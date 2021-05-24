@@ -1,30 +1,30 @@
-package ua.goit.jdbc.DTO;
+package ua.goit.jdbc.dto;
 
 public class Project {
-    private Integer id;
+    private long id;
     private String name;
     private String description;
-    private Integer cost;
+    private double cost;
 
     public Project() {
     }
 
-    public Project(Integer id, String name, String description, Integer cost) {
+    public Project(long id, String name, String description, double cost) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.cost = cost;
     }
 
-    public Project(String name, String description, Integer cost) {
-        this(null, name, description, cost);
+    public Project(String name, String description, double cost) {
+        this(0, name, description, cost);
     }
 
-    public Integer getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -44,11 +44,11 @@ public class Project {
         this.description = description;
     }
 
-    public Integer getCost() {
+    public double getCost() {
         return cost;
     }
 
-    public void setCost(Integer cost) {
+    public void setCost(double cost) {
         this.cost = cost;
     }
 

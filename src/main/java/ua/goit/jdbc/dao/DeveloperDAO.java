@@ -1,7 +1,7 @@
 package ua.goit.jdbc.dao;
 
-import ua.goit.jdbc.DTO.Developer;
-import ua.goit.jdbc.DTO.Sex;
+import ua.goit.jdbc.dto.Developer;
+import ua.goit.jdbc.dto.Sex;
 import ua.goit.jdbc.config.DatabaseConnectionManager;
 
 import java.sql.*;
@@ -41,33 +41,33 @@ public class DeveloperDAO extends AbstractDAO<Developer> {
     }
 
     @Override
-    protected void setObjectStatement(PreparedStatement statement, Integer id, Developer object) throws SQLException {
-        if (id == null) {
+    protected void setObjectStatement(PreparedStatement statement, long id, Developer object) throws SQLException {
+        if (id == 0) {
             //CREATE
             object.setId(getLastId() + 1);
-            statement.setInt(1, object.getId());
+            statement.setLong(1, object.getId());
             statement.setString(2, object.getFirstName());
             statement.setString(3, object.getLastName());
             statement.setString(4, object.getSex().getName());
-            statement.setInt(5, object.getSalary());
+            statement.setDouble(5, object.getSalary());
         } else {
             //UPDATE
             statement.setString(1, object.getFirstName());
             statement.setString(2, object.getLastName());
             statement.setString(3, object.getSex().getName());
-            statement.setInt(4, object.getSalary());
-            statement.setInt(5, id);
+            statement.setDouble(4, object.getSalary());
+            statement.setLong(5, id);
         }
     }
 
     @Override
     protected Developer convertToObject(ResultSet resultSet) throws SQLException {
         Developer developer = new Developer();
-        developer.setId(resultSet.getInt("developer_id"));
+        developer.setId(resultSet.getLong("developer_id"));
         developer.setFirstName(resultSet.getString("first_name"));
         developer.setLastName(resultSet.getString("last_name"));
         developer.setSex(Sex.findByName(resultSet.getString("sex")));
-        developer.setSalary(resultSet.getInt("salary"));
+        developer.setSalary(resultSet.getDouble("salary"));
         return developer;
     }
 }

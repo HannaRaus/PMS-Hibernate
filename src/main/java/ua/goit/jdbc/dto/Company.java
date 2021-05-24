@@ -1,28 +1,30 @@
-package ua.goit.jdbc.DTO;
+package ua.goit.jdbc.dto;
+
+import java.util.Objects;
 
 public class Company {
-    private Integer id;
+    private long id;
     private String name;
     private String headquarters;
 
     public Company() {
     }
 
-    public Company(Integer id, String companyName, String headquarters) {
+    public Company(long id, String companyName, String headquarters) {
         this.id = id;
         this.name = companyName;
         this.headquarters = headquarters;
     }
 
     public Company(String companyName, String headquarters) {
-        this(null, companyName, headquarters);
+        this(0, companyName, headquarters);
     }
 
-    public Integer getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -49,5 +51,18 @@ public class Company {
                 ", companyName='" + name + '\'' +
                 ", headquarters='" + headquarters + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Company company = (Company) o;
+        return id == company.id && Objects.equals(name, company.name) && Objects.equals(headquarters, company.headquarters);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, headquarters);
     }
 }

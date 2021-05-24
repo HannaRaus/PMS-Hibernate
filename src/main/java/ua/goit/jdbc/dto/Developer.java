@@ -1,16 +1,18 @@
-package ua.goit.jdbc.DTO;
+package ua.goit.jdbc.dto;
+
+import java.util.Objects;
 
 public class Developer {
-    private Integer id;
+    private long id;
     private String firstName;
     private String lastName;
     private Sex sex;
-    private Integer salary;
+    private double salary;
 
     public Developer() {
     }
 
-    public Developer(Integer id, String firstName, String lastName, Sex gender, Integer salary) {
+    public Developer(long id, String firstName, String lastName, Sex gender, double salary) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -18,15 +20,15 @@ public class Developer {
         this.salary = salary;
     }
 
-    public Developer(String firstName, String lastName, Sex gender, Integer salary) {
-        this(null, firstName, lastName, gender, salary);
+    public Developer(String firstName, String lastName, Sex gender, double salary) {
+        this(0, firstName, lastName, gender, salary);
     }
 
-    public Integer getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -54,11 +56,11 @@ public class Developer {
         this.sex = sex;
     }
 
-    public Integer getSalary() {
+    public double getSalary() {
         return salary;
     }
 
-    public void setSalary(Integer salary) {
+    public void setSalary(double salary) {
         this.salary = salary;
     }
 
@@ -71,5 +73,20 @@ public class Developer {
                 ", gender=" + sex +
                 ", salary=" + salary +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Developer developer = (Developer) o;
+        return id == developer.id && Objects.equals(firstName, developer.firstName) &&
+                Objects.equals(lastName, developer.lastName) && sex == developer.sex &&
+                Objects.equals(salary, developer.salary);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, firstName, lastName, sex, salary);
     }
 }

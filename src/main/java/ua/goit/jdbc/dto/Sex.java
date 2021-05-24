@@ -1,4 +1,4 @@
-package ua.goit.jdbc.DTO;
+package ua.goit.jdbc.dto;
 
 import java.util.Arrays;
 

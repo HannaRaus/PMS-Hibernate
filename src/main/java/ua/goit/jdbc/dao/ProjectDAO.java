@@ -1,6 +1,6 @@
 package ua.goit.jdbc.dao;
 
-import ua.goit.jdbc.DTO.Project;
+import ua.goit.jdbc.dto.Project;
 import ua.goit.jdbc.config.DatabaseConnectionManager;
 
 import java.sql.PreparedStatement;
@@ -42,21 +42,21 @@ public class ProjectDAO extends AbstractDAO<Project> {
     }
 
     @Override
-    protected void setObjectStatement(PreparedStatement statement, Integer id, Project object) throws SQLException {
-        if (id == null) {
+    protected void setObjectStatement(PreparedStatement statement, long id, Project object) throws SQLException {
+        if (id == 0) {
             //CREATE
             object.setId(getLastId() + 1);
-            statement.setInt(1, object.getId());
+            statement.setLong(1, object.getId());
             statement.setString(2, object.getName());
             statement.setString(3, object.getDescription());
-            statement.setInt(4, object.getCost());
+            statement.setDouble(4, object.getCost());
 
         } else {
             //UPDATE
             statement.setString(1, object.getName());
             statement.setString(2, object.getDescription());
-            statement.setInt(3, object.getCost());
-            statement.setInt(4, id);
+            statement.setDouble(3, object.getCost());
+            statement.setLong(4, id);
         }
     }
 
@@ -66,7 +66,7 @@ public class ProjectDAO extends AbstractDAO<Project> {
         project.setId(resultSet.getInt("project_id"));
         project.setName(resultSet.getString("project_name"));
         project.setDescription(resultSet.getString("project_description"));
-        project.setCost(resultSet.getInt("cost"));
+        project.setCost(resultSet.getDouble("cost"));
         return project;
     }
 }

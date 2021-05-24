@@ -1,12 +1,12 @@
 package ua.goit.jdbc;
 
-import ua.goit.jdbc.DTO.Developer;
-import ua.goit.jdbc.DTO.Sex;
+import ua.goit.jdbc.dto.Developer;
+import ua.goit.jdbc.dto.Sex;
 import ua.goit.jdbc.config.DatabaseConnectionManager;
 import ua.goit.jdbc.dao.DeveloperDAO;
 import ua.goit.jdbc.dao.GenericDAO;
 import ua.goit.jdbc.servises.Service;
-import ua.goit.jdbc.util.PropertiesLoader;
+import ua.goit.jdbc.servises.util.PropertiesLoader;
 
 public class Main {
     public static void main(String[] args) {

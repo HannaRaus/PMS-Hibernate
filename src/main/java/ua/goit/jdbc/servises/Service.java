@@ -20,7 +20,7 @@ public class Service<T> {
         return created;
     }
 
-    public T update(Integer id, T company) {
+    public T update(long id, T company) {
         T updated = null;
         try {
             updated = repository.update(id, company);
@@ -30,7 +30,7 @@ public class Service<T> {
         return updated;
     }
 
-    public void delete(Integer id) {
+    public void delete(long id) {
         try {
             repository.read(id);
             repository.delete(id);
@@ -39,7 +39,7 @@ public class Service<T> {
         }
     }
 
-    public T findById(Integer id) {
+    public T findById(long id) {
         T founded = null;
         try {
             founded = repository.read(id);

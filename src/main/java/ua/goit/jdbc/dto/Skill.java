@@ -1,25 +1,25 @@
-package ua.goit.jdbc.DTO;
+package ua.goit.jdbc.dto;
 
 
 public class Skill {
-    private Integer id;
+    private long id;
     private Branch branch;
     private SkillLevel level;
 
     public Skill() {
     }
 
-    public Skill(Integer id, Branch branch, SkillLevel level) {
+    public Skill(long id, Branch branch, SkillLevel level) {
         this.id = id;
         this.branch = branch;
         this.level = level;
     }
 
-    public Integer getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(long id) {
         this.id = id;
     }
 

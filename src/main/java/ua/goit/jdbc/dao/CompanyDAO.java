@@ -1,6 +1,6 @@
 package ua.goit.jdbc.dao;
 
-import ua.goit.jdbc.DTO.Company;
+import ua.goit.jdbc.dto.Company;
 import ua.goit.jdbc.config.DatabaseConnectionManager;
 
 import java.sql.PreparedStatement;
@@ -41,18 +41,18 @@ public class CompanyDAO extends AbstractDAO<Company> {
     }
 
     @Override
-    protected void setObjectStatement(PreparedStatement statement, Integer id, Company object) throws SQLException {
-        if (id == null) {
+    protected void setObjectStatement(PreparedStatement statement, long id, Company object) throws SQLException {
+        if (id == 0) {
             //CREATE
             object.setId(getLastId() + 1);
-            statement.setInt(1, object.getId());
+            statement.setLong(1, object.getId());
             statement.setString(2, object.getName());
             statement.setString(3, object.getHeadquarters());
         } else {
             //UPDATE
             statement.setString(1, object.getName());
             statement.setString(2, object.getHeadquarters());
-            statement.setInt(3, id);
+            statement.setLong(3, id);
         }
     }
 

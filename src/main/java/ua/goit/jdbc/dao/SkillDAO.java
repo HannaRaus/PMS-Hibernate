@@ -1,8 +1,8 @@
 package ua.goit.jdbc.dao;
 
-import ua.goit.jdbc.DTO.Branch;
-import ua.goit.jdbc.DTO.Skill;
-import ua.goit.jdbc.DTO.SkillLevel;
+import ua.goit.jdbc.dto.Branch;
+import ua.goit.jdbc.dto.Skill;
+import ua.goit.jdbc.dto.SkillLevel;
 import ua.goit.jdbc.config.DatabaseConnectionManager;
 
 import java.sql.PreparedStatement;
@@ -44,18 +44,18 @@ public class SkillDAO extends AbstractDAO<Skill> {
     }
 
     @Override
-    protected void setObjectStatement(PreparedStatement statement, Integer id, Skill object) throws SQLException {
-        if (id == null) {
+    protected void setObjectStatement(PreparedStatement statement, long id, Skill object) throws SQLException {
+        if (id == 0) {
             //CREATE
             object.setId(getLastId() + 1);
-            statement.setInt(1, object.getId());
+            statement.setLong(1, object.getId());
             statement.setString(2, object.getBranch().getName());
             statement.setString(3, object.getLevel().getName());
         } else {
             //UPDATE
             statement.setString(1, object.getBranch().getName());
             statement.setString(2, object.getLevel().getName());
-            statement.setInt(3, id);
+            statement.setLong(3, id);
         }
     }
 
