@@ -33,6 +33,11 @@ public class CustomerDAO extends AbstractDAO<Customer> {
     }
 
     @Override
+    protected String getSelectAllQuery() {
+        return "SELECT * FROM customers ORDER BY customer_id;";
+    }
+
+    @Override
     protected String getDeleteQuery() {
         return "DELETE FROM customers WHERE customer_id=?;";
     }
@@ -57,8 +62,8 @@ public class CustomerDAO extends AbstractDAO<Customer> {
                 statement.setString(2, object.getIndustry());
                 statement.setLong(3, id);
             }
-        } catch (SQLException e) {
-            throw new DAOException(e.getMessage(), e);
+        } catch (SQLException ex) {
+            throw new DAOException(ex.getMessage(), ex);
         }
     }
 
@@ -69,8 +74,8 @@ public class CustomerDAO extends AbstractDAO<Customer> {
             customer.setId(resultSet.getInt("customer_id"));
             customer.setName(resultSet.getString("customer_name"));
             customer.setIndustry(resultSet.getString("industry"));
-        } catch (SQLException e) {
-            throw new DAOException(e.getMessage(), e);
+        } catch (SQLException ex) {
+            throw new DAOException(ex.getMessage(), ex);
         }
         return customer;
     }

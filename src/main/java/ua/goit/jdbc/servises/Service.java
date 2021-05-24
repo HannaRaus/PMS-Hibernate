@@ -3,6 +3,8 @@ package ua.goit.jdbc.servises;
 import ua.goit.jdbc.dao.GenericDAO;
 import ua.goit.jdbc.exceptions.DAOException;
 
+import java.util.List;
+
 public class Service<T> {
     private final GenericDAO<T> repository;
 
@@ -44,9 +46,19 @@ public class Service<T> {
         try {
             founded = repository.read(id);
         } catch (DAOException ex) {
-            ex.getStackTrace();
+            ex.printStackTrace();
         }
         return founded;
+    }
+
+    public List<T> readAll() {
+        List<T> entities = null;
+        try {
+            entities = repository.readAll();
+        } catch (DAOException ex) {
+            ex.printStackTrace();
+        }
+        return entities;
     }
 
 }

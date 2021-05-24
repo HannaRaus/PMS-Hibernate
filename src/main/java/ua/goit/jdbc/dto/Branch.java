@@ -5,7 +5,8 @@ import java.util.Arrays;
 public enum Branch {
     JAVA("Java"),
     CPLUS("C++"),
-    CSHARP("C#");
+    CSHARP("C#"),
+    JS("JS");
 
     private final String name;
 

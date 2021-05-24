@@ -7,6 +7,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class AbstractDAO<T> implements GenericDAO<T> {
     private final DatabaseConnectionManager connectionManager;
@@ -24,6 +26,8 @@ public abstract class AbstractDAO<T> implements GenericDAO<T> {
     protected abstract String getDeleteQuery();
 
     protected abstract String getLastIdQuery();
+
+    protected abstract String getSelectAllQuery();
 
     protected abstract void setObjectStatement(PreparedStatement statement, long id, T object) throws DAOException;
 
@@ -111,5 +115,24 @@ public abstract class AbstractDAO<T> implements GenericDAO<T> {
             throw new DAOException(ex.getMessage());
         }
         return result;
+    }
+
+    @Override
+    public List<T> readAll() throws DAOException {
+        List<T> entities = new ArrayList<>();
+        T entity;
+        String selectAllQuery = getSelectAllQuery();
+        try (Connection connection = connectionManager.getConnection();
+             PreparedStatement statement = connection.prepareStatement(selectAllQuery)) {
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                entity = convertToObject(resultSet);
+                entities.add(entity);
+            }
+        } catch (
+                SQLException ex) {
+            throw new DAOException(ex.getMessage());
+        }
+        return entities;
     }
 }

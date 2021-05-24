@@ -32,6 +32,11 @@ public class DeveloperDAO extends AbstractDAO<Developer> {
     }
 
     @Override
+    protected String getSelectAllQuery() {
+        return "SELECT * FROM developers ORDER BY developer_id";
+    }
+
+    @Override
     protected String getDeleteQuery() {
         return "DELETE FROM developers WHERE developer_id=?;";
     }
@@ -60,8 +65,8 @@ public class DeveloperDAO extends AbstractDAO<Developer> {
                 statement.setDouble(4, object.getSalary());
                 statement.setLong(5, id);
             }
-        } catch (SQLException e) {
-            throw new DAOException(e.getMessage(), e);
+        } catch (SQLException ex) {
+            throw new DAOException(ex.getMessage(), ex);
         }
     }
 
@@ -74,8 +79,8 @@ public class DeveloperDAO extends AbstractDAO<Developer> {
             developer.setLastName(resultSet.getString("last_name"));
             developer.setSex(Sex.findByName(resultSet.getString("sex")));
             developer.setSalary(resultSet.getDouble("salary"));
-        } catch (SQLException e) {
-            throw new DAOException(e.getMessage(), e);
+        } catch (SQLException ex) {
+            throw new DAOException(ex.getMessage(), ex);
         }
         return developer;
     }

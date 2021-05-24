@@ -2,6 +2,8 @@ package ua.goit.jdbc.dao;
 
 import ua.goit.jdbc.exceptions.DAOException;
 
+import java.util.List;
+
 public interface GenericDAO<T> {
 
     T create(T entity) throws DAOException;
@@ -11,5 +13,7 @@ public interface GenericDAO<T> {
     T update(long id, T entity) throws DAOException;
 
     void delete(long id) throws DAOException;
+
+    List<T> readAll() throws DAOException;
 
 }

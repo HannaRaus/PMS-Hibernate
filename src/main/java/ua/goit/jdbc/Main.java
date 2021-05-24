@@ -1,45 +1,53 @@
 package ua.goit.jdbc;
 
-import ua.goit.jdbc.dto.Developer;
-import ua.goit.jdbc.dto.Sex;
+import ua.goit.jdbc.dao.*;
+import ua.goit.jdbc.dto.*;
 import ua.goit.jdbc.config.DatabaseConnectionManager;
-import ua.goit.jdbc.dao.DeveloperDAO;
-import ua.goit.jdbc.dao.GenericDAO;
 import ua.goit.jdbc.servises.Service;
 import ua.goit.jdbc.servises.util.PropertiesLoader;
 
+import java.util.List;
+
 public class Main {
     public static void main(String[] args) {
-        DatabaseConnectionManager connectionManager = getConnectionManager();
-
-        GenericDAO<Developer> repository = new DeveloperDAO(connectionManager);
-        Service<Developer> service = new Service<>(repository);
-
-        //CREATE
-        Developer created = new Developer("Hanna", "Raus", Sex.FEMALE, 1000);
-        System.out.println("Created " + service.create(created));
-
-        //READ
-        System.out.println("Find by id " + service.findById(5));
-
-        //UPDATE
-        Developer updated = new Developer("Hanna", "Raus", Sex.MALE, 2000);
-        System.out.println("Updated " + service.update(51, updated));
-
-        //DELETE
-        service.delete(51);
-        System.out.println("Find by id " + service.findById(51));
-
-    }
-
-    private static DatabaseConnectionManager getConnectionManager() {
         PropertiesLoader propertiesLoader = new PropertiesLoader();
         propertiesLoader.loadPropertiesFile("application.properties");
+        DatabaseConnectionManager connectionManager = new DatabaseConnectionManager(propertiesLoader);
 
-        return new DatabaseConnectionManager(propertiesLoader.getProperty("host"),
-                propertiesLoader.getProperty("database.name"),
-                propertiesLoader.getProperty("username"),
-                propertiesLoader.getProperty("password"));
+        Service<Developer> devService = new Service<>(new DeveloperDAO(connectionManager));
+//
+//        //CREATE
+//        Developer created = new Developer("Hanna", "Raus", Sex.FEMALE, 1000);
+//        System.out.println("Created " + devService.create(created));
+//
+//        //READ
+//        System.out.println("Find by id " + devService.findById(5));
+//
+//        //UPDATE
+//        Developer updated = new Developer("Hanna", "Raus", Sex.MALE, 2000);
+//        System.out.println("Updated " + devService.update(51, updated));
+//
+//        //DELETE
+//        devService.delete(51);
+//
+        List<Developer> developers = devService.readAll();
+        developers.forEach(System.out::println);
+
+        Service<Skill> skillService = new Service<>(new SkillDAO(connectionManager));
+        List<Skill> skills = skillService.readAll();
+        skills.forEach(System.out::println);
+
+        Service<Project> projectService = new Service<>(new ProjectDAO(connectionManager));
+        List<Project> projects = projectService.readAll();
+        projects.forEach(System.out::println);
+
+        Service<Customer> customerService = new Service<>(new CustomerDAO(connectionManager));
+        List<Customer> customers = customerService.readAll();
+        customers.forEach(System.out::println);
+
+        Service<Company> companyService = new Service<>(new CompanyDAO(connectionManager));
+        List<Company> companies = companyService.readAll();
+        companies.forEach(System.out::println);
     }
 
 }

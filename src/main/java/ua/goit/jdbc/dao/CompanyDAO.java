@@ -33,6 +33,11 @@ public class CompanyDAO extends AbstractDAO<Company> {
     }
 
     @Override
+    protected String getSelectAllQuery() {
+        return "SELECT * FROM companies ORDER BY company_id;";
+    }
+
+    @Override
     protected String getDeleteQuery() {
         return "DELETE FROM companies WHERE company_id=?;";
     }
@@ -56,8 +61,8 @@ public class CompanyDAO extends AbstractDAO<Company> {
                 statement.setString(2, object.getHeadquarters());
                 statement.setLong(3, id);
             }
-        } catch (SQLException e) {
-            throw new DAOException(e.getMessage(), e);
+        } catch (SQLException ex) {
+            throw new DAOException(ex.getMessage(), ex);
         }
     }
 
@@ -68,8 +73,8 @@ public class CompanyDAO extends AbstractDAO<Company> {
             company.setId(resultSet.getInt("company_id"));
             company.setName(resultSet.getString("company_name"));
             company.setHeadquarters(resultSet.getString("headquarters"));
-        } catch (SQLException e) {
-            throw new DAOException(e.getMessage(), e);
+        } catch (SQLException ex) {
+            throw new DAOException(ex.getMessage(), ex);
         }
         return company;
     }

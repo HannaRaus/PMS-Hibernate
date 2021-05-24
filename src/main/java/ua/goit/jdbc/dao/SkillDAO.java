@@ -35,6 +35,11 @@ public class SkillDAO extends AbstractDAO<Skill> {
     }
 
     @Override
+    protected String getSelectAllQuery() {
+        return "SELECT * FROM skills ORDER BY skill_id;";
+    }
+
+    @Override
     protected String getDeleteQuery() {
         return "DELETE FROM skills WHERE skill_id=?;";
     }
@@ -59,8 +64,8 @@ public class SkillDAO extends AbstractDAO<Skill> {
                 statement.setString(2, object.getLevel().getName());
                 statement.setLong(3, id);
             }
-        } catch (SQLException e) {
-            throw new DAOException(e.getMessage(), e);
+        } catch (SQLException ex) {
+            throw new DAOException(ex.getMessage(), ex);
         }
     }
 
@@ -71,8 +76,8 @@ public class SkillDAO extends AbstractDAO<Skill> {
             skill.setId(resultSet.getInt("skill_id"));
             skill.setBranch(Branch.findByName(resultSet.getString("branch")));
             skill.setLevel(SkillLevel.findByName(resultSet.getString("skill_level")));
-        } catch (SQLException e) {
-            throw new DAOException(e.getMessage(), e);
+        } catch (SQLException ex) {
+            throw new DAOException(ex.getMessage(), ex);
         }
         return skill;
     }

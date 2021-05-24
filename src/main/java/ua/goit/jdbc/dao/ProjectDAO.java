@@ -33,6 +33,11 @@ public class ProjectDAO extends AbstractDAO<Project> {
     }
 
     @Override
+    protected String getSelectAllQuery() {
+        return "SELECT * FROM projects ORDER BY project_id;";
+    }
+
+    @Override
     protected String getDeleteQuery() {
         return "DELETE FROM projects WHERE project_id=?;";
     }
@@ -60,8 +65,8 @@ public class ProjectDAO extends AbstractDAO<Project> {
                 statement.setDouble(3, object.getCost());
                 statement.setLong(4, id);
             }
-        } catch (SQLException e) {
-            throw new DAOException(e.getMessage(), e);
+        } catch (SQLException ex) {
+            throw new DAOException(ex.getMessage(), ex);
         }
     }
 
@@ -73,8 +78,8 @@ public class ProjectDAO extends AbstractDAO<Project> {
             project.setName(resultSet.getString("project_name"));
             project.setDescription(resultSet.getString("project_description"));
             project.setCost(resultSet.getDouble("cost"));
-        } catch (SQLException e) {
-            throw new DAOException(e.getMessage(), e);
+        } catch (SQLException ex) {
+            throw new DAOException(ex.getMessage(), ex);
         }
         return project;
     }
