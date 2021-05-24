@@ -2,6 +2,7 @@ package ua.goit.jdbc.dao;
 
 import ua.goit.jdbc.dto.Customer;
 import ua.goit.jdbc.config.DatabaseConnectionManager;
+import ua.goit.jdbc.exceptions.DAOException;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -42,27 +43,35 @@ public class CustomerDAO extends AbstractDAO<Customer> {
     }
 
     @Override
-    protected void setObjectStatement(PreparedStatement statement, long id, Customer object) throws SQLException {
-        if (id == 0) {
-            //CREATE
-            object.setId(getLastId() + 1);
-            statement.setLong(1, object.getId());
-            statement.setString(2, object.getName());
-            statement.setString(3, object.getIndustry());
-        } else {
-            //UPDATE
-            statement.setString(1, object.getName());
-            statement.setString(2, object.getIndustry());
-            statement.setLong(3, id);
+    protected void setObjectStatement(PreparedStatement statement, long id, Customer object) throws DAOException {
+        try {
+            if (id == 0) {
+                //CREATE
+                object.setId(getLastId() + 1);
+                statement.setLong(1, object.getId());
+                statement.setString(2, object.getName());
+                statement.setString(3, object.getIndustry());
+            } else {
+                //UPDATE
+                statement.setString(1, object.getName());
+                statement.setString(2, object.getIndustry());
+                statement.setLong(3, id);
+            }
+        } catch (SQLException e) {
+            throw new DAOException(e.getMessage(), e);
         }
     }
 
     @Override
-    protected Customer convertToObject(ResultSet resultSet) throws SQLException {
+    protected Customer convertToObject(ResultSet resultSet) throws DAOException {
         Customer customer = new Customer();
-        customer.setId(resultSet.getInt("customer_id"));
-        customer.setName(resultSet.getString("customer_name"));
-        customer.setIndustry(resultSet.getString("industry"));
+        try {
+            customer.setId(resultSet.getInt("customer_id"));
+            customer.setName(resultSet.getString("customer_name"));
+            customer.setIndustry(resultSet.getString("industry"));
+        } catch (SQLException e) {
+            throw new DAOException(e.getMessage(), e);
+        }
         return customer;
     }
 

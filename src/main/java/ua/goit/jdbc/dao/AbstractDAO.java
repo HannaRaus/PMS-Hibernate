@@ -25,14 +25,14 @@ public abstract class AbstractDAO<T> implements GenericDAO<T> {
 
     protected abstract String getLastIdQuery();
 
-    protected abstract void setObjectStatement(PreparedStatement statement, long id, T object) throws SQLException;
+    protected abstract void setObjectStatement(PreparedStatement statement, long id, T object) throws DAOException;
 
-    protected abstract T convertToObject(ResultSet resultSet) throws SQLException;
+    protected abstract T convertToObject(ResultSet resultSet) throws DAOException;
 
     @Override
     public T create(T entity) throws DAOException {
         String createQuery = getCreateQuery(entity);
-        T createdEntity = null;
+        T createdEntity;
         try (Connection connection = connectionManager.getConnection();
              PreparedStatement statement = connection.prepareStatement(createQuery)) {
             setObjectStatement(statement, 0, entity);
@@ -43,14 +43,14 @@ public abstract class AbstractDAO<T> implements GenericDAO<T> {
                 throw new DAOException("Problems with creating the object");
             }
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            throw new DAOException(ex.getMessage());
         }
         return createdEntity;
     }
 
     @Override
     public T read(long id) throws DAOException {
-        T entity = null;
+        T entity;
         String selectByIdQuery = getSelectByIdQuery();
         try (Connection connection = connectionManager.getConnection();
              PreparedStatement statement = connection.prepareStatement(selectByIdQuery)) {
@@ -62,7 +62,7 @@ public abstract class AbstractDAO<T> implements GenericDAO<T> {
                 throw new DAOException("There is no object with such ID!");
             }
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            throw new DAOException(ex.getMessage());
         }
         return entity;
     }
@@ -70,7 +70,7 @@ public abstract class AbstractDAO<T> implements GenericDAO<T> {
     @Override
     public T update(long id, T entity) throws DAOException {
         String updateQuery = getUpdateQuery();
-        T updated = null;
+        T updated;
         try (Connection connection = connectionManager.getConnection();
              PreparedStatement statement = connection.prepareStatement(updateQuery)) {
             setObjectStatement(statement, id, entity);
@@ -81,24 +81,24 @@ public abstract class AbstractDAO<T> implements GenericDAO<T> {
                 throw new DAOException("There are problems with updating the object");
             }
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            throw new DAOException(ex.getMessage());
         }
         return updated;
     }
 
     @Override
-    public void delete(long id) {
+    public void delete(long id) throws DAOException {
         String deleteQuery = getDeleteQuery();
         try (Connection connection = connectionManager.getConnection();
              PreparedStatement statement = connection.prepareStatement(deleteQuery)) {
             statement.setLong(1, id);
             statement.execute();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException ex) {
+            throw new DAOException(ex.getMessage());
         }
     }
 
-    protected long getLastId() {
+    protected long getLastId() throws DAOException {
         String lastIdQuery = getLastIdQuery();
         long result = 0;
         try (Connection connection = connectionManager.getConnection();
@@ -107,9 +107,8 @@ public abstract class AbstractDAO<T> implements GenericDAO<T> {
             while (resultSet.next()) {
                 result = resultSet.getLong("max");
             }
-            return result;
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            throw new DAOException(ex.getMessage());
         }
         return result;
     }

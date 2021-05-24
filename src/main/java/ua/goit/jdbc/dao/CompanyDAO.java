@@ -2,6 +2,7 @@ package ua.goit.jdbc.dao;
 
 import ua.goit.jdbc.dto.Company;
 import ua.goit.jdbc.config.DatabaseConnectionManager;
+import ua.goit.jdbc.exceptions.DAOException;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -41,27 +42,35 @@ public class CompanyDAO extends AbstractDAO<Company> {
     }
 
     @Override
-    protected void setObjectStatement(PreparedStatement statement, long id, Company object) throws SQLException {
-        if (id == 0) {
-            //CREATE
-            object.setId(getLastId() + 1);
-            statement.setLong(1, object.getId());
-            statement.setString(2, object.getName());
-            statement.setString(3, object.getHeadquarters());
-        } else {
-            //UPDATE
-            statement.setString(1, object.getName());
-            statement.setString(2, object.getHeadquarters());
-            statement.setLong(3, id);
+    protected void setObjectStatement(PreparedStatement statement, long id, Company object) throws DAOException {
+        try {
+            if (id == 0) {
+                //CREATE
+                object.setId(getLastId() + 1);
+                statement.setLong(1, object.getId());
+                statement.setString(2, object.getName());
+                statement.setString(3, object.getHeadquarters());
+            } else {
+                //UPDATE
+                statement.setString(1, object.getName());
+                statement.setString(2, object.getHeadquarters());
+                statement.setLong(3, id);
+            }
+        } catch (SQLException e) {
+            throw new DAOException(e.getMessage(), e);
         }
     }
 
     @Override
-    protected Company convertToObject(ResultSet resultSet) throws SQLException {
+    protected Company convertToObject(ResultSet resultSet) throws DAOException {
         Company company = new Company();
-        company.setId(resultSet.getInt("company_id"));
-        company.setName(resultSet.getString("company_name"));
-        company.setHeadquarters(resultSet.getString("headquarters"));
+        try {
+            company.setId(resultSet.getInt("company_id"));
+            company.setName(resultSet.getString("company_name"));
+            company.setHeadquarters(resultSet.getString("headquarters"));
+        } catch (SQLException e) {
+            throw new DAOException(e.getMessage(), e);
+        }
         return company;
     }
 }

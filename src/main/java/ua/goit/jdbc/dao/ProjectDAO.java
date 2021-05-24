@@ -2,6 +2,7 @@ package ua.goit.jdbc.dao;
 
 import ua.goit.jdbc.dto.Project;
 import ua.goit.jdbc.config.DatabaseConnectionManager;
+import ua.goit.jdbc.exceptions.DAOException;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -42,31 +43,39 @@ public class ProjectDAO extends AbstractDAO<Project> {
     }
 
     @Override
-    protected void setObjectStatement(PreparedStatement statement, long id, Project object) throws SQLException {
-        if (id == 0) {
-            //CREATE
-            object.setId(getLastId() + 1);
-            statement.setLong(1, object.getId());
-            statement.setString(2, object.getName());
-            statement.setString(3, object.getDescription());
-            statement.setDouble(4, object.getCost());
+    protected void setObjectStatement(PreparedStatement statement, long id, Project object) throws DAOException {
+        try {
+            if (id == 0) {
+                //CREATE
+                object.setId(getLastId() + 1);
+                statement.setLong(1, object.getId());
+                statement.setString(2, object.getName());
+                statement.setString(3, object.getDescription());
+                statement.setDouble(4, object.getCost());
 
-        } else {
-            //UPDATE
-            statement.setString(1, object.getName());
-            statement.setString(2, object.getDescription());
-            statement.setDouble(3, object.getCost());
-            statement.setLong(4, id);
+            } else {
+                //UPDATE
+                statement.setString(1, object.getName());
+                statement.setString(2, object.getDescription());
+                statement.setDouble(3, object.getCost());
+                statement.setLong(4, id);
+            }
+        } catch (SQLException e) {
+            throw new DAOException(e.getMessage(), e);
         }
     }
 
     @Override
-    protected Project convertToObject(ResultSet resultSet) throws SQLException {
+    protected Project convertToObject(ResultSet resultSet) throws DAOException {
         Project project = new Project();
-        project.setId(resultSet.getInt("project_id"));
-        project.setName(resultSet.getString("project_name"));
-        project.setDescription(resultSet.getString("project_description"));
-        project.setCost(resultSet.getDouble("cost"));
+        try {
+            project.setId(resultSet.getInt("project_id"));
+            project.setName(resultSet.getString("project_name"));
+            project.setDescription(resultSet.getString("project_description"));
+            project.setCost(resultSet.getDouble("cost"));
+        } catch (SQLException e) {
+            throw new DAOException(e.getMessage(), e);
+        }
         return project;
     }
 }
