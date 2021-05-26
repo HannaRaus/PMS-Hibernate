@@ -1,5 +1,6 @@
 package ua.goit.jdbc.dto;
 
+import java.util.List;
 import java.util.Objects;
 
 public class Developer {
@@ -8,6 +9,7 @@ public class Developer {
     private String lastName;
     private Sex sex;
     private double salary;
+    List<Skill> skills;
 
     public Developer() {
     }
@@ -62,6 +64,14 @@ public class Developer {
 
     public void setSalary(double salary) {
         this.salary = salary;
+    }
+
+    public List<Skill> getSkills() {
+        return skills;
+    }
+
+    public void setSkills(List<Skill> skills) {
+        this.skills = skills;
     }
 
     @Override

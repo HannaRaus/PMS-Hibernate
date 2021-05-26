@@ -1,5 +1,7 @@
 package ua.goit.jdbc.dto;
 
+import java.util.Objects;
+
 public class Project {
     private long id;
     private String name;
@@ -60,5 +62,18 @@ public class Project {
                 ", description='" + description + '\'' +
                 ", cost=" + cost +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Project project = (Project) o;
+        return id == project.id && Double.compare(project.cost, cost) == 0 && Objects.equals(name, project.name) && Objects.equals(description, project.description);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, description, cost);
     }
 }

@@ -1,10 +1,14 @@
 package ua.goit.jdbc.dto;
 
 
+import java.util.List;
+import java.util.Objects;
+
 public class Skill {
     private long id;
     private Branch branch;
     private SkillLevel level;
+    List<Developer> developers;
 
     public Skill() {
     }
@@ -13,6 +17,10 @@ public class Skill {
         this.id = id;
         this.branch = branch;
         this.level = level;
+    }
+
+    public Skill(Branch branch, SkillLevel level) {
+        this(0, branch, level);
     }
 
     public long getId() {
@@ -39,6 +47,14 @@ public class Skill {
         this.level = level;
     }
 
+    public List<Developer> getDevelopers() {
+        return developers;
+    }
+
+    public void setDevelopers(List<Developer> developers) {
+        this.developers = developers;
+    }
+
     @Override
     public String toString() {
         return "Skill{" +
@@ -46,5 +62,18 @@ public class Skill {
                 ", branch=" + branch +
                 ", level=" + level +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Skill skill = (Skill) o;
+        return id == skill.id && branch == skill.branch && level == skill.level && Objects.equals(developers, skill.developers);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, branch, level, developers);
     }
 }
