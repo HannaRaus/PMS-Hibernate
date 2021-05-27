@@ -10,7 +10,7 @@ public interface GenericDAO<T> {
 
     T read(long id) throws DAOException;
 
-    T update(long id, T entity) throws DAOException;
+    T update(T entity) throws DAOException;
 
     void delete(long id) throws DAOException;
 

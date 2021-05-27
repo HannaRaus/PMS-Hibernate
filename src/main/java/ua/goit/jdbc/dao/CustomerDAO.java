@@ -15,7 +15,7 @@ public class CustomerDAO extends AbstractDAO<Customer> {
     }
 
     @Override
-    protected String getCreateQuery(Customer object) {
+    protected String getCreateQuery() {
         return "INSERT INTO customers (customer_id, customer_name, industry) " +
                 "VALUES(?, ?, ?) RETURNING customer_id;";
     }
@@ -48,19 +48,19 @@ public class CustomerDAO extends AbstractDAO<Customer> {
     }
 
     @Override
-    protected void setObjectStatement(PreparedStatement statement, long id, Customer object) throws DAOException {
+    protected void sendEntity(PreparedStatement statement, Customer customer) throws DAOException {
         try {
-            if (id == 0) {
+            if (customer.getId() == 0) {
                 //CREATE
-                object.setId(getLastId() + 1);
-                statement.setLong(1, object.getId());
-                statement.setString(2, object.getName());
-                statement.setString(3, object.getIndustry());
+                customer.setId(getLastId() + 1);
+                statement.setLong(1, customer.getId());
+                statement.setString(2, customer.getName());
+                statement.setString(3, customer.getIndustry());
             } else {
                 //UPDATE
-                statement.setString(1, object.getName());
-                statement.setString(2, object.getIndustry());
-                statement.setLong(3, id);
+                statement.setString(1, customer.getName());
+                statement.setString(2, customer.getIndustry());
+                statement.setLong(3, customer.getId());
             }
         } catch (SQLException ex) {
             throw new DAOException(ex.getMessage(), ex);
@@ -68,7 +68,7 @@ public class CustomerDAO extends AbstractDAO<Customer> {
     }
 
     @Override
-    protected Customer convertToObject(ResultSet resultSet) throws DAOException {
+    protected Customer getEntity(ResultSet resultSet) throws DAOException {
         Customer customer = new Customer();
         try {
             customer.setId(resultSet.getInt("customer_id"));

@@ -17,7 +17,7 @@ public class SkillDAO extends AbstractDAO<Skill> {
     }
 
     @Override
-    protected String getCreateQuery(Skill object) {
+    protected String getCreateQuery() {
         return "INSERT INTO skills (skill_id, branch, skill_level) " +
                 "VALUES(?, CAST(? AS language), CAST(? AS level)) RETURNING skill_id;";
     }
@@ -50,19 +50,19 @@ public class SkillDAO extends AbstractDAO<Skill> {
     }
 
     @Override
-    protected void setObjectStatement(PreparedStatement statement, long id, Skill object) throws DAOException {
+    protected void sendEntity(PreparedStatement statement, Skill skill) throws DAOException {
         try {
-            if (id == 0) {
+            if (skill.getId() == 0) {
                 //CREATE
-                object.setId(getLastId() + 1);
-                statement.setLong(1, object.getId());
-                statement.setString(2, object.getBranch().getName());
-                statement.setString(3, object.getLevel().getName());
+                skill.setId(getLastId() + 1);
+                statement.setLong(1, skill.getId());
+                statement.setString(2, skill.getBranch().getName());
+                statement.setString(3, skill.getLevel().getName());
             } else {
                 //UPDATE
-                statement.setString(1, object.getBranch().getName());
-                statement.setString(2, object.getLevel().getName());
-                statement.setLong(3, id);
+                statement.setString(1, skill.getBranch().getName());
+                statement.setString(2, skill.getLevel().getName());
+                statement.setLong(3, skill.getId());
             }
         } catch (SQLException ex) {
             throw new DAOException(ex.getMessage(), ex);
@@ -70,7 +70,7 @@ public class SkillDAO extends AbstractDAO<Skill> {
     }
 
     @Override
-    protected Skill convertToObject(ResultSet resultSet) throws DAOException {
+    protected Skill getEntity(ResultSet resultSet) throws DAOException {
         Skill skill = new Skill();
         try {
             skill.setId(resultSet.getInt("skill_id"));

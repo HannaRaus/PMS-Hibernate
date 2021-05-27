@@ -15,7 +15,7 @@ public class CompanyDAO extends AbstractDAO<Company> {
     }
 
     @Override
-    protected String getCreateQuery(Company object) {
+    protected String getCreateQuery() {
         return "INSERT INTO companies (company_id, company_name, headquarters) " +
                 "VALUES(?, ?, ?) RETURNING company_id;";
     }
@@ -47,19 +47,19 @@ public class CompanyDAO extends AbstractDAO<Company> {
     }
 
     @Override
-    protected void setObjectStatement(PreparedStatement statement, long id, Company object) throws DAOException {
+    protected void sendEntity(PreparedStatement statement, Company company) throws DAOException {
         try {
-            if (id == 0) {
+            if (company.getId() == 0) {
                 //CREATE
-                object.setId(getLastId() + 1);
-                statement.setLong(1, object.getId());
-                statement.setString(2, object.getName());
-                statement.setString(3, object.getHeadquarters());
+                company.setId(getLastId() + 1);
+                statement.setLong(1, company.getId());
+                statement.setString(2, company.getName());
+                statement.setString(3, company.getHeadquarters());
             } else {
                 //UPDATE
-                statement.setString(1, object.getName());
-                statement.setString(2, object.getHeadquarters());
-                statement.setLong(3, id);
+                statement.setString(1, company.getName());
+                statement.setString(2, company.getHeadquarters());
+                statement.setLong(3, company.getId());
             }
         } catch (SQLException ex) {
             throw new DAOException(ex.getMessage(), ex);
@@ -67,7 +67,7 @@ public class CompanyDAO extends AbstractDAO<Company> {
     }
 
     @Override
-    protected Company convertToObject(ResultSet resultSet) throws DAOException {
+    protected Company getEntity(ResultSet resultSet) throws DAOException {
         Company company = new Company();
         try {
             company.setId(resultSet.getInt("company_id"));

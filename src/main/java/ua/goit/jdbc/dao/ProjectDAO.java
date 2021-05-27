@@ -15,7 +15,7 @@ public class ProjectDAO extends AbstractDAO<Project> {
     }
 
     @Override
-    protected String getCreateQuery(Project object) {
+    protected String getCreateQuery() {
         return "INSERT INTO projects (project_id, project_name, project_description, cost) " +
                 "VALUES(?, ?, ?, ?) RETURNING project_id;";
     }
@@ -48,22 +48,22 @@ public class ProjectDAO extends AbstractDAO<Project> {
     }
 
     @Override
-    protected void setObjectStatement(PreparedStatement statement, long id, Project object) throws DAOException {
+    protected void sendEntity(PreparedStatement statement, Project project) throws DAOException {
         try {
-            if (id == 0) {
+            if ( project.getId()== 0) {
                 //CREATE
-                object.setId(getLastId() + 1);
-                statement.setLong(1, object.getId());
-                statement.setString(2, object.getName());
-                statement.setString(3, object.getDescription());
-                statement.setDouble(4, object.getCost());
+                project.setId(getLastId() + 1);
+                statement.setLong(1, project.getId());
+                statement.setString(2, project.getName());
+                statement.setString(3, project.getDescription());
+                statement.setDouble(4, project.getCost());
 
             } else {
                 //UPDATE
-                statement.setString(1, object.getName());
-                statement.setString(2, object.getDescription());
-                statement.setDouble(3, object.getCost());
-                statement.setLong(4, id);
+                statement.setString(1, project.getName());
+                statement.setString(2, project.getDescription());
+                statement.setDouble(3, project.getCost());
+                statement.setLong(4, project.getId());
             }
         } catch (SQLException ex) {
             throw new DAOException(ex.getMessage(), ex);
@@ -71,7 +71,7 @@ public class ProjectDAO extends AbstractDAO<Project> {
     }
 
     @Override
-    protected Project convertToObject(ResultSet resultSet) throws DAOException {
+    protected Project getEntity(ResultSet resultSet) throws DAOException {
         Project project = new Project();
         try {
             project.setId(resultSet.getInt("project_id"));

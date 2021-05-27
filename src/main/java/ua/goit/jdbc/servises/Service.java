@@ -22,10 +22,10 @@ public class Service<T> {
         return created;
     }
 
-    public T update(long id, T company) {
+    public T update(T entity) {
         T updated = null;
         try {
-            updated = repository.update(id, company);
+            updated = repository.update(entity);
         } catch (DAOException ex) {
             ex.getStackTrace();
         }

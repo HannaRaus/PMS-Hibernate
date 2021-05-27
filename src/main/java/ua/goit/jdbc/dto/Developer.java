@@ -10,20 +10,21 @@ public class Developer {
     private Sex sex;
     private double salary;
     List<Skill> skills;
+    List<Project> projects;
 
     public Developer() {
     }
 
-    public Developer(long id, String firstName, String lastName, Sex gender, double salary) {
+    public Developer(long id, String firstName, String lastName, Sex sex, double salary) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.sex = gender;
+        this.sex = sex;
         this.salary = salary;
     }
 
-    public Developer(String firstName, String lastName, Sex gender, double salary) {
-        this(0, firstName, lastName, gender, salary);
+    public Developer(String firstName, String lastName, Sex sex, double salary) {
+        this(0, firstName, lastName, sex, salary);
     }
 
     public long getId() {
@@ -74,15 +75,12 @@ public class Developer {
         this.skills = skills;
     }
 
-    @Override
-    public String toString() {
-        return "Developer{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", gender=" + sex +
-                ", salary=" + salary +
-                '}';
+    public List<Project> getProjects() {
+        return projects;
+    }
+
+    public void setProjects(List<Project> projects) {
+        this.projects = projects;
     }
 
     @Override
@@ -90,13 +88,26 @@ public class Developer {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Developer developer = (Developer) o;
-        return id == developer.id && Objects.equals(firstName, developer.firstName) &&
-                Objects.equals(lastName, developer.lastName) && sex == developer.sex &&
-                Objects.equals(salary, developer.salary);
+        return id == developer.id && Double.compare(developer.salary, salary) == 0 &&
+                Objects.equals(firstName, developer.firstName) &&
+                Objects.equals(lastName, developer.lastName) &&
+                sex == developer.sex && Objects.equals(skills, developer.skills) &&
+                Objects.equals(projects, developer.projects);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, sex, salary);
+        return Objects.hash(id, firstName, lastName, sex, salary, skills, projects);
+    }
+
+    @Override
+    public String toString() {
+        return "Developer{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", sex=" + sex +
+                ", salary=" + salary +
+                '}';
     }
 }
