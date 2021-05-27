@@ -17,13 +17,13 @@ public class ProjectDAO extends AbstractDAO<Project> {
     @Override
     protected String getCreateQuery() {
         return "INSERT INTO projects (project_id, project_name, project_description, cost) " +
-                "VALUES(?, ?, ?, ?) RETURNING project_id;";
+                "VALUES(?, ?, ?, ?);";
     }
 
     @Override
     protected String getUpdateQuery() {
         return "UPDATE projects SET project_name=?, project_description=? , cost=?" +
-                "WHERE project_id=? RETURNING project_id;";
+                "WHERE project_id=?;";
     }
 
     @Override

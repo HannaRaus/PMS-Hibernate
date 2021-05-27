@@ -17,13 +17,13 @@ public class CompanyDAO extends AbstractDAO<Company> {
     @Override
     protected String getCreateQuery() {
         return "INSERT INTO companies (company_id, company_name, headquarters) " +
-                "VALUES(?, ?, ?) RETURNING company_id;";
+                "VALUES(?, ?, ?);";
     }
 
     @Override
     protected String getUpdateQuery() {
         return "UPDATE companies SET company_name=?, headquarters=? " +
-                "WHERE company_id=? RETURNING company_id;";
+                "WHERE company_id=?;";
     }
 
     @Override

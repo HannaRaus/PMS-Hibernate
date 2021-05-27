@@ -19,13 +19,13 @@ public class SkillDAO extends AbstractDAO<Skill> {
     @Override
     protected String getCreateQuery() {
         return "INSERT INTO skills (skill_id, branch, skill_level) " +
-                "VALUES(?, CAST(? AS language), CAST(? AS level)) RETURNING skill_id;";
+                "VALUES(?, CAST(? AS language), CAST(? AS level));";
     }
 
     @Override
     protected String getUpdateQuery() {
         return "UPDATE skills SET branch=CAST(? AS language), skill_level=CAST(? AS level) " +
-                "WHERE skill_id=? RETURNING skill_id;";
+                "WHERE skill_id=?;";
     }
 
     @Override

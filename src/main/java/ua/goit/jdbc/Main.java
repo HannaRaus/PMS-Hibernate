@@ -23,18 +23,18 @@ public class Main {
         //CREATE
 //        Project createdProject = projectService.create(new Project("new project", "description", 20000));
 //        System.out.println("Created " + createdProject);
-//        Developer createdDeveloper = devService.create(new Developer("Hanna", "Raus", Sex.FEMALE, 1000));
-//        System.out.println("Created " + createdDeveloper);
+        Developer createdDeveloper = devService.create(new Developer("Hanna", "Raus", Sex.FEMALE, 1000));
+        System.out.println("Created " + createdDeveloper);
 
-        //Update
-        Developer toUpdate = new Developer(53,"111", "Raus", Sex.MALE, 5000);
-        toUpdate.setProjects(List.of(projectService.findById(18), projectService.findById(19),
-                projectService.findById(20)));
-
-        Developer updatedDeveloper = devService.update(toUpdate);
-        System.out.println("Updated " + updatedDeveloper);
-        List<Project> projects = updatedDeveloper.getProjects();
-        projects.forEach(System.out::println);
+//        //Update
+//        Developer toUpdate = new Developer(53,"111", "Raus", Sex.MALE, 5000);
+//        toUpdate.setProjects(List.of(projectService.findById(18), projectService.findById(19),
+//                projectService.findById(20)));
+//
+//        Developer updatedDeveloper = devService.update(toUpdate);
+//        System.out.println("Updated " + updatedDeveloper);
+//        List<Project> projects = updatedDeveloper.getProjects();
+//        projects.forEach(System.out::println);
 
 //        //READ
 //        System.out.println("Find by id " + devService.findById(51));

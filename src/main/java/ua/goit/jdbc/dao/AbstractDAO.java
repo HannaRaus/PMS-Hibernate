@@ -3,10 +3,7 @@ package ua.goit.jdbc.dao;
 import ua.goit.jdbc.config.DatabaseConnectionManager;
 import ua.goit.jdbc.exceptions.DAOException;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,11 +39,12 @@ public abstract class AbstractDAO<T> implements GenericDAO<T> {
         String createQuery = getCreateQuery();
         T createdEntity;
         try (Connection connection = connectionManager.getConnection();
-             PreparedStatement statement = connection.prepareStatement(createQuery)) {
+             PreparedStatement statement = connection.prepareStatement(createQuery, Statement.RETURN_GENERATED_KEYS)) {
             sendEntity(statement, entity);
-            ResultSet resultSet = statement.executeQuery();
+            statement.execute();
+            ResultSet resultSet = statement.getGeneratedKeys();;
             if (resultSet.next()) {
-                createdEntity = read(resultSet.getInt(1));
+                createdEntity = read(resultSet.getLong(1));
             } else {
                 throw new DAOException("Problems with creating the object");
             }

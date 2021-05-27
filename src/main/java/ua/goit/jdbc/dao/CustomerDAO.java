@@ -17,13 +17,13 @@ public class CustomerDAO extends AbstractDAO<Customer> {
     @Override
     protected String getCreateQuery() {
         return "INSERT INTO customers (customer_id, customer_name, industry) " +
-                "VALUES(?, ?, ?) RETURNING customer_id;";
+                "VALUES(?, ?, ?);";
     }
 
     @Override
     protected String getUpdateQuery() {
         return "UPDATE customers SET customer_name=?, industry=? " +
-                "WHERE customer_id=? RETURNING customer_id;";
+                "WHERE customer_id=?;";
     }
 
     @Override

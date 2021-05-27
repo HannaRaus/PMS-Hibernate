@@ -20,13 +20,13 @@ public class DeveloperDAO extends AbstractDAO<Developer> {
     @Override
     protected String getCreateQuery() {
         return "INSERT INTO developers (developer_id, first_name, last_name, sex, salary) " +
-                "VALUES (?, ?, ?, CAST(? AS sex), ?) RETURNING developer_id;";
+                "VALUES (?, ?, ?, CAST(? AS sex), ?);";
     }
 
     @Override
     protected String getUpdateQuery() {
         return "UPDATE developers SET first_name=?, last_name=?, sex=CAST(? AS sex), salary=? " +
-                "WHERE developer_id=? RETURNING developer_id;";
+                "WHERE developer_id=?;";
     }
 
     @Override
