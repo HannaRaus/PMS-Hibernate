@@ -42,7 +42,7 @@ public abstract class AbstractDAO<T> implements GenericDAO<T> {
              PreparedStatement statement = connection.prepareStatement(createQuery, Statement.RETURN_GENERATED_KEYS)) {
             sendEntity(statement, entity);
             statement.execute();
-            ResultSet resultSet = statement.getGeneratedKeys();;
+            ResultSet resultSet = statement.getGeneratedKeys();
             if (resultSet.next()) {
                 createdEntity = read(resultSet.getLong(1));
             } else {
@@ -141,5 +141,9 @@ public abstract class AbstractDAO<T> implements GenericDAO<T> {
             throw new DAOException(ex.getMessage());
         }
         return entities;
+    }
+
+    protected <V> boolean compareInfoFromDB(List<V> listInDB, List<V> entityList) {
+        return !entityList.equals(listInDB) && !listInDB.containsAll(entityList) && !entityList.isEmpty();
     }
 }

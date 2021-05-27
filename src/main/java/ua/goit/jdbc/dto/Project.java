@@ -1,5 +1,6 @@
 package ua.goit.jdbc.dto;
 
+import java.util.List;
 import java.util.Objects;
 
 public class Project {
@@ -7,6 +8,9 @@ public class Project {
     private String name;
     private String description;
     private double cost;
+    private List<Developer> developers;
+    private List<Company> companies;
+    private List<Customer> customers;
 
     public Project() {
     }
@@ -52,6 +56,30 @@ public class Project {
 
     public void setCost(double cost) {
         this.cost = cost;
+    }
+
+    public List<Developer> getDevelopers() {
+        return developers;
+    }
+
+    public void setDevelopers(List<Developer> developers) {
+        this.developers = developers;
+    }
+
+    public List<Company> getCompanies() {
+        return companies;
+    }
+
+    public void setCompanies(List<Company> companies) {
+        this.companies = companies;
+    }
+
+    public List<Customer> getCustomers() {
+        return customers;
+    }
+
+    public void setCustomers(List<Customer> customers) {
+        this.customers = customers;
     }
 
     @Override

@@ -101,7 +101,7 @@ public class DeveloperDAO extends AbstractDAO<Developer> {
                 "VALUES (?, ?);";
         List<Project> projectsInDB = receiveDeveloperProjects(developer);
         List<Project> newProjects = developer.getProjects();
-        if (!newProjects.equals(projectsInDB) && !projectsInDB.containsAll(newProjects) && !newProjects.isEmpty()) {
+        if (compareInfoFromDB(projectsInDB, newProjects)) {
             try (Connection connection = getConnectionManager().getConnection();
                  PreparedStatement statement = connection.prepareStatement(query)) {
                 for (Project project : newProjects) {
@@ -118,7 +118,7 @@ public class DeveloperDAO extends AbstractDAO<Developer> {
     private List<Project> receiveDeveloperProjects(Developer developer) throws DAOException {
         String query = String.format("SELECT p.project_id, p.project_name, p.project_description, p.cost " +
                 "FROM projects p INNER JOIN project_developers pd ON p.project_id=pd.project_id " +
-                "WHERE developer_id = %s ORDER by p.project_id;",developer.getId());
+                "WHERE developer_id = %s ORDER by p.project_id;", developer.getId());
         return new ProjectDAO(getConnectionManager()).readByCustomQuery(query);
     }
 
@@ -127,7 +127,7 @@ public class DeveloperDAO extends AbstractDAO<Developer> {
                 "VALUES (?, ?);";
         List<Skill> skillsInDB = receiveDeveloperSkills(developer);
         List<Skill> newSkills = developer.getSkills();
-        if (!newSkills.equals(skillsInDB) && !skillsInDB.containsAll(newSkills) && !newSkills.isEmpty()) {
+        if (compareInfoFromDB(skillsInDB, newSkills)) {
             try (Connection connection = getConnectionManager().getConnection();
                  PreparedStatement statement = connection.prepareStatement(query)) {
                 for (Skill skill : newSkills) {
@@ -144,7 +144,7 @@ public class DeveloperDAO extends AbstractDAO<Developer> {
     private List<Skill> receiveDeveloperSkills(Developer developer) throws DAOException {
         String query = String.format("SELECT s.skill_id, s.branch, s.skill_level " +
                 "FROM skills s INNER JOIN developer_skills ds ON s.skill_id = ds.skill_id " +
-                "WHERE ds.developer_id = %s ORDER by s.skill_id;",developer.getId());
+                "WHERE ds.developer_id = %s ORDER by s.skill_id;", developer.getId());
         return new SkillDAO(getConnectionManager()).readByCustomQuery(query);
     }
 
