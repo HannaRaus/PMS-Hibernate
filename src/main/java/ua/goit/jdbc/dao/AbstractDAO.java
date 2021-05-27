@@ -78,11 +78,12 @@ public abstract class AbstractDAO<T> implements GenericDAO<T> {
         String updateQuery = getUpdateQuery();
         T updated;
         try (Connection connection = connectionManager.getConnection();
-             PreparedStatement statement = connection.prepareStatement(updateQuery)) {
+             PreparedStatement statement = connection.prepareStatement(updateQuery, Statement.RETURN_GENERATED_KEYS)) {
             sendEntity(statement, entity);
-            ResultSet resultSet = statement.executeQuery();
+            statement.execute();
+            ResultSet resultSet = statement.getGeneratedKeys();
             if (resultSet.next()) {
-                updated = read(resultSet.getInt(1));
+                updated = read(resultSet.getLong(1));
             } else {
                 throw new DAOException("There are problems with updating the object");
             }
