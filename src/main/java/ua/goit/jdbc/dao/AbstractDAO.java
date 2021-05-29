@@ -123,10 +123,10 @@ public abstract class AbstractDAO<T> implements GenericDAO<T> {
     @Override
     public List<T> readAll() throws DAOException {
         String selectAllQuery = getSelectAllQuery();
-        return readByCustomQuery(selectAllQuery);
+        return getListByQuery(selectAllQuery);
     }
 
-    protected List<T> readByCustomQuery(String query) throws DAOException {
+    protected List<T> getListByQuery(String query) throws DAOException {
         List<T> entities = new ArrayList<>();
         T entity;
         try (Connection connection = connectionManager.getConnection();

@@ -61,4 +61,9 @@ public class Service<T> {
         return entities;
     }
 
+    public List<T> getAllDevelopers() {
+
+        return null;
+    }
+
 }

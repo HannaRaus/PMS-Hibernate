@@ -119,7 +119,7 @@ public class DeveloperDAO extends AbstractDAO<Developer> {
         String query = String.format("SELECT p.project_id, p.project_name, p.project_description, p.cost " +
                 "FROM projects p INNER JOIN project_developers pd ON p.project_id=pd.project_id " +
                 "WHERE developer_id = %s ORDER by p.project_id;", developer.getId());
-        return new ProjectDAO(getConnectionManager()).readByCustomQuery(query);
+        return new ProjectDAO(getConnectionManager()).getListByQuery(query);
     }
 
     private void sendDeveloperSkills(Developer developer) throws DAOException {
@@ -145,7 +145,7 @@ public class DeveloperDAO extends AbstractDAO<Developer> {
         String query = String.format("SELECT s.skill_id, s.branch, s.skill_level " +
                 "FROM skills s INNER JOIN developer_skills ds ON s.skill_id = ds.skill_id " +
                 "WHERE ds.developer_id = %s ORDER by s.skill_id;", developer.getId());
-        return new SkillDAO(getConnectionManager()).readByCustomQuery(query);
+        return new SkillDAO(getConnectionManager()).getListByQuery(query);
     }
 
 }

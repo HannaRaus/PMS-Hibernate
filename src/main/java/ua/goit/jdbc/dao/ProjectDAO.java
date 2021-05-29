@@ -118,7 +118,7 @@ public class ProjectDAO extends AbstractDAO<Project> {
         String query = String.format("SELECT d.developer_id, d.first_name, d.last_name, d.sex, d.salary" +
                 "FROM developers d INNER JOIN project_developers pd ON pd.developer_d = d.developer_id " +
                 "WHERE project_id = %s ORDER by d.developer_id;", project.getId());
-        return new DeveloperDAO(getConnectionManager()).readByCustomQuery(query);
+        return new DeveloperDAO(getConnectionManager()).getListByQuery(query);
     }
 
 
@@ -150,14 +150,14 @@ public class ProjectDAO extends AbstractDAO<Project> {
         String query = String.format("SELECT c.company_id, c.company_name, c.headquarters" +
                 "FROM companies c INNER JOIN customers_companies cc ON cc.company_id = c.company_id " +
                 "WHERE project_id = %s ORDER by c.company_id;", project.getId());
-        return new CompanyDAO(getConnectionManager()).readByCustomQuery(query);
+        return new CompanyDAO(getConnectionManager()).getListByQuery(query);
     }
 
     private List<Customer> receiveProjectCustomers(Project project) throws DAOException {
         String query = String.format("SELECT c.customer_id, c.customer_name, c.industry" +
                 "FROM customers c INNER JOIN customers_companies cc ON cc.customer_id = c.customer_id " +
                 "WHERE project_id = %s ORDER by c.customer_id;", project.getId());
-        return new CustomerDAO(getConnectionManager()).readByCustomQuery(query);
+        return new CustomerDAO(getConnectionManager()).getListByQuery(query);
     }
 
 }

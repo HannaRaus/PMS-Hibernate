@@ -1,14 +1,14 @@
 package ua.goit.jdbc.dao;
 
-import ua.goit.jdbc.dto.Branch;
-import ua.goit.jdbc.dto.Skill;
-import ua.goit.jdbc.dto.SkillLevel;
+import ua.goit.jdbc.dto.*;
 import ua.goit.jdbc.config.DatabaseConnectionManager;
 import ua.goit.jdbc.exceptions.DAOException;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 public class SkillDAO extends AbstractDAO<Skill> {
 
@@ -63,6 +63,9 @@ public class SkillDAO extends AbstractDAO<Skill> {
                 statement.setString(1, skill.getBranch().getName());
                 statement.setString(2, skill.getLevel().getName());
                 statement.setLong(3, skill.getId());
+                if (skill.getDevelopers() != null) {
+                    sendSkillDevelopers(skill);
+                }
             }
         } catch (SQLException ex) {
             throw new DAOException(ex.getMessage(), ex);
@@ -81,4 +84,31 @@ public class SkillDAO extends AbstractDAO<Skill> {
         }
         return skill;
     }
+
+    private void sendSkillDevelopers(Skill skill) throws DAOException {
+        String query = "INSERT INTO developers_skills (skill_id, developer_id)" +
+                "VALUES (?, ?);";
+        List<Developer> projectsInDB = receiveSkillDevelopers(skill);
+        List<Developer> newDevelopers = skill.getDevelopers();
+        if (compareInfoFromDB(projectsInDB, newDevelopers)) {
+            try (Connection connection = getConnectionManager().getConnection();
+                 PreparedStatement statement = connection.prepareStatement(query)) {
+                for (Developer developer : newDevelopers) {
+                    statement.setLong(1, skill.getId());
+                    statement.setLong(2, developer.getId());
+                    statement.execute();
+                }
+            } catch (SQLException ex) {
+                throw new DAOException(ex.getMessage());
+            }
+        }
+    }
+
+    private List<Developer> receiveSkillDevelopers(Skill skill) throws DAOException {
+        String query = String.format("SELECT p.project_id, p.project_name, p.project_description, p.cost " +
+                "FROM projects p INNER JOIN project_developers pd ON p.project_id=pd.project_id " +
+                "WHERE developer_id = %s ORDER by p.project_id;", skill.getId());
+        return new DeveloperDAO(getConnectionManager()).getListByQuery(query);
+    }
+
 }
