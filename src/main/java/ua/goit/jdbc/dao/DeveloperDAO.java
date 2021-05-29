@@ -1,10 +1,7 @@
 package ua.goit.jdbc.dao;
 
-import ua.goit.jdbc.dto.Developer;
-import ua.goit.jdbc.dto.Project;
-import ua.goit.jdbc.dto.Sex;
+import ua.goit.jdbc.dto.*;
 import ua.goit.jdbc.config.DatabaseConnectionManager;
-import ua.goit.jdbc.dto.Skill;
 import ua.goit.jdbc.exceptions.DAOException;
 
 import java.sql.*;
@@ -148,6 +145,34 @@ public class DeveloperDAO extends AbstractDAO<Developer> {
             throw new DAOException(ex.getMessage(), ex);
         }
         return developer;
+    }
+
+    public List<Developer> getAllDevelopersByBranch(Branch branch) {
+        String query = String.format("SELECT d.developer_id, d.first_name, d.last_name, d.sex, d.salary " +
+                "FROM developers d INNER JOIN developer_skills ds ON d.developer_id = ds.developer_id " +
+                "INNER JOIN skills s ON ds.skill_id = s.skill_id " +
+                "WHERE s.branch = '%s' ORDER BY d.developer_id;", branch.getName());
+        List<Developer> listByQuery = null;
+        try {
+            listByQuery = getListByQuery(query, false);
+        } catch (DAOException ex) {
+            ex.printStackTrace();
+        }
+        return listByQuery;
+    }
+
+    public List<Developer> getAllDevelopersBySkillLevel(SkillLevel level) {
+        String query = String.format("SELECT d.developer_id, d.first_name, d.last_name, d.sex, d.salary " +
+                "FROM developers d INNER JOIN developer_skills ds ON d.developer_id = ds.developer_id " +
+                "INNER JOIN skills s ON ds.skill_id = s.skill_id " +
+                "WHERE s.skill_level = '%s' ORDER BY d.developer_id;", level.getName());
+        List<Developer> listByQuery = null;
+        try {
+            listByQuery = getListByQuery(query, false);
+        } catch (DAOException ex) {
+            ex.printStackTrace();
+        }
+        return listByQuery;
     }
 
 }

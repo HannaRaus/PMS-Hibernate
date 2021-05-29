@@ -34,6 +34,21 @@ public abstract class AbstractDAO<T> implements GenericDAO<T> {
 
     protected abstract T getEntity(ResultSet resultSet, boolean getRelatedEntity) throws DAOException;
 
+    protected long getLastId() throws DAOException {
+        String lastIdQuery = getLastIdQuery();
+        long result = 0;
+        try (Connection connection = connectionManager.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(lastIdQuery)) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                result = resultSet.getLong("max");
+            }
+        } catch (SQLException ex) {
+            throw new DAOException(ex.getMessage());
+        }
+        return result;
+    }
+
     @Override
     public T create(T entity) throws DAOException {
         String createQuery = getCreateQuery();
@@ -103,21 +118,6 @@ public abstract class AbstractDAO<T> implements GenericDAO<T> {
         } catch (SQLException ex) {
             throw new DAOException(ex.getMessage());
         }
-    }
-
-    protected long getLastId() throws DAOException {
-        String lastIdQuery = getLastIdQuery();
-        long result = 0;
-        try (Connection connection = connectionManager.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(lastIdQuery)) {
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                result = resultSet.getLong("max");
-            }
-        } catch (SQLException ex) {
-            throw new DAOException(ex.getMessage());
-        }
-        return result;
     }
 
     @Override

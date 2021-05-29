@@ -91,13 +91,12 @@ public class Developer {
         return id == developer.id && Double.compare(developer.salary, salary) == 0 &&
                 Objects.equals(firstName, developer.firstName) &&
                 Objects.equals(lastName, developer.lastName) &&
-                sex == developer.sex && Objects.equals(skills, developer.skills) &&
-                Objects.equals(projects, developer.projects);
+                sex == developer.sex;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, sex, salary, skills, projects);
+        return Objects.hash(id, firstName, lastName, sex, salary);
     }
 
     @Override
@@ -106,7 +105,7 @@ public class Developer {
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", sex=" + sex +
+                ", sex=" + sex.getName() +
                 ", salary=" + salary +
                 '}';
     }

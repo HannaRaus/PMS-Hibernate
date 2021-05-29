@@ -59,8 +59,8 @@ public class Skill {
     public String toString() {
         return "Skill{" +
                 "id=" + id +
-                ", branch=" + branch +
-                ", level=" + level +
+                ", branch=" + branch.getName() +
+                ", level=" + level.getName() +
                 '}';
     }
 
@@ -69,11 +69,11 @@ public class Skill {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Skill skill = (Skill) o;
-        return id == skill.id && branch == skill.branch && level == skill.level && Objects.equals(developers, skill.developers);
+        return id == skill.id && branch == skill.branch && level == skill.level;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, branch, level, developers);
+        return Objects.hash(id, branch, level);
     }
 }

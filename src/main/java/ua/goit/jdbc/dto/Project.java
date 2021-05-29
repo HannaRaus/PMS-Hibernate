@@ -97,7 +97,8 @@ public class Project {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Project project = (Project) o;
-        return id == project.id && Double.compare(project.cost, cost) == 0 && Objects.equals(name, project.name) && Objects.equals(description, project.description);
+        return id == project.id && Double.compare(project.cost, cost) == 0 &&
+                Objects.equals(name, project.name) && Objects.equals(description, project.description);
     }
 
     @Override

@@ -34,7 +34,6 @@ public class Service<T> {
 
     public void delete(long id) {
         try {
-            repository.read(id);
             repository.delete(id);
         } catch (DAOException ex) {
             ex.getStackTrace();
@@ -59,11 +58,6 @@ public class Service<T> {
             ex.printStackTrace();
         }
         return entities;
-    }
-
-    public List<T> getAllDevelopers() {
-
-        return null;
     }
 
 }
