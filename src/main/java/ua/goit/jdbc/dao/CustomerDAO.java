@@ -1,12 +1,16 @@
 package ua.goit.jdbc.dao;
 
+import ua.goit.jdbc.dto.Company;
 import ua.goit.jdbc.dto.Customer;
 import ua.goit.jdbc.config.DatabaseConnectionManager;
+import ua.goit.jdbc.dto.Project;
 import ua.goit.jdbc.exceptions.DAOException;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 public class CustomerDAO extends AbstractDAO<Customer> {
 
@@ -61,24 +65,69 @@ public class CustomerDAO extends AbstractDAO<Customer> {
                 statement.setString(1, customer.getName());
                 statement.setString(2, customer.getIndustry());
                 statement.setLong(3, customer.getId());
+                if (customer.getProjects() != null && customer.getCompanies() != null) {
+                    sendCompaniesAndProjects(customer);
+                }
             }
         } catch (SQLException ex) {
             throw new DAOException(ex.getMessage(), ex);
         }
     }
 
+    private void sendCompaniesAndProjects(Customer customer) throws DAOException {
+        String query = "INSERT INTO customers_companies (customer_id, project_id, company_id) " +
+                "VALUES (?, ?, ?);";
+        List<Company> companiesInDB = receiveCompanies(customer);
+        List<Company> newCompanies = customer.getCompanies();
+        List<Project> projectsInDB = receiveProjects(customer);
+        List<Project> newProjects = customer.getProjects();
+        if (compareInfoFromDB(companiesInDB, newCompanies) && compareInfoFromDB(projectsInDB,newProjects)) {
+            try (Connection connection = getConnectionManager().getConnection();
+                 PreparedStatement statement = connection.prepareStatement(query)) {
+                for (Company company : newCompanies) {
+                    for (Project project : newProjects) {
+                        statement.setLong(3, customer.getId());
+                        statement.setLong(1, project.getId());
+                        statement.setLong(2, company.getId());
+                        statement.execute();
+                    }
+                }
+            } catch (SQLException ex) {
+                throw new DAOException(ex.getMessage());
+            }
+        }
+    }
+
+    private List<Project> receiveProjects(Customer customer) throws DAOException {
+        String query = String.format("SELECT p.project_id, p.project_name, p.project_description, p.cost " +
+                "FROM projects p INNER JOIN customers_companies cc ON cc.project_id = p.project_id " +
+                "WHERE cc.customer_id = %s ORDER by p.project_id;", customer.getId());
+        return new ProjectDAO(getConnectionManager()).getListByQuery(query,false);
+
+    }
+
+    private List<Company> receiveCompanies(Customer customer) throws DAOException {
+        String query = String.format("SELECT c.company_id, c.company_name, c.headquarters " +
+                "FROM companies c INNER JOIN customers_companies cc ON cc.company_id = c.company_id " +
+                "WHERE cc.customer_id = %s ORDER by c.company_id;", customer.getId());
+        return new CompanyDAO(getConnectionManager()).getListByQuery(query, false);
+    }
+
     @Override
-    protected Customer getEntity(ResultSet resultSet) throws DAOException {
+    protected Customer getEntity(ResultSet resultSet, boolean getRelatedEntity) throws DAOException {
         Customer customer = new Customer();
         try {
             customer.setId(resultSet.getInt("customer_id"));
             customer.setName(resultSet.getString("customer_name"));
             customer.setIndustry(resultSet.getString("industry"));
+            if (getRelatedEntity) {
+                customer.setCompanies(receiveCompanies(customer));
+                customer.setProjects(receiveProjects(customer));
+            }
         } catch (SQLException ex) {
             throw new DAOException(ex.getMessage(), ex);
         }
         return customer;
     }
-
 
 }

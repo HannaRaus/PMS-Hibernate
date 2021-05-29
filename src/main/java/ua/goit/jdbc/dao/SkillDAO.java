@@ -64,7 +64,7 @@ public class SkillDAO extends AbstractDAO<Skill> {
                 statement.setString(2, skill.getLevel().getName());
                 statement.setLong(3, skill.getId());
                 if (skill.getDevelopers() != null) {
-                    sendSkillDevelopers(skill);
+                    sendDevelopers(skill);
                 }
             }
         } catch (SQLException ex) {
@@ -72,23 +72,10 @@ public class SkillDAO extends AbstractDAO<Skill> {
         }
     }
 
-    @Override
-    protected Skill getEntity(ResultSet resultSet) throws DAOException {
-        Skill skill = new Skill();
-        try {
-            skill.setId(resultSet.getInt("skill_id"));
-            skill.setBranch(Branch.findByName(resultSet.getString("branch")));
-            skill.setLevel(SkillLevel.findByName(resultSet.getString("skill_level")));
-        } catch (SQLException ex) {
-            throw new DAOException(ex.getMessage(), ex);
-        }
-        return skill;
-    }
-
-    private void sendSkillDevelopers(Skill skill) throws DAOException {
-        String query = "INSERT INTO developers_skills (skill_id, developer_id)" +
+    private void sendDevelopers(Skill skill) throws DAOException {
+        String query = "INSERT INTO developers_skills (skill_id, developer_id) " +
                 "VALUES (?, ?);";
-        List<Developer> projectsInDB = receiveSkillDevelopers(skill);
+        List<Developer> projectsInDB = receiveDevelopers(skill);
         List<Developer> newDevelopers = skill.getDevelopers();
         if (compareInfoFromDB(projectsInDB, newDevelopers)) {
             try (Connection connection = getConnectionManager().getConnection();
@@ -104,11 +91,27 @@ public class SkillDAO extends AbstractDAO<Skill> {
         }
     }
 
-    private List<Developer> receiveSkillDevelopers(Skill skill) throws DAOException {
-        String query = String.format("SELECT p.project_id, p.project_name, p.project_description, p.cost " +
-                "FROM projects p INNER JOIN project_developers pd ON p.project_id=pd.project_id " +
-                "WHERE developer_id = %s ORDER by p.project_id;", skill.getId());
-        return new DeveloperDAO(getConnectionManager()).getListByQuery(query);
+    private List<Developer> receiveDevelopers(Skill skill) throws DAOException {
+        String query = String.format("SELECT d.developer_id, d.first_name, d.last_name, d.sex, d.salary " +
+                "FROM developers d INNER JOIN developer_skills ds ON d.developer_id=ds.developer_id " +
+                "WHERE ds.skill_id = %s ORDER by d.developer_id;", skill.getId());
+        return new DeveloperDAO(getConnectionManager()).getListByQuery(query, false);
+    }
+
+    @Override
+    protected Skill getEntity(ResultSet resultSet, boolean getRelatedEntity) throws DAOException {
+        Skill skill = new Skill();
+        try {
+            skill.setId(resultSet.getInt("skill_id"));
+            skill.setBranch(Branch.findByName(resultSet.getString("branch")));
+            skill.setLevel(SkillLevel.findByName(resultSet.getString("skill_level")));
+            if (getRelatedEntity) {
+                skill.setDevelopers(receiveDevelopers(skill));
+            }
+        } catch (SQLException ex) {
+            throw new DAOException(ex.getMessage(), ex);
+        }
+        return skill;
     }
 
 }

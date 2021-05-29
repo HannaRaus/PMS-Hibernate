@@ -9,8 +9,8 @@ public class Developer {
     private String lastName;
     private Sex sex;
     private double salary;
-    List<Skill> skills;
-    List<Project> projects;
+    private List<Skill> skills;
+    private List<Project> projects;
 
     public Developer() {
     }

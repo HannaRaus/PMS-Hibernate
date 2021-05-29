@@ -8,7 +8,7 @@ public class Skill {
     private long id;
     private Branch branch;
     private SkillLevel level;
-    List<Developer> developers;
+    private List<Developer> developers;
 
     public Skill() {
     }

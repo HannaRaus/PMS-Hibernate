@@ -32,7 +32,7 @@ public abstract class AbstractDAO<T> implements GenericDAO<T> {
 
     protected abstract void sendEntity(PreparedStatement statement, T object) throws DAOException;
 
-    protected abstract T getEntity(ResultSet resultSet) throws DAOException;
+    protected abstract T getEntity(ResultSet resultSet, boolean getRelatedEntity) throws DAOException;
 
     @Override
     public T create(T entity) throws DAOException {
@@ -63,7 +63,7 @@ public abstract class AbstractDAO<T> implements GenericDAO<T> {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                entity = getEntity(resultSet);
+                entity = getEntity(resultSet, true);
             } else {
                 throw new DAOException("There is no object with such ID!");
             }
@@ -123,21 +123,20 @@ public abstract class AbstractDAO<T> implements GenericDAO<T> {
     @Override
     public List<T> readAll() throws DAOException {
         String selectAllQuery = getSelectAllQuery();
-        return getListByQuery(selectAllQuery);
+        return getListByQuery(selectAllQuery, true);
     }
 
-    protected List<T> getListByQuery(String query) throws DAOException {
+    protected List<T> getListByQuery(String query, boolean getRelatedEntity) throws DAOException {
         List<T> entities = new ArrayList<>();
         T entity;
         try (Connection connection = connectionManager.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                entity = getEntity(resultSet);
+                entity = getEntity(resultSet, getRelatedEntity);
                 entities.add(entity);
             }
-        } catch (
-                SQLException ex) {
+        } catch (SQLException ex) {
             throw new DAOException(ex.getMessage());
         }
         return entities;

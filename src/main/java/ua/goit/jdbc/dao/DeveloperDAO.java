@@ -68,10 +68,10 @@ public class DeveloperDAO extends AbstractDAO<Developer> {
                 statement.setDouble(4, developer.getSalary());
                 statement.setLong(5, developer.getId());
                 if (developer.getProjects() != null) {
-                    sendDeveloperProjects(developer);
+                    sendProjects(developer);
                 }
                 if (developer.getSkills() != null) {
-                    sendDeveloperSkills(developer);
+                    sendSkills(developer);
                 }
             }
         } catch (SQLException ex) {
@@ -79,27 +79,10 @@ public class DeveloperDAO extends AbstractDAO<Developer> {
         }
     }
 
-
-    @Override
-    protected Developer getEntity(ResultSet resultSet) throws DAOException {
-        Developer developer = new Developer();
-        try {
-            developer.setId(resultSet.getLong("developer_id"));
-            developer.setFirstName(resultSet.getString("first_name"));
-            developer.setLastName(resultSet.getString("last_name"));
-            developer.setSex(Sex.findByName(resultSet.getString("sex")));
-            developer.setSalary(resultSet.getDouble("salary"));
-            developer.setProjects(receiveDeveloperProjects(developer));
-        } catch (SQLException ex) {
-            throw new DAOException(ex.getMessage(), ex);
-        }
-        return developer;
-    }
-
-    private void sendDeveloperProjects(Developer developer) throws DAOException {
-        String query = "INSERT INTO project_developers(developer_id, project_id)" +
+    private void sendProjects(Developer developer) throws DAOException {
+        String query = "INSERT INTO project_developers(developer_id, project_id) " +
                 "VALUES (?, ?);";
-        List<Project> projectsInDB = receiveDeveloperProjects(developer);
+        List<Project> projectsInDB = receiveProjects(developer);
         List<Project> newProjects = developer.getProjects();
         if (compareInfoFromDB(projectsInDB, newProjects)) {
             try (Connection connection = getConnectionManager().getConnection();
@@ -115,17 +98,17 @@ public class DeveloperDAO extends AbstractDAO<Developer> {
         }
     }
 
-    private List<Project> receiveDeveloperProjects(Developer developer) throws DAOException {
+    private List<Project> receiveProjects(Developer developer) throws DAOException {
         String query = String.format("SELECT p.project_id, p.project_name, p.project_description, p.cost " +
-                "FROM projects p INNER JOIN project_developers pd ON p.project_id=pd.project_id " +
-                "WHERE developer_id = %s ORDER by p.project_id;", developer.getId());
-        return new ProjectDAO(getConnectionManager()).getListByQuery(query);
+                "FROM projects p INNER JOIN project_developers pd ON p.project_id = pd.project_id " +
+                "WHERE pd.developer_id = %s ORDER by p.project_id;", developer.getId());
+        return new ProjectDAO(getConnectionManager()).getListByQuery(query, false);
     }
 
-    private void sendDeveloperSkills(Developer developer) throws DAOException {
-        String query = "INSERT INTO developer_skills (developer_id, skill_id )" +
+    private void sendSkills(Developer developer) throws DAOException {
+        String query = "INSERT INTO developer_skills (developer_id, skill_id ) " +
                 "VALUES (?, ?);";
-        List<Skill> skillsInDB = receiveDeveloperSkills(developer);
+        List<Skill> skillsInDB = receiveSkills(developer);
         List<Skill> newSkills = developer.getSkills();
         if (compareInfoFromDB(skillsInDB, newSkills)) {
             try (Connection connection = getConnectionManager().getConnection();
@@ -141,11 +124,30 @@ public class DeveloperDAO extends AbstractDAO<Developer> {
         }
     }
 
-    private List<Skill> receiveDeveloperSkills(Developer developer) throws DAOException {
+    private List<Skill> receiveSkills(Developer developer) throws DAOException {
         String query = String.format("SELECT s.skill_id, s.branch, s.skill_level " +
                 "FROM skills s INNER JOIN developer_skills ds ON s.skill_id = ds.skill_id " +
                 "WHERE ds.developer_id = %s ORDER by s.skill_id;", developer.getId());
-        return new SkillDAO(getConnectionManager()).getListByQuery(query);
+        return new SkillDAO(getConnectionManager()).getListByQuery(query, false);
+    }
+
+    @Override
+    protected Developer getEntity(ResultSet resultSet, boolean getRelatedEntity) throws DAOException {
+        Developer developer = new Developer();
+        try {
+            developer.setId(resultSet.getLong("developer_id"));
+            developer.setFirstName(resultSet.getString("first_name"));
+            developer.setLastName(resultSet.getString("last_name"));
+            developer.setSex(Sex.findByName(resultSet.getString("sex")));
+            developer.setSalary(resultSet.getDouble("salary"));
+            if (getRelatedEntity) {
+                developer.setProjects(receiveProjects(developer));
+                developer.setSkills(receiveSkills(developer));
+            }
+        } catch (SQLException ex) {
+            throw new DAOException(ex.getMessage(), ex);
+        }
+        return developer;
     }
 
 }

@@ -1,11 +1,14 @@
 package ua.goit.jdbc.dto;
 
+import java.util.List;
 import java.util.Objects;
 
 public class Company {
     private long id;
     private String name;
     private String headquarters;
+    private List<Customer> customers;
+    private List<Project> projects;
 
     public Company() {
     }
@@ -42,6 +45,22 @@ public class Company {
 
     public void setHeadquarters(String headquarters) {
         this.headquarters = headquarters;
+    }
+
+    public List<Customer> getCustomers() {
+        return customers;
+    }
+
+    public void setCustomers(List<Customer> customers) {
+        this.customers = customers;
+    }
+
+    public List<Project> getProjects() {
+        return projects;
+    }
+
+    public void setProjects(List<Project> projects) {
+        this.projects = projects;
     }
 
     @Override
