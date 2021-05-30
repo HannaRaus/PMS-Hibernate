@@ -32,12 +32,8 @@ public class Service<T> {
         return updated;
     }
 
-    public void delete(long id) {
-        try {
-            repository.delete(id);
-        } catch (DAOException ex) {
-            ex.getStackTrace();
-        }
+    public void delete(long id) throws DAOException {
+        repository.delete(id);
     }
 
     public T findById(long id) throws DAOException {
