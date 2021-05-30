@@ -2,7 +2,7 @@ package ua.goit.jdbc.config;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import ua.goit.jdbc.servises.util.PropertiesLoader;
+import ua.goit.jdbc.service.util.PropertiesLoader;
 
 import java.sql.Connection;
 import java.sql.SQLException;

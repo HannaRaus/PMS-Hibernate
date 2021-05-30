@@ -1,5 +1,7 @@
 package ua.goit.jdbc.dto;
 
+import ua.goit.jdbc.exceptions.DAOException;
+
 import java.util.Arrays;
 
 public enum SkillLevel {
@@ -17,10 +19,10 @@ public enum SkillLevel {
         return name;
     }
 
-    public static SkillLevel findByName(String name) {
+    public static SkillLevel findByName(String name) throws DAOException {
         return Arrays.stream(SkillLevel.values())
                 .filter(level -> level.getName().equalsIgnoreCase(name))
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("Level with name " + name + " doesn't exists"));
+                .orElseThrow(() -> new DAOException("Level with name " + name + " doesn't exists"));
     }
 }

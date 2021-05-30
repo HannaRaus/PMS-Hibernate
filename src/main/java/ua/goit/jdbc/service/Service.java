@@ -1,4 +1,4 @@
-package ua.goit.jdbc.servises;
+package ua.goit.jdbc.service;
 
 import ua.goit.jdbc.dao.GenericDAO;
 import ua.goit.jdbc.exceptions.DAOException;
@@ -40,14 +40,8 @@ public class Service<T> {
         }
     }
 
-    public T findById(long id) {
-        T founded = null;
-        try {
-            founded = repository.read(id);
-        } catch (DAOException ex) {
-            ex.printStackTrace();
-        }
-        return founded;
+    public T findById(long id) throws DAOException {
+        return repository.read(id);
     }
 
     public List<T> readAll() {

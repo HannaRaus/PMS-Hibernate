@@ -1,4 +1,4 @@
-package ua.goit.jdbc.servises.util;
+package ua.goit.jdbc.service.util;
 
 import java.io.IOException;
 import java.io.InputStream;

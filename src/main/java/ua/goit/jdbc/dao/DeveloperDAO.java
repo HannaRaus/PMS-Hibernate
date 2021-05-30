@@ -147,7 +147,7 @@ public class DeveloperDAO extends AbstractDAO<Developer> {
         return developer;
     }
 
-    public List<Developer> getAllDevelopersByBranch(Branch branch) {
+    public List<Developer> getByBranch(Branch branch) {
         String query = String.format("SELECT d.developer_id, d.first_name, d.last_name, d.sex, d.salary " +
                 "FROM developers d INNER JOIN developer_skills ds ON d.developer_id = ds.developer_id " +
                 "INNER JOIN skills s ON ds.skill_id = s.skill_id " +
@@ -161,7 +161,7 @@ public class DeveloperDAO extends AbstractDAO<Developer> {
         return listByQuery;
     }
 
-    public List<Developer> getAllDevelopersBySkillLevel(SkillLevel level) {
+    public List<Developer> getBySkillLevel(SkillLevel level) {
         String query = String.format("SELECT d.developer_id, d.first_name, d.last_name, d.sex, d.salary " +
                 "FROM developers d INNER JOIN developer_skills ds ON d.developer_id = ds.developer_id " +
                 "INNER JOIN skills s ON ds.skill_id = s.skill_id " +

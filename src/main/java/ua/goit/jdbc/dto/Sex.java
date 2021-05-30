@@ -1,5 +1,7 @@
 package ua.goit.jdbc.dto;
 
+import ua.goit.jdbc.exceptions.DAOException;
+
 import java.util.Arrays;
 
 public enum Sex {
@@ -16,10 +18,10 @@ public enum Sex {
         return name;
     }
 
-    public static Sex findByName(String name) {
+    public static Sex findByName(String name) throws DAOException {
         return Arrays.stream(Sex.values())
                 .filter(gender -> gender.getName().equalsIgnoreCase(name))
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("Gender with name " + name + " doesn't exists"));
+                .orElseThrow(() -> new DAOException("Gender with name " + name + " doesn't exists"));
     }
 }
