@@ -12,14 +12,8 @@ public class Service<T> {
         this.repository = repository;
     }
 
-    public T create(T company) {
-        T created = null;
-        try {
-            created = repository.create(company);
-        } catch (DAOException ex) {
-            ex.getStackTrace();
-        }
-        return created;
+    public T create(T company) throws DAOException {
+        return repository.create(company);
     }
 
     public T update(T entity) {

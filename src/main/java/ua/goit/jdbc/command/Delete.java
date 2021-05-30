@@ -29,7 +29,8 @@ public class Delete extends Commands implements Command {
                     3 - delete project
                     4 - delete developer
                     5 - delete skill
-                    return - go back to main menu""");
+                    return - go back to main menu
+                    """);
             String section = view.read();
             switch (section) {
                 case "1" -> delete(getCustomerService());
@@ -44,7 +45,7 @@ public class Delete extends Commands implements Command {
     }
 
     private <T> void delete(Service<T> service) {
-        long id = getIntegerFromConsole("Enter id");
+        long id = getLongFromConsole("Enter id");
         try {
             service.delete(id);
         } catch (DAOException ex) {

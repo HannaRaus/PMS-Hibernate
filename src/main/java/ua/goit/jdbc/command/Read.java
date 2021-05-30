@@ -71,7 +71,7 @@ public class Read extends Commands implements Command {
     }
 
     private <T> void getByID(Service<T> service) {
-        long id = getIntegerFromConsole("Enter id");
+        long id = getLongFromConsole("Enter id");
         try {
             T byId = service.findById(id);
             view.write("The " + byId.getClass().getSimpleName() + " with id [" + id + "] is \n" + byId + "\n");
@@ -115,7 +115,7 @@ public class Read extends Commands implements Command {
     }
 
     private void getSumSalaryForProject() {
-        long id = getIntegerFromConsole("Enter the project id");
+        long id = getLongFromConsole("Enter the project id");
         try {
             double sum = getProjectService().findById(id).getDevelopers().stream()
                     .mapToDouble(Developer::getSalary)
@@ -127,7 +127,7 @@ public class Read extends Commands implements Command {
     }
 
     private void getDevelopersByProject() {
-        long id = getIntegerFromConsole("Enter the project id");
+        long id = getLongFromConsole("Enter the project id");
         try {
             List<Developer> developers = getProjectService().findById(id).getDevelopers();
             view.write("Developers for project with id [" + id + "]");

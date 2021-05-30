@@ -46,13 +46,32 @@ public abstract class Commands {
         return skillService;
     }
 
-    protected long getIntegerFromConsole(String message) {
+    protected long getLongFromConsole(String message) {
         long number = 0;
         boolean isFieldBlank = true;
         while (isFieldBlank) {
             try {
                 view.write(message);
                 number = Long.parseLong(view.read());
+                if (number <= 0) {
+                    view.write("Number is less, than zero, please, enter the correct one");
+                } else {
+                    isFieldBlank = false;
+                }
+            } catch (Exception e) {
+                view.write("Wrong format, please, enter integer.");
+            }
+        }
+        return number;
+    }
+
+    protected double getDoubleFromConsole(String message) {
+        double number = 0;
+        boolean isFieldBlank = true;
+        while (isFieldBlank) {
+            try {
+                view.write(message);
+                number = Double.parseDouble(view.read());
                 if (number <= 0) {
                     view.write("Number is less, than zero, please, enter the correct one");
                 } else {
@@ -102,7 +121,7 @@ public abstract class Commands {
         boolean isFieldBlank = true;
         while (isFieldBlank) {
             try {
-                view.write("Enter the level of knowledge");
+                view.write("Enter the developer gender");
                 level = Sex.findByName(view.read().toLowerCase());
                 isFieldBlank = false;
             } catch (Exception e) {
