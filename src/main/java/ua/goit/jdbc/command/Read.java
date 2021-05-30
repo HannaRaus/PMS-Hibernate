@@ -41,53 +41,46 @@ public class Read implements Command {
 
     @Override
     public void process() {
-        view.write("""
-                Please, enter the number according to list below
-                1 - to get info by id
-                2 - to get all info
-                3 - get sum of salary for project
-                4 - get list of developers for project
-                5 - get list of developers by branch
-                6 - get list of developers by skill level
-                7 - get list of projects with date, name and quantity of developers
-                return - go back to main menu""");
-        String section = view.read();
-        switch (section.toLowerCase()) {
-            case "1":
-                infoByID();
-                break;
-            case "2":
-                infoAll();
-                break;
-            case "3":
-                getSumSalaryForProject();
-                break;
-            case "4":
-                getDevelopersByProject();
-                break;
-            case "5":
-                getDevelopersByBranch();
-                break;
-            case "6":
-                getDevelopersByLevel();
-                break;
-            case "return":
-                break;
-            default:
-                view.write("Please, enter the correct command");
+        boolean running = true;
+        while (running) {
+            view.write("""
+                    Please, enter the number according to list below
+                    1 - to get info by id
+                    2 - to get all info
+                    3 - get sum of salary for project
+                    4 - get list of developers for project
+                    5 - get list of developers by branch
+                    6 - get list of developers by skill level
+                    7 - get list of projects with date, name and quantity of developers
+                    return - go back to main menu""");
+            String section = view.read();
+            switch (section) {
+                case "1" -> infoByID();
+                case "2" -> infoAll();
+                case "3" -> getSumSalaryForProject();
+                case "4" -> getDevelopersByProject();
+                case "5" -> getDevelopersByBranch();
+                case "6" -> getDevelopersByLevel();
+                case "return" -> running = false;
+                default -> view.write("Please, enter the correct command\n");
+            }
         }
-
     }
 
     private void infoByID() {
-        writeSections();
-        String section = view.read();
-        switch (section) {
-            case "1" -> getByID(customerService);
-            case "2" -> getByID(companyService);
-            case "3" -> getByID(projectService);
-            case "4" -> getByID(developerService);
-            case "5" -> getByID(skillService);
+        boolean running = true;
+        while (running) {
+            writeSections();
+            String section = view.read();
+            switch (section) {
+                case "1" -> getByID(customerService);
+                case "2" -> getByID(companyService);
+                case "3" -> getByID(projectService);
+                case "4" -> getByID(developerService);
+                case "5" -> getByID(skillService);
+                case "return" -> running = false;
+                default -> view.write("Please, enter the correct command\n");
+            }
         }
     }
 
@@ -95,21 +88,26 @@ public class Read implements Command {
         long id = getIntegerFromConsole("Enter id");
         try {
             T byId = service.findById(id);
-            view.write("The " + byId.getClass().getSimpleName() + " with id [" + id + "] is \n" + byId);
+            view.write("The " + byId.getClass().getSimpleName() + " with id [" + id + "] is \n" + byId + "\n");
         } catch (DAOException ex) {
             view.write(ex.getMessage());
         }
     }
 
     private void infoAll() {
-        writeSections();
-        String section = view.read();
-        switch (section) {
-            case "1" -> getAllInfo(customerService);
-            case "2" -> getAllInfo(companyService);
-            case "3" -> getAllInfo(projectService);
-            case "4" -> getAllInfo(developerService);
-            case "5" -> getAllInfo(skillService);
+        boolean running = true;
+        while (running) {
+            writeSections();
+            String section = view.read();
+            switch (section) {
+                case "1" -> getAllInfo(customerService);
+                case "2" -> getAllInfo(companyService);
+                case "3" -> getAllInfo(projectService);
+                case "4" -> getAllInfo(developerService);
+                case "5" -> getAllInfo(skillService);
+                case "return" -> running = false;
+                default -> view.write("Please, enter the correct command\n");
+            }
         }
     }
 
@@ -120,12 +118,14 @@ public class Read implements Command {
     }
 
     private void writeSections() {
-        view.write("Choose the section you would like to read. Enter the number according to list below");
-        view.write("1 - customers");
-        view.write("2 - companies");
-        view.write("3 - projects");
-        view.write("4 - developers");
-        view.write("5 - skills");
+        view.write("""
+                Choose the section you would like to read. Enter the number according to list below
+                1 - customers
+                2 - companies
+                3 - projects
+                4 - developers
+                5 - skills
+                return - back to the read menu""");
     }
 
     private void getSumSalaryForProject() {
@@ -134,7 +134,7 @@ public class Read implements Command {
             double sum = projectService.findById(id).getDevelopers().stream()
                     .mapToDouble(Developer::getSalary)
                     .sum();
-            view.write("Summary of developers salaries for project with id [" + id + "] is " + sum);
+            view.write("Summary of developers salaries for project with id [" + id + "] is " + sum + "\n");
         } catch (DAOException ex) {
             view.write(ex.getMessage());
         }

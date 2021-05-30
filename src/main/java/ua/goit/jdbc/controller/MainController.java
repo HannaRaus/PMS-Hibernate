@@ -25,8 +25,8 @@ public class MainController {
     }
 
     private void doCommand() {
-        boolean isNotExit = true;
-        while (isNotExit) {
+        boolean running = true;
+        while (running) {
             view.write("Please enter a command or help to retrieve command list");
             String inputCommand = view.read();
             for (Command command : commands) {
@@ -35,7 +35,7 @@ public class MainController {
                     break;
                 } else if (inputCommand.equalsIgnoreCase("exit")) {
                     view.write("Good Bye!");
-                    isNotExit = false;
+                    running = false;
                     break;
                 } else if (inputCommand.equalsIgnoreCase("return")) {
                     break;
