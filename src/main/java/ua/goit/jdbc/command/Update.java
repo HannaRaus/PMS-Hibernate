@@ -1,9 +1,7 @@
 package ua.goit.jdbc.command;
 
 import ua.goit.jdbc.config.DatabaseConnectionManager;
-import ua.goit.jdbc.dto.Company;
-import ua.goit.jdbc.dto.Customer;
-import ua.goit.jdbc.dto.Project;
+import ua.goit.jdbc.dto.*;
 import ua.goit.jdbc.exceptions.DAOException;
 import ua.goit.jdbc.view.View;
 
@@ -24,14 +22,42 @@ public class Update extends AbstractCommand implements Command {
             Choose info you would like to update from list below
             1 - update customer name
             2 - update customer industry
-            3 - add customer companies
-            4 - add customer projects
+            3 - add customer companies and projects
             ok - when you are ready
             """;
-    private static final String COMPANY_SECTION_MENU = "";
-    private static final String PROJECT_SECTION_MENU = "";
-    private static final String DEVELOPER_SECTION_MENU = "";
-    private static final String SKILL_SECTION_MENU = "";
+    private static final String COMPANY_SECTION_MENU = """
+            Choose info you would like to update from list below
+            1 - update company name
+            2 - update company headquarters
+            3 - add company customers and projects
+            ok - when you are ready
+            """;
+    private static final String PROJECT_SECTION_MENU = """
+            Choose info you would like to update from list below
+            1 - update project name
+            2 - update project description
+            3 - update project cost
+            4 - add project customers and companies
+            5 - add project developers
+            ok - when you are ready
+            """;
+    private static final String DEVELOPER_SECTION_MENU = """
+            Choose info you would like to update from list below
+            1 - update developer first name
+            2 - update developer last name
+            3 - update developer gender
+            4 - update developer salary
+            5 - add developer projects
+            6 - add developer skills
+            ok - when you are ready
+            """;
+    private static final String SKILL_SECTION_MENU = """
+            Choose info you would like to update from list below
+            1 - update skill branch
+            2 - update skill level
+            3 - add skill developers
+            ok - when you are ready
+            """;
     private final View view;
 
     public Update(View view, DatabaseConnectionManager connectionManager) {
@@ -81,8 +107,10 @@ public class Update extends AbstractCommand implements Command {
                     view.write("Write customer new industry");
                     toUpdate.setIndustry(view.read());
                 }
-                case "3" -> toUpdate.setCompanies(getCompaniesFromConsole());
-                case "4" -> toUpdate.setProjects(getProjectsFromConsole());
+                case "3" -> {
+                    toUpdate.setCompanies(getCompaniesFromConsole());
+                    toUpdate.setProjects(getProjectsFromConsole());
+                }
                 case "ok" -> running = false;
                 default -> view.write("Please, enter the correct command\n");
             }
@@ -96,46 +124,136 @@ public class Update extends AbstractCommand implements Command {
     }
 
     private void updateCompany() {
-
+        Company toUpdate = null;
+        view.write("Which company you would like to update?");
+        while (toUpdate == null) {
+            toUpdate = getByID(getCompanyService(), "company");
+        }
+        boolean running = true;
+        while (running) {
+            view.write(COMPANY_SECTION_MENU);
+            String field = view.read();
+            switch (field) {
+                case "1" -> {
+                    view.write("Write company new name");
+                    toUpdate.setName(view.read());
+                }
+                case "2" -> {
+                    view.write("Write company new headquarters");
+                    toUpdate.setHeadquarters(view.read());
+                }
+                case "3" -> {
+                    toUpdate.setCustomers(getCustomersFromConsole());
+                    toUpdate.setProjects(getProjectsFromConsole());
+                }
+                case "ok" -> running = false;
+                default -> view.write("Please, enter the correct command\n");
+            }
+        }
+        try {
+            Company updated = getCompanyService().update(toUpdate);
+            view.write("Updated company\n" + updated + "\n");
+        } catch (DAOException ex) {
+            view.write(ex.getMessage());
+        }
     }
 
     private void updateProject() {
-
+        Project toUpdate = null;
+        view.write("Which project you would like to update?");
+        while (toUpdate == null) {
+            toUpdate = getByID(getProjectService(), "project");
+        }
+        boolean running = true;
+        while (running) {
+            view.write(PROJECT_SECTION_MENU);
+            String field = view.read();
+            switch (field) {
+                case "1" -> {
+                    view.write("Write project new name");
+                    toUpdate.setName(view.read());
+                }
+                case "2" -> {
+                    view.write("Write project new description");
+                    toUpdate.setDescription(view.read());
+                }
+                case "3" -> toUpdate.setCost(getDoubleFromConsole("Write project new cost"));
+                case "4" -> {
+                    toUpdate.setCustomers(getCustomersFromConsole());
+                    toUpdate.setCompanies(getCompaniesFromConsole());
+                }
+                case "5" -> toUpdate.setDevelopers(getDevelopersFromConsole());
+                case "ok" -> running = false;
+                default -> view.write("Please, enter the correct command\n");
+            }
+        }
+        try {
+            Project project = getProjectService().update(toUpdate);
+            view.write("Updated project\n" + project + "\n");
+        } catch (DAOException ex) {
+            view.write(ex.getMessage());
+        }
     }
 
     private void updateDeveloper() {
-
+        Developer toUpdate = null;
+        view.write("Which developer you would like to update?");
+        while (toUpdate == null) {
+            toUpdate = getByID(getDeveloperService(), "developer");
+        }
+        boolean running = true;
+        while (running) {
+            view.write(DEVELOPER_SECTION_MENU);
+            String field = view.read();
+            switch (field) {
+                case "1" -> {
+                    view.write("Write developer new first name");
+                    toUpdate.setFirstName(view.read());
+                }
+                case "2" -> {
+                    view.write("Write developer new last name");
+                    toUpdate.setLastName(view.read());
+                }
+                case "3" -> toUpdate.setSex(getGenderFromConsole());
+                case "4" -> toUpdate.setSalary(getDoubleFromConsole("Write developer new salary"));
+                case "5" -> toUpdate.setProjects(getProjectsFromConsole());
+                case "6" -> toUpdate.setSkills(getSkillsFromConsole());
+                case "ok" -> running = false;
+                default -> view.write("Please, enter the correct command\n");
+            }
+        }
+        try {
+            Developer developer = getDeveloperService().update(toUpdate);
+            view.write("Updated developer\n" + developer + "\n");
+        } catch (DAOException ex) {
+            view.write(ex.getMessage());
+        }
     }
 
     private void updateSkill() {
-
-    }
-
-    private List<Company> getCompaniesFromConsole() {
-        List<Company> companies = new ArrayList<>();
+        Skill toUpdate = null;
+        view.write("Which skill you would like to update?");
+        while (toUpdate == null) {
+            toUpdate = getByID(getSkillService(), "skill");
+        }
         boolean running = true;
         while (running) {
-            Company company = getByID(getCompanyService(), "company");
-            companies.add(company);
-            view.write("Successfully added.Enter another company id\nEnter 'ok' when finish");
-            if (view.read().equalsIgnoreCase("ok")) {
-                running = false;
+            view.write(SKILL_SECTION_MENU);
+            String field = view.read();
+            switch (field) {
+                case "1" -> toUpdate.setBranch(getBranchFromConsole());
+                case "2" -> toUpdate.setLevel(getLevelFromConsole());
+                case "3" -> toUpdate.setDevelopers(getDevelopersFromConsole());
+                case "ok" -> running = false;
+                default -> view.write("Please, enter the correct command\n");
             }
         }
-        return companies;
+        try {
+            Skill skill = getSkillService().update(toUpdate);
+            view.write("Updated skil;\n" + skill + "\n");
+        } catch (DAOException ex) {
+            view.write(ex.getMessage());
+        }
     }
 
-    private List<Project> getProjectsFromConsole() {
-        List<Project> projects = new ArrayList<>();
-        boolean running = true;
-        while (running) {
-            Project project = getByID(getProjectService(), "project");
-            projects.add(project);
-            view.write("Successfully added. Enter another project id\nEnter 'ok' when finish");
-            if (view.read().equalsIgnoreCase("ok")) {
-                running = false;
-            }
-        }
-        return projects;
-    }
 }

@@ -7,7 +7,9 @@ import ua.goit.jdbc.exceptions.DAOException;
 import ua.goit.jdbc.service.Service;
 import ua.goit.jdbc.view.View;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 
 public abstract class AbstractCommand {
@@ -143,5 +145,73 @@ public abstract class AbstractCommand {
             view.write(ex.getMessage());
         }
         return entity;
+    }
+
+    protected List<Company> getCompaniesFromConsole() {
+        List<Company> companies = new ArrayList<>();
+        boolean running = true;
+        while (running) {
+            Company company = getByID(companyService, "company");
+            companies.add(company);
+            view.write("Successfully added.Enter another company id\nEnter 'ok' when finish");
+            if (view.read().equalsIgnoreCase("ok")) {
+                running = false;
+            }
+        }
+        return companies;
+    }
+
+    protected List<Project> getProjectsFromConsole() {
+        List<Project> projects = new ArrayList<>();
+        boolean running = true;
+        while (running) {
+            Project project = getByID(projectService, "project");
+            projects.add(project);
+            view.write("Successfully added. Enter another project id\nEnter 'ok' when finish");
+            if (view.read().equalsIgnoreCase("ok")) {
+                running = false;
+            }
+        }
+        return projects;
+    }
+
+    protected List<Customer> getCustomersFromConsole() {
+        List<Customer> customers = new ArrayList<>();
+        boolean running = true;
+        while (running) {
+            Customer customer = getByID(customerService, "customer");
+            customers.add(customer);
+            view.write("Successfully added. Enter another customer id\nEnter 'ok' when finish");
+            if (view.read().equalsIgnoreCase("ok")) {
+                running = false;
+            }
+        }
+        return customers;
+    }
+    protected List<Developer> getDevelopersFromConsole() {
+        List<Developer> developers = new ArrayList<>();
+        boolean running = true;
+        while (running) {
+            Developer developer = getByID(developerService, "developer");
+            developers.add(developer);
+            view.write("Successfully added. Enter another developer id\nEnter 'ok' when finish");
+            if (view.read().equalsIgnoreCase("ok")) {
+                running = false;
+            }
+        }
+        return developers;
+    }
+    protected List<Skill> getSkillsFromConsole() {
+        List<Skill> skills = new ArrayList<>();
+        boolean running = true;
+        while (running) {
+            Skill skill = getByID(skillService, "skill");
+            skills.add(skill);
+            view.write("Successfully added. Enter another skill id\nEnter 'ok' when finish");
+            if (view.read().equalsIgnoreCase("ok")) {
+                running = false;
+            }
+        }
+        return skills;
     }
 }
