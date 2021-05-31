@@ -99,7 +99,7 @@ public class CustomerDAO extends AbstractDAO<Customer> {
     }
 
     private List<Project> receiveProjects(Customer customer) throws DAOException {
-        String query = String.format("SELECT p.project_id, p.project_name, p.project_description, p.cost " +
+        String query = String.format("SELECT p.project_id, p.project_name, p.project_description, p.cost, p.create_date " +
                 "FROM projects p INNER JOIN customers_companies cc ON cc.project_id = p.project_id " +
                 "WHERE cc.customer_id = %s ORDER by p.project_id;", customer.getId());
         return new ProjectDAO(getConnectionManager()).getListByQuery(query,false);

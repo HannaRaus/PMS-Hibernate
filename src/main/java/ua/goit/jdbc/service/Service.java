@@ -21,6 +21,7 @@ public class Service<T> {
     }
 
     public void delete(long id) throws DAOException {
+        repository.read(id);
         repository.delete(id);
     }
 

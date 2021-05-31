@@ -96,7 +96,7 @@ public class DeveloperDAO extends AbstractDAO<Developer> {
     }
 
     private List<Project> receiveProjects(Developer developer) throws DAOException {
-        String query = String.format("SELECT p.project_id, p.project_name, p.project_description, p.cost " +
+        String query = String.format("SELECT p.project_id, p.project_name, p.project_description, p.cost, p.create_date " +
                 "FROM projects p INNER JOIN project_developers pd ON p.project_id = pd.project_id " +
                 "WHERE pd.developer_id = %s ORDER by p.project_id;", developer.getId());
         return new ProjectDAO(getConnectionManager()).getListByQuery(query, false);

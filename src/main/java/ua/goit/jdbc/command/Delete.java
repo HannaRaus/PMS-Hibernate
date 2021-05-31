@@ -40,9 +40,9 @@ public class Delete extends AbstractCommand implements Command {
         long id = getLongFromConsole("Enter id");
         try {
             service.delete(id);
+            view.write("Deleted successfully\n");
         } catch (DAOException ex) {
             view.write(ex.getMessage());
         }
-        view.write("Deleted successfully\n");
     }
 }

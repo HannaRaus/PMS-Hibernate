@@ -1,5 +1,6 @@
 package ua.goit.jdbc.dto;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
@@ -8,6 +9,7 @@ public class Project {
     private String name;
     private String description;
     private double cost;
+    private LocalDate date;
     private List<Developer> developers;
     private List<Company> companies;
     private List<Customer> customers;
@@ -20,6 +22,7 @@ public class Project {
         this.name = name;
         this.description = description;
         this.cost = cost;
+        this.date = LocalDate.now();
     }
 
     public Project(String name, String description, double cost) {
@@ -80,6 +83,14 @@ public class Project {
 
     public void setCustomers(List<Customer> customers) {
         this.customers = customers;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 
     @Override

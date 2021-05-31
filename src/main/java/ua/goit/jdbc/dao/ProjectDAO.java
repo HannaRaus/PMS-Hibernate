@@ -7,10 +7,8 @@ import ua.goit.jdbc.dto.Project;
 import ua.goit.jdbc.config.DatabaseConnectionManager;
 import ua.goit.jdbc.exceptions.DAOException;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.time.LocalDate;
 import java.util.List;
 
 public class ProjectDAO extends AbstractDAO<Project> {
@@ -21,19 +19,19 @@ public class ProjectDAO extends AbstractDAO<Project> {
 
     @Override
     protected String getCreateQuery() {
-        return "INSERT INTO projects (project_id, project_name, project_description, cost) " +
-                "VALUES(?, ?, ?, ?);";
+        return "INSERT INTO projects (project_id, project_name, project_description, cost, create_date) " +
+                "VALUES(?, ?, ?, ?, ?);";
     }
 
     @Override
     protected String getUpdateQuery() {
-        return "UPDATE projects SET project_name=?, project_description=? , cost=?" +
+        return "UPDATE projects SET project_name=?, project_description=? , cost=?, create_date=? " +
                 "WHERE project_id=?;";
     }
 
     @Override
     protected String getSelectByIdQuery() {
-        return "SELECT project_id, project_name, project_description, cost " +
+        return "SELECT project_id, project_name, project_description, cost, create_date " +
                 "FROM projects WHERE project_id = ?;";
     }
 
@@ -62,12 +60,14 @@ public class ProjectDAO extends AbstractDAO<Project> {
                 statement.setString(2, project.getName());
                 statement.setString(3, project.getDescription());
                 statement.setDouble(4, project.getCost());
+                statement.setDate(5, Date.valueOf(project.getDate()));
             } else {
                 //UPDATE
                 statement.setString(1, project.getName());
                 statement.setString(2, project.getDescription());
                 statement.setDouble(3, project.getCost());
-                statement.setLong(4, project.getId());
+                statement.setDate(4, Date.valueOf(project.getDate()));
+                statement.setLong(5, project.getId());
                 if (project.getDevelopers() != null) {
                     sendDevelopers(project);
                 }
@@ -153,6 +153,7 @@ public class ProjectDAO extends AbstractDAO<Project> {
             project.setName(resultSet.getString("project_name"));
             project.setDescription(resultSet.getString("project_description"));
             project.setCost(resultSet.getDouble("cost"));
+            project.setDate(resultSet.getObject("create_date", LocalDate.class));
             if (getRelatedEntity) {
                 project.setDevelopers(receiveDevelopers(project));
                 project.setCompanies(receiveCompanies(project));

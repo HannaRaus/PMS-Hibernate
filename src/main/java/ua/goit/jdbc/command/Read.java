@@ -8,6 +8,7 @@ import ua.goit.jdbc.service.Service;
 import ua.goit.jdbc.view.View;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Read extends AbstractCommand implements Command {
     private final View view;
@@ -37,6 +38,7 @@ public class Read extends AbstractCommand implements Command {
                 case "4" -> getDevelopersByProject();
                 case "5" -> getDevelopersByBranch();
                 case "6" -> getDevelopersByLevel();
+                case "7" -> getProjectsInfo();
                 case "return" -> running = false;
                 default -> view.write("Please, enter the correct command\n");
             }
@@ -79,7 +81,7 @@ public class Read extends AbstractCommand implements Command {
 
     private <T> void getAllInfo(Service<T> service) {
         List<T> all = service.readAll();
-        all.forEach(System.out::println);
+        all.forEach((entity) -> view.write(entity.toString()));
     }
 
     private void getSumSalaryForProject() {
@@ -99,7 +101,7 @@ public class Read extends AbstractCommand implements Command {
         try {
             List<Developer> developers = getProjectService().findById(id).getDevelopers();
             view.write("Developers for project with id [" + id + "]");
-            developers.forEach(System.out::println);
+            developers.forEach((dev) -> view.write(dev.toString()));
         } catch (DAOException ex) {
             view.write(ex.getMessage());
         }
@@ -109,7 +111,7 @@ public class Read extends AbstractCommand implements Command {
         Branch branch = getBranchFromConsole();
         List<Developer> byBranch = new DeveloperDAO(connectionManager).getByBranch(branch);
         view.write("Developers with language [" + branch.getName() + "]");
-        byBranch.forEach(System.out::println);
+        byBranch.forEach((dev) -> view.write(dev.toString()));
     }
 
     private void getDevelopersByLevel() {
@@ -119,4 +121,9 @@ public class Read extends AbstractCommand implements Command {
         bySkillLevel.forEach(System.out::println);
     }
 
+    private void getProjectsInfo() {
+        getProjectService().readAll().forEach((project) -> {
+            view.write(project.getDate() + " - " + project.getName() + " - " + project.getDevelopers().size() + ";");
+        });
+    }
 }
