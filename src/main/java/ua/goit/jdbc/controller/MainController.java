@@ -12,8 +12,11 @@ public class MainController {
 
     public MainController(View view, DatabaseConnectionManager connectionManager) {
         this.view = view;
-        this.commands = new ArrayList<>(Arrays.asList(new Help(view), new Create(view, connectionManager),
-                new Read(view, connectionManager), new Delete(view, connectionManager)));
+        this.commands = new ArrayList<>(Arrays.asList(new Help(view),
+                new Create(view, connectionManager),
+                new Read(view, connectionManager),
+                new Update(view, connectionManager),
+                new Delete(view, connectionManager)));
     }
 
     public void run() {
@@ -24,7 +27,7 @@ public class MainController {
     private void doCommand() {
         boolean running = true;
         while (running) {
-            view.write("Please enter a command or help to retrieve command list");
+            view.write("Please enter a command or 'help' to retrieve command list\nEnter 'exit' to leave");
             String inputCommand = view.read();
             for (Command command : commands) {
                 if (command.canProcess(inputCommand)) {

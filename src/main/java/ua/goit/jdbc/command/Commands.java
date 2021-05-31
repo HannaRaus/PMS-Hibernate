@@ -3,6 +3,7 @@ package ua.goit.jdbc.command;
 import ua.goit.jdbc.config.DatabaseConnectionManager;
 import ua.goit.jdbc.dao.*;
 import ua.goit.jdbc.dto.*;
+import ua.goit.jdbc.exceptions.DAOException;
 import ua.goit.jdbc.service.Service;
 import ua.goit.jdbc.view.View;
 
@@ -130,5 +131,17 @@ public abstract class Commands {
             }
         }
         return level;
+    }
+
+    protected  <T> T getByID(Service<T> service, String entityName) {
+        long id = getLongFromConsole(String.format("Enter %s id", entityName));
+        T entity = null;
+        try {
+            entity = service.findById(id);
+            view.write("The " + entity.getClass().getSimpleName() + " with id [" + id + "] is \n" + entity + "\n");
+        } catch (DAOException ex) {
+            view.write(ex.getMessage());
+        }
+        return entity;
     }
 }

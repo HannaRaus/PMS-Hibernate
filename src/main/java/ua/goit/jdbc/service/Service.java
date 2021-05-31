@@ -16,14 +16,8 @@ public class Service<T> {
         return repository.create(company);
     }
 
-    public T update(T entity) {
-        T updated = null;
-        try {
-            updated = repository.update(entity);
-        } catch (DAOException ex) {
-            ex.getStackTrace();
-        }
-        return updated;
+    public T update(T entity) throws DAOException {
+        return repository.update(entity);
     }
 
     public void delete(long id) throws DAOException {

@@ -86,9 +86,9 @@ public class CustomerDAO extends AbstractDAO<Customer> {
                  PreparedStatement statement = connection.prepareStatement(query)) {
                 for (Company company : newCompanies) {
                     for (Project project : newProjects) {
-                        statement.setLong(3, customer.getId());
-                        statement.setLong(1, project.getId());
-                        statement.setLong(2, company.getId());
+                        statement.setLong(1, customer.getId());
+                        statement.setLong(2, project.getId());
+                        statement.setLong(3, company.getId());
                         statement.execute();
                     }
                 }

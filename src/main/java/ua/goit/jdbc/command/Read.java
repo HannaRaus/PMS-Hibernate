@@ -59,24 +59,14 @@ public class Read extends Commands implements Command {
             writeSections();
             String section = view.read();
             switch (section) {
-                case "1" -> getByID(getCustomerService());
-                case "2" -> getByID(getCompanyService());
-                case "3" -> getByID(getProjectService());
-                case "4" -> getByID(getDeveloperService());
-                case "5" -> getByID(getSkillService());
+                case "1" -> getByID(getCustomerService(), "customer");
+                case "2" -> getByID(getCompanyService(), "company");
+                case "3" -> getByID(getProjectService(), "project");
+                case "4" -> getByID(getDeveloperService(), "developer");
+                case "5" -> getByID(getSkillService(), "skill");
                 case "return" -> running = false;
                 default -> view.write("Please, enter the correct command\n");
             }
-        }
-    }
-
-    private <T> void getByID(Service<T> service) {
-        long id = getLongFromConsole("Enter id");
-        try {
-            T byId = service.findById(id);
-            view.write("The " + byId.getClass().getSimpleName() + " with id [" + id + "] is \n" + byId + "\n");
-        } catch (DAOException ex) {
-            view.write(ex.getMessage());
         }
     }
 
