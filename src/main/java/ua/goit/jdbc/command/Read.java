@@ -10,26 +10,6 @@ import ua.goit.jdbc.view.View;
 import java.util.List;
 
 public class Read extends AbstractCommand implements Command {
-    private static final String SECTION_MENU = """
-            Please, enter the number according to list below
-            1 - to get info by id
-            2 - to get all info
-            3 - get sum of salary for project
-            4 - get list of developers for project
-            5 - get list of developers by branch
-            6 - get list of developers by skill level
-            7 - get list of projects with date, name and quantity of developers
-            return - go back to main menu
-            """;
-    private static final String SUB_SECTION_MENU = """
-            Choose the section you would like to read. Enter the number according to list below
-            1 - customers
-            2 - companies
-            3 - projects
-            4 - developers
-            5 - skills
-            return - back to the read menu
-            """;
     private final View view;
     private final DatabaseConnectionManager connectionManager;
 
@@ -48,7 +28,7 @@ public class Read extends AbstractCommand implements Command {
     public void process() {
         boolean running = true;
         while (running) {
-            view.write(SECTION_MENU);
+            view.write(MenuOutput.READ_SECTION_MENU.getText());
             String section = view.read();
             switch (section) {
                 case "1" -> infoByID();
@@ -66,7 +46,7 @@ public class Read extends AbstractCommand implements Command {
     private void infoByID() {
         boolean running = true;
         while (running) {
-            view.write(SUB_SECTION_MENU);
+            view.write(MenuOutput.READ_SUB_SECTION_MENU.getText());
             String section = view.read();
             switch (section) {
                 case "1" -> getByID(getCustomerService(), "customer");
@@ -83,7 +63,7 @@ public class Read extends AbstractCommand implements Command {
     private void infoAll() {
         boolean running = true;
         while (running) {
-            view.write(SUB_SECTION_MENU);
+            view.write(MenuOutput.READ_SUB_SECTION_MENU.getText());
             String section = view.read();
             switch (section) {
                 case "1" -> getAllInfo(getCustomerService());

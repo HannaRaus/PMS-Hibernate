@@ -135,7 +135,7 @@ public abstract class AbstractCommand {
         return level;
     }
 
-    protected  <T> T getByID(Service<T> service, String entityName) {
+    protected <T> T getByID(Service<T> service, String entityName) {
         long id = getLongFromConsole(String.format("Enter %s id", entityName));
         T entity = null;
         try {
@@ -188,6 +188,7 @@ public abstract class AbstractCommand {
         }
         return customers;
     }
+
     protected List<Developer> getDevelopersFromConsole() {
         List<Developer> developers = new ArrayList<>();
         boolean running = true;
@@ -201,6 +202,7 @@ public abstract class AbstractCommand {
         }
         return developers;
     }
+
     protected List<Skill> getSkillsFromConsole() {
         List<Skill> skills = new ArrayList<>();
         boolean running = true;

@@ -6,15 +6,6 @@ import ua.goit.jdbc.exceptions.DAOException;
 import ua.goit.jdbc.view.View;
 
 public class Create extends AbstractCommand implements Command {
-    private static final String SECTION_MENU = """
-            Please, enter the number according to list below
-            1 - create customer
-            2 - create company
-            3 - create project
-            4 - create developer
-            5 - create skill
-            return - go back to main menu
-            """;
     private final View view;
 
     public Create(View view, DatabaseConnectionManager connectionManager) {
@@ -31,7 +22,7 @@ public class Create extends AbstractCommand implements Command {
     public void process() {
         boolean running = true;
         while (running) {
-            view.write(SECTION_MENU);
+            view.write(MenuOutput.CREATE_MENU.getText());
             String section = view.read();
             switch (section) {
                 case "1" -> createCustomer();

@@ -6,15 +6,6 @@ import ua.goit.jdbc.service.Service;
 import ua.goit.jdbc.view.View;
 
 public class Delete extends AbstractCommand implements Command {
-    private static final String SECTION_MENU = """
-            Please, enter the number according to list below
-            1 - delete customer
-            2 - delete company
-            3 - delete project
-            4 - delete developer
-            5 - delete skill
-            return - go back to main menu
-            """;
     private final View view;
 
     public Delete(View view, DatabaseConnectionManager connectionManager) {
@@ -31,7 +22,7 @@ public class Delete extends AbstractCommand implements Command {
     public void process() {
         boolean running = true;
         while (running) {
-            view.write(SECTION_MENU);
+            view.write(MenuOutput.DELETE_MENU.getText());
             String section = view.read();
             switch (section) {
                 case "1" -> delete(getCustomerService());

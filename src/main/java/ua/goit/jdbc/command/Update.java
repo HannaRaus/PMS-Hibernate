@@ -5,59 +5,8 @@ import ua.goit.jdbc.dto.*;
 import ua.goit.jdbc.exceptions.DAOException;
 import ua.goit.jdbc.view.View;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class Update extends AbstractCommand implements Command {
-    private static final String SECTION_MENU = """
-            Please, enter the number according to list below
-            1 - update customer
-            2 - update company
-            3 - update project
-            4 - update developer
-            5 - update skill
-            return - go back to main menu
-            """;
-    private static final String CUSTOMER_SECTION_MENU = """
-            Choose info you would like to update from list below
-            1 - update customer name
-            2 - update customer industry
-            3 - add customer companies and projects
-            ok - when you are ready
-            """;
-    private static final String COMPANY_SECTION_MENU = """
-            Choose info you would like to update from list below
-            1 - update company name
-            2 - update company headquarters
-            3 - add company customers and projects
-            ok - when you are ready
-            """;
-    private static final String PROJECT_SECTION_MENU = """
-            Choose info you would like to update from list below
-            1 - update project name
-            2 - update project description
-            3 - update project cost
-            4 - add project customers and companies
-            5 - add project developers
-            ok - when you are ready
-            """;
-    private static final String DEVELOPER_SECTION_MENU = """
-            Choose info you would like to update from list below
-            1 - update developer first name
-            2 - update developer last name
-            3 - update developer gender
-            4 - update developer salary
-            5 - add developer projects
-            6 - add developer skills
-            ok - when you are ready
-            """;
-    private static final String SKILL_SECTION_MENU = """
-            Choose info you would like to update from list below
-            1 - update skill branch
-            2 - update skill level
-            3 - add skill developers
-            ok - when you are ready
-            """;
     private final View view;
 
     public Update(View view, DatabaseConnectionManager connectionManager) {
@@ -74,7 +23,7 @@ public class Update extends AbstractCommand implements Command {
     public void process() {
         boolean running = true;
         while (running) {
-            view.write(SECTION_MENU);
+            view.write(MenuOutput.UPDATE_SECTION_MENU.getText());
             String section = view.read();
             switch (section) {
                 case "1" -> updateCustomer();
@@ -96,7 +45,7 @@ public class Update extends AbstractCommand implements Command {
         }
         boolean running = true;
         while (running) {
-            view.write(CUSTOMER_SECTION_MENU);
+            view.write(MenuOutput.UPDATE_CUSTOMER_SECTION_MENU.getText());
             String field = view.read();
             switch (field) {
                 case "1" -> {
@@ -131,7 +80,7 @@ public class Update extends AbstractCommand implements Command {
         }
         boolean running = true;
         while (running) {
-            view.write(COMPANY_SECTION_MENU);
+            view.write(MenuOutput.UPDATE_COMPANY_SECTION_MENU.getText());
             String field = view.read();
             switch (field) {
                 case "1" -> {
@@ -166,7 +115,7 @@ public class Update extends AbstractCommand implements Command {
         }
         boolean running = true;
         while (running) {
-            view.write(PROJECT_SECTION_MENU);
+            view.write(MenuOutput.UPDATE_PROJECT_SECTION_MENU.getText());
             String field = view.read();
             switch (field) {
                 case "1" -> {
@@ -203,7 +152,7 @@ public class Update extends AbstractCommand implements Command {
         }
         boolean running = true;
         while (running) {
-            view.write(DEVELOPER_SECTION_MENU);
+            view.write(MenuOutput.UPDATE_DEVELOPER_SECTION_MENU.getText());
             String field = view.read();
             switch (field) {
                 case "1" -> {
@@ -238,7 +187,7 @@ public class Update extends AbstractCommand implements Command {
         }
         boolean running = true;
         while (running) {
-            view.write(SKILL_SECTION_MENU);
+            view.write(MenuOutput.UPDATE_SKILL_SECTION_MENU.getText());
             String field = view.read();
             switch (field) {
                 case "1" -> toUpdate.setBranch(getBranchFromConsole());
