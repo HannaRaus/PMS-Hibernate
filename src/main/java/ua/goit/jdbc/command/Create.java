@@ -5,7 +5,16 @@ import ua.goit.jdbc.dto.*;
 import ua.goit.jdbc.exceptions.DAOException;
 import ua.goit.jdbc.view.View;
 
-public class Create extends Commands implements Command{
+public class Create extends AbstractCommand implements Command {
+    private static final String SECTION_MENU = """
+            Please, enter the number according to list below
+            1 - create customer
+            2 - create company
+            3 - create project
+            4 - create developer
+            5 - create skill
+            return - go back to main menu
+            """;
     private final View view;
 
     public Create(View view, DatabaseConnectionManager connectionManager) {
@@ -22,15 +31,7 @@ public class Create extends Commands implements Command{
     public void process() {
         boolean running = true;
         while (running) {
-            view.write("""
-                    Please, enter the number according to list below
-                    1 - create customer
-                    2 - create company
-                    3 - create project
-                    4 - create developer
-                    5 - create skill
-                    return - go back to main menu
-                    """);
+            view.write(SECTION_MENU);
             String section = view.read();
             switch (section) {
                 case "1" -> createCustomer();
@@ -44,7 +45,7 @@ public class Create extends Commands implements Command{
         }
     }
 
-    private  void createCustomer() {
+    private void createCustomer() {
         view.write("Enter the customer name:");
         String name = view.read();
         view.write("Enter the customer industry:");
@@ -52,7 +53,7 @@ public class Create extends Commands implements Command{
         Customer customer = new Customer(name, industry);
         try {
             Customer created = getCustomerService().create(customer);
-            view.write("Created customer\n" + created +"\n");
+            view.write("Created customer\n" + created + "\n");
         } catch (DAOException ex) {
             view.write(ex.getMessage());
         }
@@ -66,7 +67,7 @@ public class Create extends Commands implements Command{
         Company company = new Company(name, headquarters);
         try {
             Company created = getCompanyService().create(company);
-            view.write("Created customer\n" + created +"\n");
+            view.write("Created customer\n" + created + "\n");
         } catch (DAOException ex) {
             view.write(ex.getMessage());
         }
@@ -81,7 +82,7 @@ public class Create extends Commands implements Command{
         Project project = new Project(name, description, cost);
         try {
             Project created = getProjectService().create(project);
-            view.write("Created project\n" + created +"\n");
+            view.write("Created project\n" + created + "\n");
         } catch (DAOException ex) {
             view.write(ex.getMessage());
         }
@@ -97,7 +98,7 @@ public class Create extends Commands implements Command{
         Developer developer = new Developer(firstName, lastName, sex, salary);
         try {
             Developer created = getDeveloperService().create(developer);
-            view.write("Created developer\n" + created +"\n");
+            view.write("Created developer\n" + created + "\n");
         } catch (DAOException ex) {
             view.write(ex.getMessage());
         }
@@ -109,7 +110,7 @@ public class Create extends Commands implements Command{
         Skill skill = new Skill(branch, level);
         try {
             Skill created = getSkillService().create(skill);
-            view.write("Created skill\n" + created +"\n");
+            view.write("Created skill\n" + created + "\n");
         } catch (DAOException ex) {
             view.write(ex.getMessage());
         }

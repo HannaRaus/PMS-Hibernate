@@ -10,7 +10,7 @@ import ua.goit.jdbc.view.View;
 import java.util.Arrays;
 
 
-public abstract class Commands {
+public abstract class AbstractCommand {
     private final View view;
     private final Service<Customer> customerService;
     private final Service<Company> companyService;
@@ -18,7 +18,7 @@ public abstract class Commands {
     private final Service<Developer> developerService;
     private final Service<Skill> skillService;
 
-    public Commands(View view, DatabaseConnectionManager connectionManager) {
+    public AbstractCommand(View view, DatabaseConnectionManager connectionManager) {
         this.view = view;
         this.customerService = new Service<>(new CustomerDAO(connectionManager));
         this.companyService = new Service<>(new CompanyDAO(connectionManager));

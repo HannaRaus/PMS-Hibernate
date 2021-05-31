@@ -10,7 +10,28 @@ import ua.goit.jdbc.view.View;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Update extends Commands implements Command {
+public class Update extends AbstractCommand implements Command {
+    private static final String SECTION_MENU = """
+            Please, enter the number according to list below
+            1 - update customer
+            2 - update company
+            3 - update project
+            4 - update developer
+            5 - update skill
+            return - go back to main menu
+            """;
+    private static final String CUSTOMER_SECTION_MENU = """
+            Choose info you would like to update from list below
+            1 - update customer name
+            2 - update customer industry
+            3 - add customer companies
+            4 - add customer projects
+            ok - when you are ready
+            """;
+    private static final String COMPANY_SECTION_MENU = "";
+    private static final String PROJECT_SECTION_MENU = "";
+    private static final String DEVELOPER_SECTION_MENU = "";
+    private static final String SKILL_SECTION_MENU = "";
     private final View view;
 
     public Update(View view, DatabaseConnectionManager connectionManager) {
@@ -27,15 +48,7 @@ public class Update extends Commands implements Command {
     public void process() {
         boolean running = true;
         while (running) {
-            view.write("""
-                    Please, enter the number according to list below
-                    1 - update customer
-                    2 - update company
-                    3 - update project
-                    4 - update developer
-                    5 - update skill
-                    return - go back to main menu
-                    """);
+            view.write(SECTION_MENU);
             String section = view.read();
             switch (section) {
                 case "1" -> updateCustomer();
@@ -57,14 +70,7 @@ public class Update extends Commands implements Command {
         }
         boolean running = true;
         while (running) {
-            view.write("""
-                    Choose info you would like to update from list below
-                    1 - update customer name
-                    2 - update customer industry
-                    3 - add customer companies
-                    4 - add customer projects
-                    ok - when you are ready
-                    """);
+            view.write(CUSTOMER_SECTION_MENU);
             String field = view.read();
             switch (field) {
                 case "1" -> {
@@ -83,7 +89,7 @@ public class Update extends Commands implements Command {
         }
         try {
             Customer updated = getCustomerService().update(toUpdate);
-            view.write("Updated customer\n" + updated +"\n");
+            view.write("Updated customer\n" + updated + "\n");
         } catch (DAOException ex) {
             view.write(ex.getMessage());
         }
