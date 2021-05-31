@@ -8,7 +8,6 @@ import ua.goit.jdbc.service.Service;
 import ua.goit.jdbc.view.View;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Read extends AbstractCommand implements Command {
     private final View view;
