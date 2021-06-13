@@ -1,6 +1,6 @@
 package ua.goit.jdbc.command;
 
-import ua.goit.jdbc.config.DatabaseConnectionManager;
+import com.zaxxer.hikari.HikariDataSource;
 import ua.goit.jdbc.exceptions.DAOException;
 import ua.goit.jdbc.service.Service;
 import ua.goit.jdbc.view.View;
@@ -8,8 +8,8 @@ import ua.goit.jdbc.view.View;
 public class Delete extends AbstractCommand implements Command {
     private final View view;
 
-    public Delete(View view, DatabaseConnectionManager connectionManager) {
-        super(view, connectionManager);
+    public Delete(View view, HikariDataSource dataSource) {
+        super(view, dataSource);
         this.view = view;
     }
 

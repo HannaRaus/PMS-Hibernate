@@ -1,6 +1,6 @@
 package ua.goit.jdbc.command;
 
-import ua.goit.jdbc.config.DatabaseConnectionManager;
+import com.zaxxer.hikari.HikariDataSource;
 import ua.goit.jdbc.dao.*;
 import ua.goit.jdbc.dto.*;
 import ua.goit.jdbc.exceptions.DAOException;
@@ -11,12 +11,12 @@ import java.util.List;
 
 public class Read extends AbstractCommand implements Command {
     private final View view;
-    private final DatabaseConnectionManager connectionManager;
+    private final HikariDataSource dataSource;
 
-    public Read(View view, DatabaseConnectionManager connectionManager) {
-        super(view, connectionManager);
+    public Read(View view, HikariDataSource dataSource) {
+        super(view, dataSource);
         this.view = view;
-        this.connectionManager = connectionManager;
+        this.dataSource = dataSource;
     }
 
     @Override
@@ -108,14 +108,14 @@ public class Read extends AbstractCommand implements Command {
 
     private void getDevelopersByBranch() {
         Branch branch = getBranchFromConsole();
-        List<Developer> byBranch = new DeveloperDAO(connectionManager).getByBranch(branch);
+        List<Developer> byBranch = new DeveloperDAO(dataSource).getByBranch(branch);
         view.write("Developers with language [" + branch.getName() + "]");
         byBranch.forEach((dev) -> view.write(dev.toString()));
     }
 
     private void getDevelopersByLevel() {
         SkillLevel level = getLevelFromConsole();
-        List<Developer> bySkillLevel = new DeveloperDAO(connectionManager).getBySkillLevel(level);
+        List<Developer> bySkillLevel = new DeveloperDAO(dataSource).getBySkillLevel(level);
         view.write("Developers with level [" + level.getName() + "]");
         bySkillLevel.forEach(System.out::println);
     }

@@ -1,10 +1,10 @@
 package ua.goit.jdbc.dao;
 
+import com.zaxxer.hikari.HikariDataSource;
 import ua.goit.jdbc.dto.Company;
 import ua.goit.jdbc.dto.Customer;
 import ua.goit.jdbc.dto.Developer;
 import ua.goit.jdbc.dto.Project;
-import ua.goit.jdbc.config.DatabaseConnectionManager;
 import ua.goit.jdbc.exceptions.DAOException;
 
 import java.sql.*;
@@ -13,8 +13,8 @@ import java.util.List;
 
 public class ProjectDAO extends AbstractDAO<Project> {
 
-    public ProjectDAO(DatabaseConnectionManager connectionManager) {
-        super(connectionManager);
+    public ProjectDAO(HikariDataSource dataSource) {
+        super(dataSource);
     }
 
     @Override

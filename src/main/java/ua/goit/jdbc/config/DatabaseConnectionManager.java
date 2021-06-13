@@ -4,26 +4,30 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import ua.goit.jdbc.service.util.PropertiesLoader;
 
-import java.sql.Connection;
-import java.sql.SQLException;
+import java.util.Objects;
 
 public class DatabaseConnectionManager {
-    private HikariDataSource ds;
+    private static HikariDataSource ds;
 
     public DatabaseConnectionManager(PropertiesLoader propertiesLoader) {
         initDataSource(propertiesLoader);
     }
 
-    public Connection getConnection() {
-        try {
-            return ds.getConnection();
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            throw new RuntimeException(ex);
-        }
+    public static void init() {
+        PropertiesLoader propertiesLoader = new PropertiesLoader();
+        propertiesLoader.loadPropertiesFile("application.properties");
+        initDataSource(propertiesLoader);
     }
 
-    private void initDataSource(PropertiesLoader propertiesLoader) {
+    public static synchronized HikariDataSource getDataSource() {
+        if (Objects.isNull(ds)) {
+            init();
+            return ds;
+        }
+        return ds;
+    }
+
+    private static void initDataSource(PropertiesLoader propertiesLoader) {
         HikariConfig config = new HikariConfig();
         config.setJdbcUrl(String.format("jdbc:postgresql://%s/%s", propertiesLoader.getProperty("host"),
                 propertiesLoader.getProperty("database.name")));

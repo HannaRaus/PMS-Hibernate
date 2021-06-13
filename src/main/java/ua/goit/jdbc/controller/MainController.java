@@ -1,7 +1,7 @@
 package ua.goit.jdbc.controller;
 
+import com.zaxxer.hikari.HikariDataSource;
 import ua.goit.jdbc.command.*;
-import ua.goit.jdbc.config.DatabaseConnectionManager;
 import ua.goit.jdbc.view.View;
 
 import java.util.*;
@@ -10,13 +10,13 @@ public class MainController {
     private final View view;
     private final List<Command> commands;
 
-    public MainController(View view, DatabaseConnectionManager connectionManager) {
+    public MainController(View view, HikariDataSource dataSource) {
         this.view = view;
         this.commands = new ArrayList<>(Arrays.asList(new Help(view),
-                new Create(view, connectionManager),
-                new Read(view, connectionManager),
-                new Update(view, connectionManager),
-                new Delete(view, connectionManager)));
+                new Create(view, dataSource),
+                new Read(view, dataSource),
+                new Update(view, dataSource),
+                new Delete(view, dataSource)));
     }
 
     public void run() {

@@ -9,14 +9,12 @@ import ua.goit.jdbc.view.View;
 
 public class Main {
     public static void main(String[] args) {
-        PropertiesLoader propertiesLoader = new PropertiesLoader();
-        propertiesLoader.loadPropertiesFile("application.properties");
-        DatabaseConnectionManager connectionManager = new DatabaseConnectionManager(propertiesLoader);
-
-        View view = new Console(System.in, System.out);
-        MainController controller = new MainController(view, connectionManager);
-
-        controller.run();
+//        DatabaseConnectionManager connectionManager = new DatabaseConnectionManager(propertiesLoader);
+//
+//        View view = new Console(System.in, System.out);
+//        MainController controller = new MainController(view, connectionManager);
+//
+//        controller.run();
 
     }
 }

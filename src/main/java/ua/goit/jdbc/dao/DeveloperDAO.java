@@ -1,7 +1,7 @@
 package ua.goit.jdbc.dao;
 
+import com.zaxxer.hikari.HikariDataSource;
 import ua.goit.jdbc.dto.*;
-import ua.goit.jdbc.config.DatabaseConnectionManager;
 import ua.goit.jdbc.exceptions.DAOException;
 
 import java.sql.*;
@@ -9,8 +9,8 @@ import java.util.List;
 
 public class DeveloperDAO extends AbstractDAO<Developer> {
 
-    public DeveloperDAO(DatabaseConnectionManager connectionManager) {
-        super(connectionManager);
+    public DeveloperDAO(HikariDataSource dataSource) {
+        super(dataSource);
     }
 
     @Override

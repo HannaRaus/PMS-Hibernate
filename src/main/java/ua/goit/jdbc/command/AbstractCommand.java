@@ -1,6 +1,6 @@
 package ua.goit.jdbc.command;
 
-import ua.goit.jdbc.config.DatabaseConnectionManager;
+import com.zaxxer.hikari.HikariDataSource;
 import ua.goit.jdbc.dao.*;
 import ua.goit.jdbc.dto.*;
 import ua.goit.jdbc.exceptions.DAOException;
@@ -20,13 +20,13 @@ public abstract class AbstractCommand {
     private final Service<Developer> developerService;
     private final Service<Skill> skillService;
 
-    public AbstractCommand(View view, DatabaseConnectionManager connectionManager) {
+    public AbstractCommand(View view, HikariDataSource dataSource) {
         this.view = view;
-        this.customerService = new Service<>(new CustomerDAO(connectionManager));
-        this.companyService = new Service<>(new CompanyDAO(connectionManager));
-        this.projectService = new Service<>(new ProjectDAO(connectionManager));
-        this.developerService = new Service<>(new DeveloperDAO(connectionManager));
-        this.skillService = new Service<>(new SkillDAO(connectionManager));
+        this.customerService = new Service<>(new CustomerDAO(dataSource));
+        this.companyService = new Service<>(new CompanyDAO(dataSource));
+        this.projectService = new Service<>(new ProjectDAO(dataSource));
+        this.developerService = new Service<>(new DeveloperDAO(dataSource));
+        this.skillService = new Service<>(new SkillDAO(dataSource));
     }
 
     protected Service<Customer> getCustomerService() {

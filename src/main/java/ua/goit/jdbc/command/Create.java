@@ -1,6 +1,6 @@
 package ua.goit.jdbc.command;
 
-import ua.goit.jdbc.config.DatabaseConnectionManager;
+import com.zaxxer.hikari.HikariDataSource;
 import ua.goit.jdbc.dto.*;
 import ua.goit.jdbc.exceptions.DAOException;
 import ua.goit.jdbc.view.View;
@@ -8,8 +8,8 @@ import ua.goit.jdbc.view.View;
 public class Create extends AbstractCommand implements Command {
     private final View view;
 
-    public Create(View view, DatabaseConnectionManager connectionManager) {
-        super(view, connectionManager);
+    public Create(View view, HikariDataSource dataSource) {
+        super(view, dataSource);
         this.view = view;
     }
 
