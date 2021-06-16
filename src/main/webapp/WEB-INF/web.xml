@@ -14,6 +14,10 @@
         <servlet-name>HelloWorld</servlet-name>
         <url-pattern>/welcome</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.css</url-pattern>
+    </servlet-mapping>
 
 <!--    <listener>-->
 <!--        <listener-class>ua.goit.jdbc.config.AppInit</listener-class>-->
