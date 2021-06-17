@@ -42,7 +42,7 @@ nav a {
   line-height: 70px;
   padding: 0 30px;
   font-weight: bold;
-  color: #003559;
+  color: #003559;/*колір тексту*/
   text-transform: uppercase;
 }
 .topmenu > li:hover .submenu{ /* Випадаючий список */
