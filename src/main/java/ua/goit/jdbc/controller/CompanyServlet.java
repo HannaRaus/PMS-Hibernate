@@ -2,9 +2,7 @@ package ua.goit.jdbc.controller;
 
 import ua.goit.jdbc.config.DatabaseConnectionManager;
 import ua.goit.jdbc.dao.CompanyDAO;
-import ua.goit.jdbc.dao.CustomerDAO;
 import ua.goit.jdbc.dto.Company;
-import ua.goit.jdbc.dto.Customer;
 import ua.goit.jdbc.service.Service;
 
 import javax.servlet.ServletException;
