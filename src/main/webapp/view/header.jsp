@@ -14,11 +14,11 @@
             </li>
             <li><a href="" class="icon">Read</a>
               <ul class="submenu">
-                <li><a href="/customers">customer</a></li>
-                <li><a href="">company</a></li>
-                <li><a href="">project</a></li>
-                <li><a href="">developer</a></li>
-                <li><a href="">skill</a></li>
+                <li><a href="/customers">customers</a></li>
+                <li><a href="/companies">companies</a></li>
+                <li><a href="/projects">projects</a></li>
+                <li><a href="/developers">developers</a></li>
+                <li><a href="/skills">skills</a></li>
               </ul>
             </li>
             <li><a href="" class="icon">Update</a>

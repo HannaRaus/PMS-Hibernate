@@ -7,7 +7,6 @@
         <script src="https://kit.fontawesome.com/1121c369ff.js" crossorigin="anonymous"></script>
         <LINK REL="stylesheet" TYPE="text/css" HREF="<%=request.getContextPath()%>/css/table.css" TITLE="style" />
         <LINK REL="stylesheet" TYPE="text/css" HREF="<%=request.getContextPath()%>/css/style.css" TITLE="style" />
-        <LINK REL="stylesheet" TYPE="text/css" HREF="<%=request.getContextPath()%>/css/popup.css" TITLE="style" />
         <LINK REL="stylesheet" TYPE="text/css" HREF="<%=request.getContextPath()%>/css/tooltip.css" TITLE="style" />
     </head>
     <body>
@@ -18,26 +17,26 @@
         			<tr>
         				<th>id</th>
         				<th>name</th>
-        				<th>industry</th>
-        				<th>companies</th>
+        				<th>headquarters</th>
+        				<th>customers</th>
         				<th>projects</th>
         				<th></th>
         			</tr>
         		</thead>
         		<tbody>
-                 <c:forEach var="customer" items="${customers}">
+                 <c:forEach var="company" items="${companies}">
                      <tr>
-                         <td>${customer.id}</td>
-                         <td>${customer.name}</td>
-                         <td>${customer.industry}</td>
+                         <td>${company.id}</td>
+                         <td>${company.name}</td>
+                         <td>${company.headquarters}</td>
                          <td>
-                             <div class="popup" onclick="display(${customer.id})">${customer.companies.size()}
-                               <span class="popuptext" id="myPopup${customer.id}">${customer.companies}</span>
+                             <div class="tooltip">${company.customers.size()}
+                               <span class="tooltiptext">${company.customers}</span>
                              </div>
                          </td>
                          <td>
-                             <div class="tooltip" style=z-index: 10;>${customer.projects.size()}
-                               <span class="tooltiptext">${customer.projects}</span>
+                             <div class="tooltip">${company.projects.size()}
+                               <span class="tooltiptext">${company.projects}</span>
                              </div>
                          </td>
                          <td> <a href="">
@@ -49,12 +48,5 @@
         		</tbody>
         	</table>
         </div>
-        <script>
-            function display(row) {
-              var txt= "myPopup" + row;
-              var popup = document.getElementById(txt);
-              popup.classList.toggle("show");
-            }
-        </script>
     </body>
 </html>
