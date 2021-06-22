@@ -7,11 +7,11 @@
         <script src="https://kit.fontawesome.com/1121c369ff.js" crossorigin="anonymous"></script>
         <LINK REL="stylesheet" TYPE="text/css" HREF="<%=request.getContextPath()%>/css/table.css" TITLE="style" />
         <LINK REL="stylesheet" TYPE="text/css" HREF="<%=request.getContextPath()%>/css/style.css" TITLE="style" />
-        <LINK REL="stylesheet" TYPE="text/css" HREF="<%=request.getContextPath()%>/css/tooltip.css" TITLE="style" />
         <LINK REL="stylesheet" TYPE="text/css" HREF="<%=request.getContextPath()%>/css/button.css" TITLE="style" />
     </head>
     <body>
         <c:import url="/view/header.jsp"/>
+        <c:set var="project" value="${project}" />
         <div class="container">
         	<table>
         		<thead>
@@ -24,41 +24,24 @@
         				<th>customers</th>
         				<th>companies</th>
         				<th>developers</th>
-        				<td colspan="2" align="center"></td>
+        				<th></th>
         			</tr>
         		</thead>
         		<tbody>
-                 <c:forEach var="project" items="${projects}">
                      <tr>
                          <td>${project.id}</td>
                          <td>${project.name}</td>
                          <td>${project.description}</td>
                          <td>${project.cost}</td>
                          <td>${project.date}</td>
-                         <td>
-                             <div class="tooltip">${project.customers.size()}
-                               <span class="tooltiptext">${project.customers}</span>
-                             </div>
-                         </td>
-                         <td>
-                             <div class="tooltip">${project.companies.size()}
-                               <span class="tooltiptext">${project.companies}</span>
-                             </div>
-                         </td>                         <td>
-                             <div class="tooltip">${project.developers.size()}
-                               <span class="tooltiptext">${project.developers}</span>
-                             </div>
-                         </td>
-                         <td> <a href="/projects/findById?id=${project.id}">
-                                 <button>Details</button>
-                              </a>
-                         </td>
+                         <td>${project.customers}</td>
+                         <td>${project.companies}</td>
+                         <td>${project.developers}</td>
                          <td> <a href="">
                                  <button>Update</button>
                               </a>
                          </td>
                      </tr>
-                 </c:forEach>
         		</tbody>
         	</table>
         </div>

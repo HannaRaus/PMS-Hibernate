@@ -12,47 +12,31 @@
     </head>
     <body>
         <c:import url="/view/header.jsp"/>
+        <c:set var="company" value="${company}" />
         <div class="container">
         	<table>
         		<thead>
         			<tr>
         				<th>id</th>
-        				<th>first Name</th>
-        				<th>last Name</th>
-        				<th>sex</th>
-        				<th>salary</th>
-        				<th>skills</th>
+        				<th>name</th>
+        				<th>headquarters</th>
+        				<th>customers</th>
         				<th>projects</th>
-        				<td colspan="2" align="center"></td>
+        				<th></th>
         			</tr>
         		</thead>
         		<tbody>
-                 <c:forEach var="developer" items="${developers}">
                      <tr>
-                         <td>${developer.id}</td>
-                         <td>${developer.firstName}</td>
-                         <td>${developer.lastName}</td>
-                         <td>${developer.sex}</td>
-                         <td>${developer.salary}</td>
-                         <td>
-                             <div class="tooltip">${developer.skills.size()}
-                               <span class="tooltiptext">${developer.skills}</span>
-                             </div>
-                         </td>
-                         <td>
-                             <div class="tooltip">${developer.projects.size()}
-                               <span class="tooltiptext">${developer.projects}</span>
-                             </div>
-                         <td> <a href="/developers/findById?id=${developer.id}">
-                                 <button>Details</button>
-                              </a>
-                         </td>
+                         <td>${company.id}</td>
+                         <td>${company.name}</td>
+                         <td>${company.headquarters}</td>
+                         <td>${company.customers}</td>
+                         <td>${company.projects}</td>
                          <td> <a href="">
                                  <button>Update</button>
                               </a>
                          </td>
                      </tr>
-                 </c:forEach>
         		</tbody>
         	</table>
         </div>

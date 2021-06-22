@@ -3,6 +3,7 @@ package ua.goit.jdbc.controller;
 import ua.goit.jdbc.config.DatabaseConnectionManager;
 import ua.goit.jdbc.dao.SkillDAO;
 import ua.goit.jdbc.dto.Skill;
+import ua.goit.jdbc.exceptions.DAOException;
 import ua.goit.jdbc.service.Service;
 
 import javax.servlet.ServletException;
@@ -11,9 +12,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
-@WebServlet("/skills")
+@WebServlet("/skills/findById")
 public class SkillServlet extends HttpServlet {
     private Service<Skill> service;
 
@@ -24,11 +24,12 @@ public class SkillServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<Skill> skills = service.readAll();
-        req.setAttribute("skills", skills);
+        long id = Long.parseLong(req.getParameter("id"));
         try {
-            req.getRequestDispatcher("/view/skills.jsp").forward(req, resp);
-        } catch (ServletException | IOException ex) {
+            Skill skill = service.findById(id);
+            req.setAttribute("skill", skill);
+            req.getRequestDispatcher("/view/skill.jsp").forward(req, resp);
+        } catch (DAOException exception) {
             resp.sendRedirect(req.getContextPath() + "/error.jsp");
         }
     }

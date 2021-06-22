@@ -7,11 +7,11 @@
         <script src="https://kit.fontawesome.com/1121c369ff.js" crossorigin="anonymous"></script>
         <LINK REL="stylesheet" TYPE="text/css" HREF="<%=request.getContextPath()%>/css/table.css" TITLE="style" />
         <LINK REL="stylesheet" TYPE="text/css" HREF="<%=request.getContextPath()%>/css/style.css" TITLE="style" />
-        <LINK REL="stylesheet" TYPE="text/css" HREF="<%=request.getContextPath()%>/css/tooltip.css" TITLE="style" />
         <LINK REL="stylesheet" TYPE="text/css" HREF="<%=request.getContextPath()%>/css/button.css" TITLE="style" />
     </head>
     <body>
         <c:import url="/view/header.jsp"/>
+        <c:set var="skill" value="${skill}" />
         <div class="container">
         	<table>
         		<thead>
@@ -20,30 +20,20 @@
         				<th>branch</th>
         				<th>level</th>
         				<th>developers</th>
-        				<td colspan="2" align="center"></td>
+        				<th></th>
         			</tr>
         		</thead>
         		<tbody>
-                 <c:forEach var="skill" items="${skills}">
                      <tr>
                          <td>${skill.id}</td>
                          <td>${skill.branch}</td>
                          <td>${skill.level}</td>
-                         <td>
-                             <div class="tooltip">${skill.developers.size()}
-                               <span class="tooltiptext">${skill.developers}</span>
-                             </div>
-                         </td>
-                         <td> <a href="/skills/findById?id=${skill.id}">
-                                 <button>Details</button>
-                              </a>
-                         </td>
+                         <td>${skill.developers}</td>
                          <td> <a href="">
                                  <button>Update</button>
                               </a>
                          </td>
                      </tr>
-                 </c:forEach>
         		</tbody>
         	</table>
         </div>

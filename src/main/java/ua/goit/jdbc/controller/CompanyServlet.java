@@ -3,6 +3,7 @@ package ua.goit.jdbc.controller;
 import ua.goit.jdbc.config.DatabaseConnectionManager;
 import ua.goit.jdbc.dao.CompanyDAO;
 import ua.goit.jdbc.dto.Company;
+import ua.goit.jdbc.exceptions.DAOException;
 import ua.goit.jdbc.service.Service;
 
 import javax.servlet.ServletException;
@@ -11,9 +12,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
-@WebServlet("/companies")
+@WebServlet("/companies/findById")
 public class CompanyServlet extends HttpServlet {
     private Service<Company> service;
 
@@ -24,11 +24,12 @@ public class CompanyServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<Company> companies = service.readAll();
-        req.setAttribute("companies", companies);
+        long id = Long.parseLong(req.getParameter("id"));
         try {
-            req.getRequestDispatcher("/view/companies.jsp").forward(req, resp);
-        } catch (ServletException | IOException ex) {
+            Company company = service.findById(id);
+            req.setAttribute("company", company);
+            req.getRequestDispatcher("/view/company.jsp").forward(req, resp);
+        } catch (DAOException exception) {
             resp.sendRedirect(req.getContextPath() + "/error.jsp");
         }
     }

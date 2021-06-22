@@ -21,7 +21,7 @@
         				<th>headquarters</th>
         				<th>customers</th>
         				<th>projects</th>
-        				<th></th>
+        				<td colspan="2" align="center"></td>
         			</tr>
         		</thead>
         		<tbody>
@@ -39,6 +39,10 @@
                              <div class="tooltip">${company.projects.size()}
                                <span class="tooltiptext">${company.projects}</span>
                              </div>
+                         </td>
+                         <td> <a href="/companies/findById?id=${company.id}">
+                                 <button>Details</button>
+                              </a>
                          </td>
                          <td> <a href="">
                                  <button>Update</button>

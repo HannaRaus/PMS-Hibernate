@@ -3,6 +3,7 @@ package ua.goit.jdbc.controller;
 import ua.goit.jdbc.config.DatabaseConnectionManager;
 import ua.goit.jdbc.dao.CustomerDAO;
 import ua.goit.jdbc.dto.Customer;
+import ua.goit.jdbc.exceptions.DAOException;
 import ua.goit.jdbc.service.Service;
 
 import javax.servlet.ServletException;
@@ -11,9 +12,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
-@WebServlet("/customers")
+@WebServlet("/customers/findById")
 public class CustomerServlet extends HttpServlet {
     private Service<Customer> service;
 
@@ -24,11 +24,12 @@ public class CustomerServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<Customer> customers = service.readAll();
-        req.setAttribute("customers", customers);
+        long id = Long.parseLong(req.getParameter("id"));
         try {
-            req.getRequestDispatcher("/view/customers.jsp").forward(req, resp);
-        } catch (ServletException | IOException ex) {
+            Customer customer = service.findById(id);
+            req.setAttribute("customer", customer);
+            req.getRequestDispatcher("/view/customer.jsp").forward(req, resp);
+        } catch (DAOException exception) {
             resp.sendRedirect(req.getContextPath() + "/error.jsp");
         }
     }

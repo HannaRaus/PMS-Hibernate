@@ -3,6 +3,7 @@ package ua.goit.jdbc.controller;
 import ua.goit.jdbc.config.DatabaseConnectionManager;
 import ua.goit.jdbc.dao.ProjectDAO;
 import ua.goit.jdbc.dto.Project;
+import ua.goit.jdbc.exceptions.DAOException;
 import ua.goit.jdbc.service.Service;
 
 import javax.servlet.ServletException;
@@ -11,9 +12,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
-@WebServlet("/projects")
+@WebServlet("/projects/findById")
 public class ProjectServlet extends HttpServlet {
     private Service<Project> service;
 
@@ -24,11 +24,12 @@ public class ProjectServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<Project> projects = service.readAll();
-        req.setAttribute("projects", projects);
+        long id = Long.parseLong(req.getParameter("id"));
         try {
-            req.getRequestDispatcher("/view/projects.jsp").forward(req, resp);
-        } catch (ServletException | IOException ex) {
+            Project project = service.findById(id);
+            req.setAttribute("project", project);
+            req.getRequestDispatcher("/view/project.jsp").forward(req, resp);
+        } catch (DAOException exception) {
             resp.sendRedirect(req.getContextPath() + "/error.jsp");
         }
     }
