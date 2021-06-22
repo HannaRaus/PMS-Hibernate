@@ -2,7 +2,8 @@ package ua.goit.jdbc.controller;
 
 import ua.goit.jdbc.config.DatabaseConnectionManager;
 import ua.goit.jdbc.dao.SkillDAO;
-import ua.goit.jdbc.dto.Skill;
+import ua.goit.jdbc.dto.*;
+import ua.goit.jdbc.exceptions.DAOException;
 import ua.goit.jdbc.service.Service;
 
 import javax.servlet.ServletException;
@@ -29,6 +30,19 @@ public class SkillsServlet extends HttpServlet {
         try {
             req.getRequestDispatcher("/view/skills.jsp").forward(req, resp);
         } catch (ServletException | IOException ex) {
+            resp.sendRedirect(req.getContextPath() + "/error.jsp");
+        }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Branch branch = Branch.valueOf(req.getParameter("branch").toUpperCase());
+        SkillLevel level = SkillLevel.valueOf(req.getParameter("level").toUpperCase());
+        Skill skill = new Skill(branch, level);
+        try {
+            service.create(skill);
+            req.getRequestDispatcher("/view/created.jsp").forward(req, resp);
+        } catch (DAOException exception) {
             resp.sendRedirect(req.getContextPath() + "/error.jsp");
         }
     }

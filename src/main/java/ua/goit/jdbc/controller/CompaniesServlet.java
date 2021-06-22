@@ -3,6 +3,7 @@ package ua.goit.jdbc.controller;
 import ua.goit.jdbc.config.DatabaseConnectionManager;
 import ua.goit.jdbc.dao.CompanyDAO;
 import ua.goit.jdbc.dto.Company;
+import ua.goit.jdbc.exceptions.DAOException;
 import ua.goit.jdbc.service.Service;
 
 import javax.servlet.ServletException;
@@ -29,6 +30,19 @@ public class CompaniesServlet extends HttpServlet {
         try {
             req.getRequestDispatcher("/view/companies.jsp").forward(req, resp);
         } catch (ServletException | IOException ex) {
+            resp.sendRedirect(req.getContextPath() + "/error.jsp");
+        }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String name = req.getParameter("name");
+        String headquarters = req.getParameter("headquarters");
+        Company company = new Company(name, headquarters);
+        try {
+            service.create(company);
+            req.getRequestDispatcher("/view/created.jsp").forward(req, resp);
+        } catch (DAOException exception) {
             resp.sendRedirect(req.getContextPath() + "/error.jsp");
         }
     }

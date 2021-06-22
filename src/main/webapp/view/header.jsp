@@ -6,10 +6,10 @@
             <li><a href="" class="icon">Create</a>
               <ul class="submenu">
                 <li><a href="/customers/create">customer</a></li>
-                <li><a href="">company</a></li>
-                <li><a href="">project</a></li>
-                <li><a href="">developer</a></li>
-                <li><a href="">skill</a></li>
+                <li><a href="/companies/create">company</a></li>
+                <li><a href="/projects/create">project</a></li>
+                <li><a href="/developers/create">developer</a></li>
+                <li><a href="/skills/create">skill</a></li>
               </ul>
             </li>
             <li><a href="" class="icon">Read</a>

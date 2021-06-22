@@ -37,7 +37,7 @@
                          </td>
                          <td>
                              <div class="tooltip">${company.projects.size()}
-                               <span class="tooltiptext">${company.projects}</span>
+                             <span class="tooltiptext">${company.projects}</span>
                              </div>
                          </td>
                          <td> <a href="/companies/findById?id=${company.id}">
