@@ -42,4 +42,9 @@
           </ul>
         </nav>
       </div>
+    <button type="button" class="fill">Get sum of salary for project</button>
+    <button type="button" class="fill">Get list of developers for project</button>
+    <button type="button" class="fill">Get list of developers by branch</button>
+    <button type="button" class="fill">Get list of developers by skill level</button>
+    <button type="button" class="fill">Get list of projects with date and developers</button>
 </div>
