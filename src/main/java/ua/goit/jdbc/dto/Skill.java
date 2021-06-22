@@ -76,4 +76,8 @@ public class Skill {
     public int hashCode() {
         return Objects.hash(id, branch, level);
     }
+
+    public String simpleString() {
+        return "branch-" + branch.getName() + ", level-" + level.getName();
+    }
 }
