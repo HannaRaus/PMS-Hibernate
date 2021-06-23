@@ -22,7 +22,7 @@
         				<th>headquarters</th>
         				<th>customers</th>
         				<th>projects</th>
-        				<th></th>
+        				<th colspan="2" align="center"></th>
         			</tr>
         		</thead>
         		<tbody>
@@ -32,10 +32,8 @@
                          <td>${company.headquarters}</td>
                          <td>${company.customers}</td>
                          <td>${company.projects}</td>
-                         <td> <a href="">
-                                 <button>Update</button>
-                              </a>
-                         </td>
+                         <td> <a href="/companies/byId?id=${company.id}"><button>Update</button></a></td>
+                         <td> <a href="/companies/delete?id=${company.id}"><button>Delete</button></a></td>
                      </tr>
         		</tbody>
         	</table>

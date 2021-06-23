@@ -21,7 +21,7 @@
         				<th>headquarters</th>
         				<th>customers</th>
         				<th>projects</th>
-        				<td colspan="2" align="center"></td>
+        				<th colspan="3" align="center"></th>
         			</tr>
         		</thead>
         		<tbody>
@@ -32,22 +32,17 @@
                          <td>${company.headquarters}</td>
                          <td>
                              <div class="tooltip">${company.customers.size()}
-                               <span class="tooltiptext">${company.customers}</span>
+                                <span class="tooltiptext">${company.customers}</span>
                              </div>
                          </td>
                          <td>
                              <div class="tooltip">${company.projects.size()}
-                             <span class="tooltiptext">${company.projects}</span>
+                                <span class="tooltiptext">${company.projects}</span>
                              </div>
                          </td>
-                         <td> <a href="/companies/findById?id=${company.id}">
-                                 <button>Details</button>
-                              </a>
-                         </td>
-                         <td> <a href="">
-                                 <button>Update</button>
-                              </a>
-                         </td>
+                         <td> <a href="/companies/details?id=${company.id}"><button>Details</button></a></td>
+                         <td> <a href="/companies/edit?id=${company.id}"><button>Update</button></a></td>
+                         <td> <a href="/companies/delete?id=${company.id}"><button>Delete</button></a></td>
                      </tr>
                  </c:forEach>
         		</tbody>

@@ -5,11 +5,11 @@
           <ul class="topmenu">
             <li><a href="" class="icon">Create</a>
               <ul class="submenu">
-                <li><a href="/customers/create">customer</a></li>
-                <li><a href="/companies/create">company</a></li>
-                <li><a href="/projects/create">project</a></li>
-                <li><a href="/developers/create">developer</a></li>
-                <li><a href="/skills/create">skill</a></li>
+                <li><a href="/customers/new">customer</a></li>
+                <li><a href="/companies/new">company</a></li>
+                <li><a href="/projects/new">project</a></li>
+                <li><a href="/developers/new">developer</a></li>
+                <li><a href="/skills/new">skill</a></li>
               </ul>
             </li>
             <li><a href="" class="icon">Read</a>
@@ -23,20 +23,20 @@
             </li>
             <li><a href="" class="icon">Update</a>
               <ul class="submenu">
-                <li><a href="" >customer</a></li>
-                <li><a href="">company</a></li>
-                <li><a href="">project</a></li>
-                <li><a href="">developer</a></li>
-                <li><a href="">skill</a></li>
+                <li><a href="/customers/edit">customers</a></li>
+                <li><a href="/companies/edit">companies</a></li>
+                <li><a href="/projects/edit">projects</a></li>
+                <li><a href="/developers/edit">developers</a></li>
+                <li><a href="/skills/edit">skills</a></li>
               </ul>
             </li>
             <li><a href="" class="icon">Delete</a>
               <ul class="submenu">
-                <li><a href="" >customer</a></li>
-                <li><a href="">company</a></li>
-                <li><a href="">project</a></li>
-                <li><a href="">developer</a></li>
-                <li><a href="">skill</a></li>
+                <li><a href="/customers/search">customers</a></li>
+                <li><a href="/companies/search">companies</a></li>
+                <li><a href="/projects/search">projects</a></li>
+                <li><a href="/developers/search">developers</a></li>
+                <li><a href="/skills/search">skills</a></li>
               </ul>
             </li>
           </ul>

@@ -13,22 +13,11 @@
     <body>
         <c:import url="/view/header.jsp"/>
         <div>
-          <form name="developerForm" method="post" action="/developers">
-            <label for="firstName">First name</label>
-            <input type="text" id="firstName" name="firstName" placeholder="First name.." />
-
-            <label for="lastName">Last name</label>
-            <input type="text" id="lastName" name="lastName" placeholder="Last name.." />
-
-            <label for="sex">Gender</label>
-            <select id="sex" name="sex">
-                <option value="MALE">Male</option>
-                <option value="FEMALE">Female</option>
-            </select>
-
-            <label for="salary">Salary</label>
-            <input type="number" step="0.01" id="salary" name="salary" placeholder="Salary.." />
-
+          <form method="post" action="create">
+            <label for="name">Company name</label>
+            <input type="text" id="name" name="name" placeholder="Company name.." />
+            <label for="country">Company headquarters</label>
+            <input type="text" id="country" name="headquarters" placeholder="Company headquarters.." />
             <input type="submit" value="Create" />
           </form>
         </div>
