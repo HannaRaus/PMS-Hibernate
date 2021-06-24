@@ -23,20 +23,20 @@
             </li>
             <li><a href="" class="icon">Update</a>
               <ul class="submenu">
-                <li><a href="/customers/edit">customers</a></li>
-                <li><a href="/companies/edit">companies</a></li>
-                <li><a href="/projects/edit">projects</a></li>
-                <li><a href="/developers/edit">developers</a></li>
-                <li><a href="/skills/edit">skills</a></li>
+                <li><a href="/customers/search">customer</a></li>
+                <li><a href="/companies/search">company</a></li>
+                <li><a href="/projects/search">project</a></li>
+                <li><a href="/developers/search">developer</a></li>
+                <li><a href="/skills/search">skill</a></li>
               </ul>
             </li>
             <li><a href="" class="icon">Delete</a>
               <ul class="submenu">
-                <li><a href="/customers/search">customers</a></li>
-                <li><a href="/companies/search">companies</a></li>
-                <li><a href="/projects/search">projects</a></li>
-                <li><a href="/developers/search">developers</a></li>
-                <li><a href="/skills/search">skills</a></li>
+                <li><a href="/customers/search">customer</a></li>
+                <li><a href="/companies/search">company</a></li>
+                <li><a href="/projects/search">project</a></li>
+                <li><a href="/developers/search">developer</a></li>
+                <li><a href="/skills/search">skill</a></li>
               </ul>
             </li>
           </ul>

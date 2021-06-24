@@ -13,13 +13,10 @@
     <body>
         <c:import url="/view/header.jsp"/>
         <div>
-          <form method="post" action="create">
-            <label for="name">Company name</label>
-            <input type="text" id="name" name="name" placeholder="Company name.." />
-            <label for="country">Company headquarters</label>
-            <input type="text" id="country" name="headquarters" placeholder="Company headquarters.." />
-            <input type="submit" value="Create" />
-          </form>
+            <form method="post" action="details">
+                <input type="number" name="id" placeholder="Enter id.." />
+                <input type="submit" value="Search" />
+            </form>
         </div>
     </body>
 </html>

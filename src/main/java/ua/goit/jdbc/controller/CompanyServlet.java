@@ -16,17 +16,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @WebServlet("/companies/*")
 public class CompanyServlet extends HttpServlet {
-    private Service<Company> service;
+    private Service<Company> companyService;
     private Service<Customer> customerService;
     private Service<Project> projectService;
 
     @Override
     public void init() throws ServletException {
-        this.service = new Service<>(new CompanyDAO(DatabaseConnectionManager.getDataSource()));
+        this.companyService = new Service<>(new CompanyDAO(DatabaseConnectionManager.getDataSource()));
         this.customerService = new Service<>(new CustomerDAO(DatabaseConnectionManager.getDataSource()));
         this.projectService = new Service<>(new ProjectDAO(DatabaseConnectionManager.getDataSource()));
     }
@@ -48,6 +51,7 @@ public class CompanyServlet extends HttpServlet {
             case "/new" -> newCompanyForm(req, resp);
             case "/create" -> createCompany(req, resp);
             case "/details" -> readCompany(req, resp);
+            case "/search" -> searchForm(req, resp);
             case "/edit" -> editCompanyForm(req, resp);
             case "/update" -> updateCompany(req, resp);
             case "/delete" -> deleteCompany(req, resp);
@@ -56,7 +60,8 @@ public class CompanyServlet extends HttpServlet {
     }
 
     private void newCompanyForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/view/newCompanyForm.jsp").forward(req, resp);
+        req.setAttribute("endpoint", "new");
+        req.getRequestDispatcher("/view/companyForm.jsp").forward(req, resp);
     }
 
     private void createCompany(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -64,40 +69,73 @@ public class CompanyServlet extends HttpServlet {
         String headquarters = req.getParameter("headquarters");
         Company company = new Company(name, headquarters);
         try {
-            service.create(company);
+            companyService.create(company);
         } catch (DAOException exception) {
             resp.sendRedirect(req.getContextPath() + "/error.jsp");
         }
         resp.sendRedirect("/companies");
     }
 
-    private void readCompany(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        long id = Long.parseLong(req.getParameter("id"));
-        try {
-            Company company = service.findById(id);
-            req.setAttribute("company", company);
-            req.getRequestDispatcher("/view/company.jsp").forward(req, resp);
-        } catch (DAOException | ServletException exception) {
-            resp.sendRedirect(req.getContextPath() + "/error.jsp");
-        }
+    private void readCompany(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+        int id = Integer.parseInt(req.getParameter("id"));
+        Company company = findById(id, companyService);
+        req.setAttribute("company", company);
+        req.getRequestDispatcher("/view/company.jsp").forward(req, resp);
+    }
+
+
+    private void searchForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.getRequestDispatcher("/view/search.jsp").forward(req, resp);
     }
 
     private void editCompanyForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<Customer> customers = customerService.readAll();
-        List<Project> projects = projectService.readAll();
-        req.setAttribute("customers", customers);
-        req.setAttribute("projects", projects);
-        req.getRequestDispatcher("/view/editCompanyForm.jsp").forward(req, resp);
+        int id = Integer.parseInt(req.getParameter("id"));
+        Company company = findById(id, companyService);
+        List<Customer> customerList = customerService.readAll();
+        List<Project> projectList = projectService.readAll();
+        req.setAttribute("company", company);
+        req.setAttribute("customerList", customerList);
+        req.setAttribute("projectList", projectList);
+        req.getRequestDispatcher("/view/companyForm.jsp").forward(req, resp);
     }
 
-    private void updateCompany(HttpServletRequest req, HttpServletResponse resp) {
-
+    private void updateCompany(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        int id = Integer.parseInt(req.getParameter("id"));
+        Company company = findById(id, companyService);
+        company.setName(req.getParameter("name"));
+        company.setHeadquarters(req.getParameter("headquarters"));
+        String[] listOfCustomerId = req.getParameterValues("customers");
+        if (listOfCustomerId != null && listOfCustomerId.length > 0) {
+            List<Customer> customers = Arrays.stream(listOfCustomerId)
+                    .mapToInt(Integer::parseInt)
+                    .mapToObj(cus -> findById(cus, customerService))
+                    .collect(Collectors.toList());
+            company.setCustomers(customers);
+        } else {
+            company.setCustomers(null);
+        }
+        String[] listOfProjectId = req.getParameterValues("projects");
+        if (listOfProjectId != null && listOfProjectId.length > 0) {
+            List<Project> projects = Arrays.stream(listOfProjectId)
+                    .mapToInt(Integer::parseInt)
+                    .mapToObj(proj -> findById(proj, projectService))
+                    .collect(Collectors.toList());
+            company.setProjects(projects);
+        } else {
+            company.setCustomers(null);
+        }
+        try {
+            companyService.update(company);
+        } catch (DAOException exception) {
+            resp.sendRedirect(req.getContextPath() + "/error.jsp");
+        }
+        resp.sendRedirect("/companies");
     }
 
     private void deleteCompany(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         long id = Long.parseLong(req.getParameter("id"));
         try {
-            service.delete(id);
+            companyService.delete(id);
         } catch (DAOException exception) {
             resp.sendRedirect(req.getContextPath() + "/error.jsp");
         }
@@ -106,7 +144,7 @@ public class CompanyServlet extends HttpServlet {
     }
 
     private void readCompanies(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        List<Company> companies = service.readAll();
+        List<Company> companies = companyService.readAll();
         req.setAttribute("companies", companies);
         try {
             req.getRequestDispatcher("/view/companies.jsp").forward(req, resp);
@@ -115,4 +153,13 @@ public class CompanyServlet extends HttpServlet {
         }
     }
 
+    private <T> T findById(long id, Service<T> service) {
+        T entity = null;
+        try {
+            entity = service.findById(id);
+        } catch (DAOException exception) {
+            exception.printStackTrace();
+        }
+        return entity;
+    }
 }
