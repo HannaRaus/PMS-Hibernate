@@ -85,7 +85,7 @@ public class ProjectDAO extends AbstractDAO<Project> {
                 "VALUES (?, ?);";
         List<Developer> developersInDB = receiveDevelopers(project);
         List<Developer> newDevelopers = project.getDevelopers();
-        if (compareInfoFromDB(developersInDB, newDevelopers)) {
+        if (areNotEquals(developersInDB, newDevelopers)) {
             try (Connection connection = getConnectionManager().getConnection();
                  PreparedStatement statement = connection.prepareStatement(query)) {
                 for (Developer dev : newDevelopers) {
@@ -114,7 +114,7 @@ public class ProjectDAO extends AbstractDAO<Project> {
         List<Company> newCompanies = project.getCompanies();
         List<Customer> customersInDB = receiveCustomers(project);
         List<Customer> newCustomers = project.getCustomers();
-        if (compareInfoFromDB(companiesInDB, newCompanies) && compareInfoFromDB(customersInDB,newCustomers)) {
+        if (areNotEquals(companiesInDB, newCompanies) && areNotEquals(customersInDB,newCustomers)) {
             try (Connection connection = getConnectionManager().getConnection();
                  PreparedStatement statement = connection.prepareStatement(query)) {
                 for (Company company : newCompanies) {

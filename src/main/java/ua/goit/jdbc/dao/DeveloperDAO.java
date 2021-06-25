@@ -81,7 +81,7 @@ public class DeveloperDAO extends AbstractDAO<Developer> {
                 "VALUES (?, ?);";
         List<Project> projectsInDB = receiveProjects(developer);
         List<Project> newProjects = developer.getProjects();
-        if (compareInfoFromDB(projectsInDB, newProjects)) {
+        if (areNotEquals(projectsInDB, newProjects)) {
             try (Connection connection = getConnectionManager().getConnection();
                  PreparedStatement statement = connection.prepareStatement(query)) {
                 for (Project project : newProjects) {
@@ -107,7 +107,7 @@ public class DeveloperDAO extends AbstractDAO<Developer> {
                 "VALUES (?, ?);";
         List<Skill> skillsInDB = receiveSkills(developer);
         List<Skill> newSkills = developer.getSkills();
-        if (compareInfoFromDB(skillsInDB, newSkills)) {
+        if (areNotEquals(skillsInDB, newSkills)) {
             try (Connection connection = getConnectionManager().getConnection();
                  PreparedStatement statement = connection.prepareStatement(query)) {
                 for (Skill skill : newSkills) {

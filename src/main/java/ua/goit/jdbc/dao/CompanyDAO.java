@@ -80,7 +80,7 @@ public class CompanyDAO extends AbstractDAO<Company> {
         List<Project> newProjects = company.getProjects();
         List<Customer> customersInDB = receiveCustomers(company);
         List<Customer> newCustomers = company.getCustomers();
-        if (compareInfoFromDB(projectsInDB, newProjects) && compareInfoFromDB(customersInDB,newCustomers)) {
+        if (areNotEquals(projectsInDB, newProjects) && areNotEquals(customersInDB,newCustomers)) {
             try (Connection connection = getConnectionManager().getConnection();
                  PreparedStatement statement = connection.prepareStatement(query)) {
                 for (Project project : newProjects) {

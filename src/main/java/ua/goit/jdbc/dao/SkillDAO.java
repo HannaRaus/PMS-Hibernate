@@ -77,7 +77,7 @@ public class SkillDAO extends AbstractDAO<Skill> {
                 "VALUES (?, ?);";
         List<Developer> projectsInDB = receiveDevelopers(skill);
         List<Developer> newDevelopers = skill.getDevelopers();
-        if (compareInfoFromDB(projectsInDB, newDevelopers)) {
+        if (areNotEquals(projectsInDB, newDevelopers)) {
             try (Connection connection = getConnectionManager().getConnection();
                  PreparedStatement statement = connection.prepareStatement(query)) {
                 for (Developer developer : newDevelopers) {

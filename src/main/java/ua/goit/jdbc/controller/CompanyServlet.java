@@ -65,9 +65,7 @@ public class CompanyServlet extends HttpServlet {
     }
 
     private void createCompany(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String name = req.getParameter("name");
-        String headquarters = req.getParameter("headquarters");
-        Company company = new Company(name, headquarters);
+        Company company = readJSPForm(req, new Company());
         try {
             companyService.create(company);
         } catch (DAOException exception) {
@@ -85,6 +83,8 @@ public class CompanyServlet extends HttpServlet {
 
 
     private void searchForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        int amountInDB = companyService.readAll().size();
+        req.setAttribute("amountInDB", amountInDB);
         req.getRequestDispatcher("/view/search.jsp").forward(req, resp);
     }
 
@@ -101,29 +101,7 @@ public class CompanyServlet extends HttpServlet {
 
     private void updateCompany(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         int id = Integer.parseInt(req.getParameter("id"));
-        Company company = findById(id, companyService);
-        company.setName(req.getParameter("name"));
-        company.setHeadquarters(req.getParameter("headquarters"));
-        String[] listOfCustomerId = req.getParameterValues("customers");
-        if (listOfCustomerId != null && listOfCustomerId.length > 0) {
-            List<Customer> customers = Arrays.stream(listOfCustomerId)
-                    .mapToInt(Integer::parseInt)
-                    .mapToObj(cus -> findById(cus, customerService))
-                    .collect(Collectors.toList());
-            company.setCustomers(customers);
-        } else {
-            company.setCustomers(null);
-        }
-        String[] listOfProjectId = req.getParameterValues("projects");
-        if (listOfProjectId != null && listOfProjectId.length > 0) {
-            List<Project> projects = Arrays.stream(listOfProjectId)
-                    .mapToInt(Integer::parseInt)
-                    .mapToObj(proj -> findById(proj, projectService))
-                    .collect(Collectors.toList());
-            company.setProjects(projects);
-        } else {
-            company.setCustomers(null);
-        }
+        Company company = readJSPForm(req, findById(id, companyService));
         try {
             companyService.update(company);
         } catch (DAOException exception) {
@@ -161,5 +139,31 @@ public class CompanyServlet extends HttpServlet {
             exception.printStackTrace();
         }
         return entity;
+    }
+
+    private Company readJSPForm(HttpServletRequest req, Company company) {
+        company.setName(req.getParameter("name"));
+        company.setHeadquarters(req.getParameter("headquarters"));
+        if (company.getId() == 0) {
+            String[] listOfCustomerId = req.getParameterValues("customers");
+            List<Customer> customers = new ArrayList<>();
+            if (listOfCustomerId != null && listOfCustomerId.length > 0) {
+                customers = Arrays.stream(listOfCustomerId)
+                        .mapToInt(Integer::parseInt)
+                        .mapToObj(cus -> findById(cus, customerService))
+                        .collect(Collectors.toList());
+            }
+            company.setCustomers(customers);
+            String[] listOfProjectId = req.getParameterValues("projects");
+            List<Project> projects = new ArrayList<>();
+            if (listOfProjectId != null && listOfProjectId.length > 0) {
+                projects = Arrays.stream(listOfProjectId)
+                        .mapToInt(Integer::parseInt)
+                        .mapToObj(proj -> findById(proj, projectService))
+                        .collect(Collectors.toList());
+            }
+            company.setProjects(projects);
+        }
+        return company;
     }
 }

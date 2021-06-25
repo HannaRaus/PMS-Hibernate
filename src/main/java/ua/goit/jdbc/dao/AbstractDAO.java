@@ -142,7 +142,14 @@ public abstract class AbstractDAO<T> implements GenericDAO<T> {
         return entities;
     }
 
-    protected <V> boolean compareInfoFromDB(List<V> listInDB, List<V> entityList) {
+    protected <V> boolean areNotEquals(List<V> listInDB, List<V> entityList) {
         return !entityList.equals(listInDB) && !listInDB.containsAll(entityList) && !entityList.isEmpty();
+    }
+
+    protected <V> boolean validateInfo(List<V> listInDataBase, List<V> newList) {
+        boolean areDifferent = areNotEquals(listInDataBase, newList);
+        boolean hasDuplicates = newList.removeIf(listInDataBase::contains);
+
+        return true;
     }
 }
