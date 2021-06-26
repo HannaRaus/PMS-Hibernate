@@ -3,7 +3,7 @@ package ua.goit.jdbc.controller;
 import ua.goit.jdbc.config.DatabaseConnectionManager;
 import ua.goit.jdbc.dao.*;
 import ua.goit.jdbc.dto.*;
-import ua.goit.jdbc.service.Service;
+import ua.goit.jdbc.service.Service;;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -13,56 +13,56 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-@WebServlet("/companies/*")
-public class CompanyServlet extends AbstractServlet<Company> {
-    private final Service<Customer> customerService = new Service<>(new CustomerDAO(DatabaseConnectionManager.getDataSource()));
+@WebServlet("/customers/*")
+public class CustomerServlet extends AbstractServlet<Customer> {
+    private final Service<Company> companyService = new Service<>(new CompanyDAO(DatabaseConnectionManager.getDataSource()));
     private final Service<Project> projectService = new Service<>(new ProjectDAO(DatabaseConnectionManager.getDataSource()));
 
     @Override
-    protected Service<Company> initService() {
-        return new Service<>(new CompanyDAO(DatabaseConnectionManager.getDataSource()));
+    protected Service<Customer> initService() {
+        return new Service<>(new CustomerDAO(DatabaseConnectionManager.getDataSource()));
     }
 
     @Override
     protected String getServletPath() {
-        return "/companies";
+        return "/customers";
     }
 
     @Override
     protected String getEntitiesPage() {
-        return "/view/companies.jsp";
+        return "/view/customers.jsp";
     }
 
     @Override
     protected String getEntityPage() {
-        return "/view/company.jsp";
+        return "/view/customer.jsp";
     }
 
     @Override
     protected String getFormPage() {
-        return "/view/companyForm.jsp";
+        return "/view/customerForm.jsp";
     }
 
     @Override
-    protected Company readJSPForm(HttpServletRequest req, Company company) {
+    protected Customer readJSPForm(HttpServletRequest req, Customer customer) {
 
-        if (Objects.isNull(company)) {
-            company = new Company();
+        if (Objects.isNull(customer)) {
+            customer = new Customer();
         }
 
-        company.setName(req.getParameter("name"));
-        company.setHeadquarters(req.getParameter("headquarters"));
+        customer.setName(req.getParameter("name"));
+        customer.setIndustry(req.getParameter("industry"));
 
-        if (company.getId() != 0) {
-            String[] listOfCustomerId = req.getParameterValues("customers");
-            List<Customer> customers = new ArrayList<>();
+        if (customer.getId() != 0) {
+            String[] listOfCustomerId = req.getParameterValues("companies");
+            List<Company> companies = new ArrayList<>();
             if (listOfCustomerId != null && listOfCustomerId.length > 0) {
-                customers = Arrays.stream(listOfCustomerId)
+                companies = Arrays.stream(listOfCustomerId)
                         .mapToInt(Integer::parseInt)
-                        .mapToObj(cus -> findById(cus, customerService))
+                        .mapToObj(cus -> findById(cus, companyService))
                         .collect(Collectors.toList());
             }
-            company.setCustomers(customers);
+            customer.setCompanies(companies);
 
             String[] listOfProjectId = req.getParameterValues("projects");
             List<Project> projects = new ArrayList<>();
@@ -72,18 +72,18 @@ public class CompanyServlet extends AbstractServlet<Company> {
                         .mapToObj(proj -> findById(proj, projectService))
                         .collect(Collectors.toList());
             }
-            company.setProjects(projects);
+            customer.setProjects(projects);
 
         }
+        return customer;
 
-        return company;
     }
 
     @Override
     protected void setAdditionalAttributesInForm(HttpServletRequest req) {
-        List<Customer> customerList = customerService.readAll();
+        List<Company> companyList = companyService.readAll();
         List<Project> projectList = projectService.readAll();
-        req.setAttribute("customerList", customerList);
+        req.setAttribute("companyList", companyList);
         req.setAttribute("projectList", projectList);
     }
 }

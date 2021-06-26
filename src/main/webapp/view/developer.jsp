@@ -12,7 +12,7 @@
     </head>
     <body>
         <c:import url="/view/header.jsp"/>
-        <c:set var="developer" value="${developer}" />
+        <c:set var="developer" value="${entity}" />
         <div class="container">
         	<table>
         		<thead>

@@ -25,7 +25,7 @@
         			</tr>
         		</thead>
         		<tbody>
-                 <c:forEach var="company" items="${companies}">
+                 <c:forEach var="company" items="${entities}">
                      <tr>
                          <td>${company.id}</td>
                          <td>${company.name}</td>

@@ -12,7 +12,7 @@
     </head>
     <body>
         <c:import url="/view/header.jsp"/>
-        <c:set var="company" value="${company}" />
+        <c:set var="company" value="${entity}" />
         <div class="container">
         	<table>
         		<thead>

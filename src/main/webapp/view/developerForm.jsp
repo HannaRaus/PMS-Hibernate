@@ -34,6 +34,7 @@
 
             <c:otherwise>
                 <form method="post" action="update">
+                    <c:set var="developer" value="${entity}" />
                     <input type="hidden" name="id" value='${developer.id}' />
                     <label for="firstName">First name</label>
                     <input type="text" id="firstName" name="firstName" value="<c:out value='${developer.firstName}' />" />

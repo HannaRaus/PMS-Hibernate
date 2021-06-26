@@ -27,6 +27,7 @@
 
             <c:otherwise>
                 <form method="post" action="update">
+                <c:set var="company" value="${entity}" />
                     <input type="hidden" name="id" value='${company.id}' />
                     <label for="name">Company name</label>
                     <input type="text" id="name" name="name" value="<c:out value='${company.name}' />" />
