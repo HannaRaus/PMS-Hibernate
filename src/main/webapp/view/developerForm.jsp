@@ -40,7 +40,7 @@
                     <input type="text" id="firstName" name="firstName" value="<c:out value='${developer.firstName}' />" />
                     <label for="lastName">Last name</label>
                     <input type="text" id="lastName" name="lastName" value="<c:out value='${developer.lastName}'/>" />
-                    <label for="lastName">Gender</label>
+                    <label for="sex">Gender</label>
                     <select id="sex" name="sex">
                         <option value="MALE">Male</option>
                         <option value="FEMALE">Female</option>

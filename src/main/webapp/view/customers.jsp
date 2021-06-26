@@ -17,36 +17,32 @@
         		<thead>
         			<tr>
         				<th>id</th>
-        				<th>firstName</th>
-        				<th>lastName</th>
-        				<th>sex</th>
-        				<th>salary</th>
+        				<th>name</th>
+        				<th>industry</th>
+        				<th>companies</th>
         				<th>projects</th>
-        				<th>skills</th>
         				<th colspan="3" align="center"></th>
         			</tr>
         		</thead>
         		<tbody>
-                 <c:forEach var="developer" items="${entities}">
+                 <c:forEach var="customer" items="${entities}">
                      <tr>
-                         <td>${developer.id}</td>
-                         <td>${developer.firstName}</td>
-                         <td>${developer.lastName}</td>
-                         <td>${developer.sex}</td>
-                         <td>${developer.salary}</td>
+                         <td>${customer.id}</td>
+                         <td>${customer.name}</td>
+                         <td>${customer.industry}</td>
                          <td>
-                             <div class="tooltip">${developer.projects.size()}
-                                <span class="tooltiptext">${developer.projects}</span>
+                             <div class="tooltip">${customer.companies.size()}
+                                <span class="tooltiptext">${customer.companies}</span>
                              </div>
                          </td>
                          <td>
-                             <div class="tooltip">${developer.skills.size()}
-                                <span class="tooltiptext">${developer.skills}</span>
+                             <div class="tooltip">${customer.projects.size()}
+                                <span class="tooltiptext">${customer.projects}</span>
                              </div>
                          </td>
-                         <td> <a href="/developers/details?id=${developer.id}"><button>Details</button></a></td>
-                         <td> <a href="/developers/edit?id=${developer.id}"><button>Update</button></a></td>
-                         <td> <a href="/developers/delete?id=${developer.id}"><button>Delete</button></a></td>
+                         <td> <a href="/customers/details?id=${customer.id}"><button>Details</button></a></td>
+                         <td> <a href="/customers/edit?id=${customer.id}"><button>Update</button></a></td>
+                         <td> <a href="/customers/delete?id=${customer.id}"><button>Delete</button></a></td>
                      </tr>
                  </c:forEach>
         		</tbody>

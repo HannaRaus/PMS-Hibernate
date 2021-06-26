@@ -12,33 +12,33 @@
     </head>
     <body>
         <c:import url="/view/header.jsp"/>
-        <c:set var="developer" value="${entity}" />
         <div class="container">
         	<table>
         		<thead>
         			<tr>
         				<th>id</th>
-        				<th>firstName</th>
-        				<th>lastName</th>
-        				<th>sex</th>
-        				<th>salary</th>
-        				<th>projects</th>
-        				<th>skills</th>
-        				<th colspan="2" align="center"></th>
+        				<th>branch</th>
+        				<th>level</th>
+        				<th>developers</th>
+        				<th colspan="3" align="center"></th>
         			</tr>
         		</thead>
         		<tbody>
+                 <c:forEach var="skill" items="${entities}">
                      <tr>
-                         <td>${developer.id}</td>
-                         <td>${developer.firstName}</td>
-                         <td>${developer.lastName}</td>
-                         <td>${developer.sex}</td>
-                         <td>${developer.salary}</td>
-                         <td>${developer.projects}</td>
-                         <td>${developer.skills}</td>
-                         <td> <a href="/developers/edit?id=${developer.id}"><button>Update</button></a></td>
-                         <td> <a href="/developers/delete?id=${developer.id}"><button>Delete</button></a></td>
+                         <td>${skill.id}</td>
+                         <td>${skill.branch}</td>
+                         <td>${skill.level}</td>
+                         <td>
+                             <div class="tooltip">${skill.developers.size()}
+                                <span class="tooltiptext">${skill.developers}</span>
+                             </div>
+                         </td>
+                         <td> <a href="/skills/details?id=${skill.id}"><button>Details</button></a></td>
+                         <td> <a href="/skills/edit?id=${skill.id}"><button>Update</button></a></td>
+                         <td> <a href="/skills/delete?id=${skill.id}"><button>Delete</button></a></td>
                      </tr>
+                 </c:forEach>
         		</tbody>
         	</table>
         </div>
