@@ -27,7 +27,7 @@
                             <option value="FEMALE">Female</option>
                         </select>
                         <label for="salary">Salary</label>
-                        <input type="number" step="0.01" id="salary" name="salary" placeholder="Salary.." />
+                        <input type="number" min="1" step="0.01" id="salary" name="salary" placeholder="Salary.." />
                         <input type="submit" value="Create" />
                     </form>
                 </c:when>
@@ -46,7 +46,7 @@
                         <option value="FEMALE">Female</option>
                     </select>
                     <label for="salary">Salary</label>
-                    <input type="number" step="0.01" id="salary" name="salary" value="<c:out value='${developer.salary}'/>" />
+                    <input type="number" min="1" step="0.01" id="salary" name="salary" value="<c:out value='${developer.salary}'/>" />
 
                     <label>Projects</label>
                     <div class="check">

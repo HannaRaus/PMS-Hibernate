@@ -1,16 +1,11 @@
 package ua.goit.servlets.dao;
 
 import com.zaxxer.hikari.HikariDataSource;
-import ua.goit.servlets.dto.Company;
-import ua.goit.servlets.dto.Project;
 import ua.goit.servlets.exceptions.DAOException;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 public abstract class AbstractDAO<T> implements GenericDAO<T> {
     private final HikariDataSource dataSource;
