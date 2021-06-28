@@ -19,7 +19,6 @@
         				<th>id</th>
         				<th>name</th>
         				<th>industry</th>
-        				<th>companies</th>
         				<th>projects</th>
         				<th colspan="3" align="center"></th>
         			</tr>
@@ -30,11 +29,6 @@
                          <td>${customer.id}</td>
                          <td>${customer.name}</td>
                          <td>${customer.industry}</td>
-                         <td>
-                             <div class="tooltip">${customer.companies.size()}
-                                <span class="tooltiptext">${customer.companies}</span>
-                             </div>
-                         </td>
                          <td>
                              <div class="tooltip">${customer.projects.size()}
                                 <span class="tooltiptext">${customer.projects}</span>

@@ -34,27 +34,6 @@
                     <label for="industry">Customer industry</label>
                     <input type="text" id="industry" name="industry" value="<c:out value='${customer.industry}'/>" />
 
-                    <label>Companies</label>
-                    <div class="check">
-                        <ul class="ks-cboxtags">
-                            <c:set var="customerCompanies" value="${customer.companies}"/>
-                            <c:forEach var="company" items="${companyList}">
-                                <c:if test="${customerCompanies.contains(company)}">
-                                    <li>
-                                        <input type="checkbox" id="company${company.id}" name="companies" checked value="${company.id}">
-                                        <label for="company${company.id}">${company.name}</label>
-                                    </li>
-                                </c:if>
-                                <c:if test="${!customerCompanies.contains(company)}">
-                                    <li>
-                                        <input type="checkbox" id="company${company.id}" name="companies" value="${company.id}">
-                                        <label for="company${company.id}">${company.name}</label>
-                                    </li>
-                                </c:if>
-                            </c:forEach>
-                        </ul>
-                    </div>
-
                     <label>Projects</label>
                     <div class="check">
                         <ul class="ks-cboxtags">

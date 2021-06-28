@@ -13,14 +13,19 @@ CREATE TABLE projects
 project_name VARCHAR(100) NOT NULL,
 project_description VARCHAR(100));
 
-CREATE TABLE customers_companies
+CREATE TABLE customer_projects
 (customer_id int NOT NULL,
-company_id int NOT NULL,
 project_id int NOT NULL,
 FOREIGN KEY (customer_id) REFERENCES customers(customer_id)  ON DELETE CASCADE,
+FOREIGN KEY (project_id) REFERENCES projects(project_id)  ON DELETE CASCADE,
+UNIQUE (customer_id, project_id));
+
+CREATE TABLE company_projects
+(company_id int NOT NULL,
+project_id int NOT NULL,
 FOREIGN KEY (company_id) REFERENCES companies(company_id)  ON DELETE CASCADE,
 FOREIGN KEY (project_id) REFERENCES projects(project_id)  ON DELETE CASCADE,
-UNIQUE (customer_id, company_id, project_id));
+UNIQUE (company_id, project_id));
 
 CREATE TYPE sex AS ENUM ('male', 'female');
 CREATE TABLE developers

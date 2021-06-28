@@ -20,7 +20,6 @@
         				<th>id</th>
         				<th>name</th>
         				<th>industry</th>
-        				<th>companies</th>
         				<th>projects</th>
         				<th colspan="2" align="center"></th>
         			</tr>
@@ -30,7 +29,6 @@
                          <td>${customer.id}</td>
                          <td>${customer.name}</td>
                          <td>${customer.industry}</td>
-                         <td>${customer.companies}</td>
                          <td>${customer.projects}</td>
                          <td> <a href="/customers/edit?id=${customer.id}"><button>Update</button></a></td>
                          <td> <a href="/customers/delete?id=${customer.id}"><button>Delete</button></a></td>

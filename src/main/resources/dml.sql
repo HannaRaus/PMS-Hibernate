@@ -39,18 +39,26 @@ VALUES
 ('Image Mining Project', NULL),
 ('MLM Project', NULL);
 
-INSERT INTO customers_companies (customer_id, company_id, project_id)
+INSERT INTO customer_projects (customer_id, project_id)
 VALUES
-(1, 1, 1), (1, 2, 1), (1, 2, 5),
-(2, 2, 2), (2, 2, 8), (2, 4, 12),
-(3, 1, 3), (3, 3, 3), (3, 5, 7),
-(4, 3, 10), (4, 4, 10),
-(5, 1, 11), (5, 4, 11), (5, 4, 13),
-(6, 2, 14), (6, 5, 14),
-(7, 1, 4), (7, 2, 4), (7, 5, 15),
-(8, 3, 9), (8, 4, 16),
-(9, 1, 6), (9, 5, 17),
-(10, 1, 12);
+(1, 1), (1,  5),
+(2, 2), (2, 8), (2, 12),
+(3, 3), (3, 7),
+(4, 10),
+(5, 11), (5, 13),
+(6, 14),
+(7, 4),(7, 15),
+(8, 9), (8, 16),
+(9, 6), (9, 17),
+(10, 12);
+
+INSERT INTO company_projects (company_id, project_id)
+VALUES
+(1, 1), (1, 3), (1, 4), (1, 6), (1, 11), (1, 12),
+(2, 1), (2, 2), (2, 4), (2, 5), (2, 8), (2, 14),
+(3, 3), (3, 9), (3, 10),
+(4, 10), (4, 11), (4, 12), (4, 13), (4, 16),
+(5, 7), (5, 14), (5, 15), (5, 17);
 
 INSERT INTO developers (first_name, last_name, sex)
 VALUES

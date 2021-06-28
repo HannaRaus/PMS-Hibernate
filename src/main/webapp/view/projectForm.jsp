@@ -22,7 +22,7 @@
                     <label for="description">Project description</label>
                     <input type="text" id="description" name="description" placeholder="Project description.." />
                     <label for="cost">Project cost</label>
-                    <input type="number" step="0.01" id="cost" name="cost" placeholder="Project cost.." />
+                    <input type="number" min="1" step="0.01" id="cost" name="cost" placeholder="Project cost.." />
                     <input type="submit" value="Create" />
                     </form>
                 </c:when>
@@ -37,7 +37,10 @@
                     <label for="description">Project description</label>
                     <input type="text" id="description" name="description" value="<c:out value='${project.description}'/>" />
                     <label for="cost">Project cost</label>
-                    <input type="number" step="0.01" id="cost" name="cost" value="<c:out value='${project.cost}'/>" />
+                    <input type="number" min="1" step="0.01" id="cost" name="cost" value="<c:out value='${project.cost}'/>" />
+
+                    <label for="date">Project date</label>
+                    <input type="date"  id="date" name="date" value="<c:out value='${project.date}'/>">
 
                     <label>Customers</label>
                     <div class="check">
