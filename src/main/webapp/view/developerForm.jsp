@@ -18,16 +18,16 @@
                 <c:when test="${endpoint == 'new'}">
                     <form method="post" action="create">
                         <label for="firstName">First name</label>
-                        <input type="text" id="firstName" name="firstName" placeholder="First name.." />
+                        <input type="text" minlength="3" id="firstName" name="firstName" required placeholder="First name.." />
                         <label for="lastName">Last name</label>
-                        <input type="text" id="lastName" name="lastName" placeholder="Last name.." />
+                        <input type="text" id="lastName" name="lastName" required placeholder="Last name.." />
                         <label for="sex">Gender</label>
                         <select id="sex" name="sex">
                             <option value="MALE">Male</option>
                             <option value="FEMALE">Female</option>
                         </select>
                         <label for="salary">Salary</label>
-                        <input type="number" min="1" step="0.01" id="salary" name="salary" placeholder="Salary.." />
+                        <input type="number" min="1" step="0.01" id="salary" name="salary" required placeholder="Salary.." />
                         <input type="submit" value="Create" />
                     </form>
                 </c:when>
@@ -37,16 +37,16 @@
                     <c:set var="developer" value="${entity}" />
                     <input type="hidden" name="id" value='${developer.id}' />
                     <label for="firstName">First name</label>
-                    <input type="text" id="firstName" name="firstName" value="<c:out value='${developer.firstName}' />" />
+                    <input type="text" id="firstName" name="firstName" required value="<c:out value='${developer.firstName}' />" />
                     <label for="lastName">Last name</label>
-                    <input type="text" id="lastName" name="lastName" value="<c:out value='${developer.lastName}'/>" />
+                    <input type="text" id="lastName" name="lastName" required value="<c:out value='${developer.lastName}'/>" />
                     <label for="sex">Gender</label>
                     <select id="sex" name="sex">
                         <option value="MALE">Male</option>
                         <option value="FEMALE">Female</option>
                     </select>
                     <label for="salary">Salary</label>
-                    <input type="number" min="1" step="0.01" id="salary" name="salary" value="<c:out value='${developer.salary}'/>" />
+                    <input type="number" min="1" step="0.01" id="salary" name="salary" required value="<c:out value='${developer.salary}'/>" />
 
                     <label>Projects</label>
                     <div class="check">

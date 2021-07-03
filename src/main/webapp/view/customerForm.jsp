@@ -18,7 +18,7 @@
                 <c:when test="${endpoint == 'new'}">
                     <form method="post" action="create">
                     <label for="name">Customer name</label>
-                    <input type="text" id="name" name="name" placeholder="Customer name.." />
+                    <input type="text" id="name" name="name" required placeholder="Customer name.." />
                     <label for="industry">Customer industry</label>
                     <input type="text" id="industry" name="industry" placeholder="Customer industry.." />
                     <input type="submit" value="Create" />
@@ -30,7 +30,7 @@
                 <c:set var="customer" value="${entity}" />
                     <input type="hidden" name="id" value='${customer.id}' />
                     <label for="name">Customer name</label>
-                    <input type="text" id="name" name="name" value="<c:out value='${customer.name}' />" />
+                    <input type="text" id="name" name="name" required value="<c:out value='${customer.name}' />" />
                     <label for="industry">Customer industry</label>
                     <input type="text" id="industry" name="industry" value="<c:out value='${customer.industry}'/>" />
 

@@ -18,11 +18,11 @@
                 <c:when test="${endpoint == 'new'}">
                     <form method="post" action="create">
                     <label for="name">Project name</label>
-                    <input type="text" id="name" name="name" placeholder="Project name.." />
+                    <input type="text" id="name" name="name" required placeholder="Project name.." />
                     <label for="description">Project description</label>
                     <input type="text" id="description" name="description" placeholder="Project description.." />
                     <label for="cost">Project cost</label>
-                    <input type="number" min="1" step="0.01" id="cost" name="cost" placeholder="Project cost.." />
+                    <input type="number" min="1" step="0.01" id="cost" name="cost" required placeholder="Project cost.." />
                     <input type="submit" value="Create" />
                     </form>
                 </c:when>
@@ -33,11 +33,11 @@
 
                     <input type="hidden" name="id" value='${project.id}' />
                     <label for="name">Project name</label>
-                    <input type="text" id="name" name="name" value="<c:out value='${project.name}' />" />
+                    <input type="text" id="name" name="name" required value="<c:out value='${project.name}' />" />
                     <label for="description">Project description</label>
                     <input type="text" id="description" name="description" value="<c:out value='${project.description}'/>" />
                     <label for="cost">Project cost</label>
-                    <input type="number" min="1" step="0.01" id="cost" name="cost" value="<c:out value='${project.cost}'/>" />
+                    <input type="number" min="1" step="0.01" id="cost" name="cost" required value="<c:out value='${project.cost}'/>" />
 
                     <label for="date">Project date</label>
                     <input type="date"  id="date" name="date" value="<c:out value='${project.date}'/>">

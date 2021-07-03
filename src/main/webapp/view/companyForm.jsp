@@ -18,7 +18,7 @@
                 <c:when test="${endpoint == 'new'}">
                     <form method="post" action="create">
                     <label for="name">Company name</label>
-                    <input type="text" id="name" name="name" placeholder="Company name.." />
+                    <input type="text" id="name" name="name" required placeholder="Company name.." />
                     <label for="country">Company headquarters</label>
                     <input type="text" id="country" name="headquarters" placeholder="Company headquarters.." />
                     <input type="submit" value="Create" />
@@ -30,7 +30,7 @@
                 <c:set var="company" value="${entity}" />
                     <input type="hidden" name="id" value='${company.id}' />
                     <label for="name">Company name</label>
-                    <input type="text" id="name" name="name" value="<c:out value='${company.name}' />" />
+                    <input type="text" id="name" name="name" required value="<c:out value='${company.name}' />" />
                     <label for="country">Company headquarters</label>
                     <input type="text" id="country" name="headquarters" value="<c:out value='${company.headquarters}'/>" />
 
