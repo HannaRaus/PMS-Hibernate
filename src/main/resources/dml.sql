@@ -226,9 +226,6 @@ LEFT JOIN developers d
 ON d.developer_id BETWEEN 36 AND 50
 WHERE s.skill_id in (6,9,10);
 
-ALTER TABLE developers
-ADD COLUMN salary int;
-
 UPDATE developers
 SET salary = 1000
 WHERE last_name LIKE '%on';
@@ -249,16 +246,10 @@ UPDATE developers
 SET salary = 5000
 WHERE salary IS NULL;
 
-ALTER TABLE projects
-ADD COLUMN cost int;
-
 UPDATE projects proj SET cost =
 (	SELECT SUM (d.salary)  AS total_cost
 	FROM projects p
 	INNER JOIN project_developers pd ON p.project_id = pd.project_id
 	INNER JOIN developers d ON d.developer_id=pd.developer_id
 	WHERE p.project_id = proj.project_id
- );
-
- alter table projects
- add column create_date date default current_date;
+);

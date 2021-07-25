@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+        <!-- Database connection settings -->
+        <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/hw</property>
+        <property name="hibernate.connection.username">postgres</property>
+        <property name="hibernate.connection.password">qazse456</property>
+        <!-- JDBC connection pool (use the built-in) -->
+        <property name="hibernate.connection.pool_size">10</property>
+        <!-- Echo all executed SQL to stdout -->
+        <property name="show_sql">true</property>
+        <!-- SQL dialect -->
+        <property name="dialect">org.hibernate.dialect.PostgreSQL10Dialect</property>
+        <property name="hbm2ddl.auto">validate</property>
+        <!--EHCACHE -->
+        <property name="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory</property>
+        <property name="hibernate.javax.cache.provider">org.ehcache.jsr107.EhcacheCachingProvider</property>
+        <property name="hibernate.cache.use_second_level_cache">true</property>
+        <property name="hibernate.cache.use_query_cache">true</property>
+        <property name="format_sql">true</property>
+
+        <mapping class="ua.goit.PMS.model.entity.Company"/>
+        <mapping class="ua.goit.PMS.model.entity.Customer" />
+        <mapping class="ua.goit.PMS.model.entity.Project" />
+        <mapping class="ua.goit.PMS.model.entity.Developer" />
+        <mapping class="ua.goit.PMS.model.entity.Skill" />
+    </session-factory>
+</hibernate-configuration>

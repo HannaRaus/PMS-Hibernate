@@ -55,3 +55,17 @@ FOREIGN KEY (skill_id) REFERENCES skills(skill_id) ON DELETE CASCADE,
 FOREIGN KEY (developer_id) REFERENCES developers(developer_id) ON DELETE CASCADE,
 UNIQUE (skill_id, developer_id));
 
+ALTER TABLE developers
+ADD COLUMN salary int;
+
+ALTER TABLE projects
+ADD COLUMN cost int;
+
+ALTER TABLE projects
+ADD COLUMN create_date date default current_date;
+
+ALTER TABLE developers
+ALTER COLUMN salary TYPE double precision;
+
+ALTER TABLE projects
+ALTER COLUMN cost TYPE double precision;

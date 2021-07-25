@@ -11,6 +11,6 @@
     </servlet-mapping>
 
     <listener>
-        <listener-class>ua.goit.servlets.config.AppInit</listener-class>
+        <listener-class>ua.goit.PMS.config.AppInit</listener-class>
     </listener>
 </web-app>
