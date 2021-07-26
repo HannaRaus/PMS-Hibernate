@@ -3,6 +3,8 @@ package ua.goit.PMS.model.entity;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import ua.goit.PMS.service.BranchConverter;
+import ua.goit.PMS.service.SkillLevelConverter;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -17,10 +19,10 @@ public class Skill {
     @Column(name = "skill_id")
     private int id;
     @Column(name = "branch")
-    @Enumerated(EnumType.STRING)
+    @Convert(converter = BranchConverter.class)
     private Branch branch;
     @Column(name = "skill_level")
-    @Enumerated(EnumType.STRING)
+    @Convert(converter = SkillLevelConverter.class)
     private SkillLevel level;
     @ManyToMany(fetch = FetchType.EAGER,
             targetEntity = ua.goit.PMS.model.entity.Developer.class)

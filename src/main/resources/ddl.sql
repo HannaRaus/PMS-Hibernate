@@ -69,3 +69,12 @@ ALTER COLUMN salary TYPE double precision;
 
 ALTER TABLE projects
 ALTER COLUMN cost TYPE double precision;
+
+ALTER TABLE developers
+ALTER COLUMN sex TYPE varchar(100);
+
+ALTER TABLE skills
+ALTER COLUMN skill_level TYPE varchar(100);
+
+ALTER TABLE skills
+ALTER COLUMN branch TYPE varchar(100);

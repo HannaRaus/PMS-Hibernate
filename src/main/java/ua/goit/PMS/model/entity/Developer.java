@@ -2,6 +2,7 @@ package ua.goit.PMS.model.entity;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import ua.goit.PMS.service.SexConverter;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -20,7 +21,7 @@ public class Developer {
     @Column(name = "last_name")
     private String lastName;
     @Column(name = "sex")
-    @Enumerated(EnumType.STRING)
+    @Convert(converter = SexConverter.class)
     private Sex sex;
     @Column(name = "salary")
     private double salary;
