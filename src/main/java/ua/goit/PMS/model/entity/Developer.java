@@ -1,7 +1,5 @@
 package ua.goit.PMS.model.entity;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 import ua.goit.PMS.service.SexConverter;
 
 import javax.persistence.*;
@@ -10,7 +8,6 @@ import java.util.Set;
 
 @Entity
 @Table(name = "developers")
-@Cache(usage = CacheConcurrencyStrategy.READ_ONLY, region = "Developer")
 public class Developer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

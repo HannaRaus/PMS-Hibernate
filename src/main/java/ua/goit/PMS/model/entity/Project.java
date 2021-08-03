@@ -1,8 +1,5 @@
 package ua.goit.PMS.model.entity;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -10,7 +7,6 @@ import java.util.Set;
 
 @Entity
 @Table(name = "projects")
-@Cache(usage = CacheConcurrencyStrategy.READ_ONLY, region = "Project")
 public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

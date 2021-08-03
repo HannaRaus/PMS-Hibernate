@@ -1,8 +1,6 @@
 package ua.goit.PMS.model.entity;
 
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 import ua.goit.PMS.service.BranchConverter;
 import ua.goit.PMS.service.SkillLevelConverter;
 
@@ -12,7 +10,6 @@ import java.util.Set;
 
 @Entity
 @Table(name = "skills")
-@Cache(usage = CacheConcurrencyStrategy.READ_ONLY, region = "Skill")
 public class Skill {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

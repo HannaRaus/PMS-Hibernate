@@ -1,15 +1,11 @@
 package ua.goit.PMS.model.entity;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
 import javax.persistence.*;
 import java.util.Objects;
 import java.util.Set;
 
 @Entity
 @Table(name = "companies")
-@Cache(usage = CacheConcurrencyStrategy.READ_ONLY, region = "Company")
 public class Company {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
