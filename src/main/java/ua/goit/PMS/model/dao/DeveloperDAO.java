@@ -9,4 +9,8 @@ public class DeveloperDAO extends AbstractDAO<Developer> {
         super(sessionFactory, Developer.class);
     }
 
+    @Override
+    protected String getDeleteQuery() {
+        return "DELETE Developer d WHERE d.id=:id";
+    }
 }

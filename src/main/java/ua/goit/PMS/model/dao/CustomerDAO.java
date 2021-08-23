@@ -9,4 +9,8 @@ public class CustomerDAO extends AbstractDAO<Customer> {
         super(sessionFactory, Customer.class);
     }
 
+    @Override
+    protected String getDeleteQuery() {
+        return "DELETE Customer c WHERE c.id=:id";
+    }
 }

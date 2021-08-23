@@ -5,6 +5,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ua.goit.PMS.exceptions.DAOException;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -22,8 +23,10 @@ public abstract class AbstractDAO<T> implements GenericDAO<T> {
         this.entityClass = entityClass;
     }
 
+    protected abstract String getDeleteQuery();
+
     @Override
-    public void create(T entity) {
+    public void create(T entity) throws DAOException {
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
@@ -34,22 +37,26 @@ public abstract class AbstractDAO<T> implements GenericDAO<T> {
             if (Objects.nonNull(transaction)) {
                 transaction.rollback();
             }
+            throw new DAOException("Problems with creating an object");
         }
     }
 
     @Override
-    public T read(int id) {
+    public T read(int id) throws DAOException {
         T entity = null;
         try (Session session = sessionFactory.openSession()) {
             entity = session.get(entityClass, id);
         } catch (Exception ex) {
             LOG.error("read. ", ex);
         }
+        if (Objects.isNull(entity)) {
+            throw new DAOException("There is no object with such id");
+        }
         return entity;
     }
 
     @Override
-    public void update(T entity) {
+    public void update(T entity) throws DAOException {
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
@@ -60,25 +67,23 @@ public abstract class AbstractDAO<T> implements GenericDAO<T> {
             if (Objects.nonNull(transaction)) {
                 transaction.rollback();
             }
+            throw new DAOException("Problems with updating an object");
         }
     }
 
     @Override
-    public void delete(int id) {
-        T toDelete = read(id);
-        if (Objects.nonNull(toDelete)) {
-            Transaction transaction = null;
-            try (Session session = sessionFactory.openSession()) {
-                transaction = session.beginTransaction();
-                session.delete(toDelete);
-                transaction.commit();
-
-            } catch (Exception ex) {
-                LOG.error("delete. ", ex);
-                if (Objects.nonNull(transaction)) {
-                    transaction.rollback();
-                }
+    public void delete(int id) throws DAOException {
+        Transaction transaction = null;
+        try (Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
+            session.createQuery(getDeleteQuery()).setParameter("id", id).executeUpdate();
+            transaction.commit();
+        } catch (Exception ex) {
+            LOG.error("delete. ", ex);
+            if (Objects.nonNull(transaction)) {
+                transaction.rollback();
             }
+            throw new DAOException("Problems with deleting an object");
         }
     }
 

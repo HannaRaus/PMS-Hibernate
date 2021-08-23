@@ -9,4 +9,8 @@ public class SkillDAO extends AbstractDAO<Skill> {
         super(sessionFactory, Skill.class);
     }
 
+    @Override
+    protected String getDeleteQuery() {
+        return "DELETE Skill s WHERE s.id=:id";
+    }
 }

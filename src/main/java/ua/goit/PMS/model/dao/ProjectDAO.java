@@ -9,4 +9,8 @@ public class ProjectDAO extends AbstractDAO<Project> {
         super(sessionFactory, Project.class);
     }
 
+    @Override
+    protected String getDeleteQuery() {
+        return "DELETE Project p WHERE p.id=:id";
+    }
 }
