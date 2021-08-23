@@ -11,6 +11,6 @@
     <body>
         <c:import url="/view/header.jsp"/>
         <h2 align="center">Error</h2>
-        <h2 align="center"><%=exception.getMessage() %></h2>
+        <h2 align="center">${message}</h2>
     </body>
 </html>

@@ -14,7 +14,7 @@
         <c:import url="/view/header.jsp"/>
         <div>
             <form method="post" action="details">
-                <input type="number" min="0" max="${amountInDB}" name="id" placeholder="Enter id.." />
+                <input type="number" min="0" name="id" placeholder="Enter id.." />
                 <input type="submit" value="Search" />
             </form>
         </div>

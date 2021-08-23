@@ -70,26 +70,23 @@ public abstract class AbstractServlet<T> extends HttpServlet {
         try {
             service.create(entity);
         } catch (DAOException exception) {
-            resp.sendRedirect(req.getContextPath() + "/error.jsp");
+            req.setAttribute("message", exception.getMessage());
+            req.getRequestDispatcher("/view/error.jsp").forward(req, resp);
         }
         resp.sendRedirect(getServletPath());
     }
 
     private void readEntity(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         int id = Integer.parseInt(req.getParameter("id"));
-        T entity = findById(id, service);
-        req.setAttribute("entity", entity);
-        req.getRequestDispatcher(getEntityPage()).forward(req, resp);
-    }
-
-    protected <V> V findById(int id, Service<V> service) {
-        V entity = null;
+        T entity = null;
         try {
             entity = service.findById(id);
         } catch (DAOException exception) {
-            exception.printStackTrace();
+            req.setAttribute("message", exception.getMessage());
+            req.getRequestDispatcher("/view/error.jsp").forward(req, resp);
         }
-        return entity;
+        req.setAttribute("entity", entity);
+        req.getRequestDispatcher(getEntityPage()).forward(req, resp);
     }
 
     private void searchForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -104,23 +101,25 @@ public abstract class AbstractServlet<T> extends HttpServlet {
         req.getRequestDispatcher(getFormPage()).forward(req, resp);
     }
 
-    private void updateEntity(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    private void updateEntity(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         int id = Integer.parseInt(req.getParameter("id"));
         T entity = mapper.readJSPForm(req, findById(id, service));
         try {
             service.update(entity);
         } catch (DAOException exception) {
-            resp.sendRedirect(req.getContextPath() + "/error.jsp");
+            req.setAttribute("message", exception.getMessage());
+            req.getRequestDispatcher("/view/error.jsp").forward(req, resp);
         }
         resp.sendRedirect(getServletPath());
     }
 
-    private void deleteEntity(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    private void deleteEntity(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         int id = Integer.parseInt(req.getParameter("id"));
         try {
             service.delete(id);
         } catch (DAOException exception) {
-            resp.sendRedirect(req.getContextPath() + "/error.jsp");
+            req.setAttribute("message", exception.getMessage());
+            req.getRequestDispatcher("/view/error.jsp").forward(req, resp);
         }
         resp.sendRedirect(getServletPath());
     }
@@ -129,5 +128,16 @@ public abstract class AbstractServlet<T> extends HttpServlet {
         Set<T> entities = service.readAll();
         req.setAttribute("entities", entities);
         req.getRequestDispatcher(getEntitiesPage()).forward(req, resp);
+    }
+
+
+    private <V> V findById(int id, Service<V> service) {
+        V entity = null;
+        try {
+            entity = service.findById(id);
+        } catch (DAOException exception) {
+            exception.printStackTrace();
+        }
+        return entity;
     }
 }
