@@ -2,6 +2,7 @@ package ua.goit.PMS.controller;
 
 import ua.goit.PMS.exceptions.DAOException;
 import ua.goit.PMS.service.Service;
+import ua.goit.PMS.service.mappers.EntityFromJSPMapper;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -12,11 +13,15 @@ import java.util.Set;
 
 public abstract class AbstractServlet<T> extends HttpServlet {
     protected Service<T> service;
+    private EntityFromJSPMapper<T> mapper;
 
     @Override
     public void init() throws ServletException {
         this.service = initService();
+        this.mapper = initMapper();
     }
+
+    protected abstract EntityFromJSPMapper<T> initMapper();
 
     protected abstract Service<T> initService();
 
@@ -27,8 +32,6 @@ public abstract class AbstractServlet<T> extends HttpServlet {
     protected abstract String getEntityPage();
 
     protected abstract String getFormPage();
-
-    protected abstract T readJSPForm(HttpServletRequest req, T entity);
 
     protected abstract void setAdditionalAttributesInForm(HttpServletRequest req);
 
@@ -63,7 +66,7 @@ public abstract class AbstractServlet<T> extends HttpServlet {
     }
 
     private void createEntity(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        T entity = readJSPForm(req, null);
+        T entity = mapper.readJSPForm(req);
         try {
             service.create(entity);
         } catch (DAOException exception) {
@@ -90,8 +93,6 @@ public abstract class AbstractServlet<T> extends HttpServlet {
     }
 
     private void searchForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        int amountInDB = service.readAll().size();
-        req.setAttribute("amountInDB", amountInDB);
         req.getRequestDispatcher("/view/search.jsp").forward(req, resp);
     }
 
@@ -105,7 +106,7 @@ public abstract class AbstractServlet<T> extends HttpServlet {
 
     private void updateEntity(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         int id = Integer.parseInt(req.getParameter("id"));
-        T entity = readJSPForm(req, findById(id, service));
+        T entity = mapper.readJSPForm(req, findById(id, service));
         try {
             service.update(entity);
         } catch (DAOException exception) {

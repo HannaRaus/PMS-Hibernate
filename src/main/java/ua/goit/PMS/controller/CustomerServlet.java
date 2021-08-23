@@ -7,14 +7,12 @@ import ua.goit.PMS.model.dao.ProjectDAO;
 import ua.goit.PMS.model.entity.Customer;
 import ua.goit.PMS.model.entity.Project;
 import ua.goit.PMS.service.Service;
+import ua.goit.PMS.service.mappers.CustomerFromJSPMapper;
+import ua.goit.PMS.service.mappers.EntityFromJSPMapper;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 ;
 
@@ -22,6 +20,11 @@ import java.util.stream.Collectors;
 public class CustomerServlet extends AbstractServlet<Customer> {
     private final SessionFactory sessionFactory = HibernateDatabaseConnector.getSessionFactory();
     private final Service<Project> projectService = new Service<>(new ProjectDAO(sessionFactory));
+
+    @Override
+    protected EntityFromJSPMapper<Customer> initMapper() {
+        return new CustomerFromJSPMapper(projectService);
+    }
 
     @Override
     protected Service<Customer> initService() {
@@ -46,33 +49,6 @@ public class CustomerServlet extends AbstractServlet<Customer> {
     @Override
     protected String getFormPage() {
         return "/view/customerForm.jsp";
-    }
-
-    @Override
-    protected Customer readJSPForm(HttpServletRequest req, Customer customer) {
-
-        if (Objects.isNull(customer)) {
-            customer = new Customer();
-        }
-
-        customer.setName(req.getParameter("name"));
-        customer.setIndustry(req.getParameter("industry"));
-
-        if (customer.getId() != 0) {
-
-            String[] listOfProjectId = req.getParameterValues("projects");
-            Set<Project> projects = new HashSet<>();
-            if (listOfProjectId != null && listOfProjectId.length > 0) {
-                projects = Arrays.stream(listOfProjectId)
-                        .mapToInt(Integer::parseInt)
-                        .mapToObj(proj -> findById(proj, projectService))
-                        .collect(Collectors.toSet());
-            }
-            customer.setProjects(projects);
-
-        }
-        return customer;
-
     }
 
     @Override
